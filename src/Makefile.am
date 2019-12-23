@@ -1,3 +1,6 @@
+AM_CPPFLAGS = -I$(top_srcdir)/include/core \
+    -I$(top_srcdir)/include/crypto
+
 noinst_LIBRARIES = libisshe.a
 
 libisshe_a_SOURCES = \
@@ -20,6 +23,3 @@ libisshe_a_SOURCES = \
     crypto/isshe_sha2.c \
     crypto/isshe_hmac.c \
     crypto/isshe_rand.c
-
-AM_CPPFLAGS = -I$(top_srcdir)/include/core \
-    -I$(top_srcdir)/include/crypto
