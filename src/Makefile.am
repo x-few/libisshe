@@ -21,5 +21,5 @@ libisshe_a_SOURCES = \
     crypto/isshe_hmac.c \
     crypto/isshe_rand.c
 
-AM_CPPFLAGS = -I$(top_srcdir)/src/core \
-    -I$(top_srcdir)/src/crypto
+AM_CPPFLAGS = -I$(top_srcdir)/include/core \
+    -I$(top_srcdir)/include/crypto
