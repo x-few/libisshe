@@ -71,3 +71,8 @@ ltmain.sh
 missing
 .deps/
 .dirstamp
+config.h
+config.log
+config.status
+libtool
+stamp-h1
