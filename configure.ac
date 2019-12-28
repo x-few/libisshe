@@ -3,7 +3,7 @@
 
 AC_PREREQ([2.69])
 AC_INIT(libisshe, 1.0, i.sshe@foxmail.com)
-AC_CONFIG_SRCDIR([src/core/isshe_common.h])
+AC_CONFIG_SRCDIR([src])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([foreign subdir-objects])

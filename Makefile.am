@@ -1,5 +1,8 @@
 ACLOCAL_AMFLAGS = -I m4
 
 SUBDIRS = \
-	src \
+	src
+
+DIST_SUBDIRS = \
+	$(SUBDIRS) \
 	test
