@@ -2,9 +2,32 @@
 #define _ISSHE_FILE_H_
 
 #include <unistd.h>
+#include <fcntl.h>
 #include <sys/stat.h>
+#include <stdlib.h>
+
+#include "isshe_string.h"
 
 #define LOCKMODE (S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH)
+#define ISSHE_FILE_RDONLY          O_RDONLY
+#define ISSHE_FILE_WRONLY          O_WRONLY
+#define ISSHE_FILE_RDWR            O_RDWR
+#define ISSHE_FILE_CREATE_OR_OPEN  O_CREAT
+#define ISSHE_FILE_OPEN            0
+#define ISSHE_FILE_TRUNCATE        (O_CREAT|O_TRUNC)
+#define ISSHE_FILE_APPEND          (O_WRONLY|O_APPEND)
+#define ISSHE_FILE_NONBLOCK        O_NONBLOCK
+
+typedef int                     isshe_fd_t;
+typedef struct stat             isshe_file_info_t;
+typedef struct isshe_file_s     isshe_file_t;
+
+struct isshe_file_s
+{
+    isshe_fd_t                  fd;
+    isshe_str_t                 name;
+    isshe_file_info_t           info;
+};
 
 int isshe_lock_file(int fd);
 int isshe_unlock_file(int fd);
@@ -57,5 +80,6 @@ ssize_t isshe_readline(int fd, void *ptr, size_t maxlen);
 off_t isshe_lseek(int fd, off_t offset, int whence);
 void isshe_ftruncate(int fd, off_t length);
 void isshe_fstat(int fd, struct stat *ptr);
+char *isshe_read_all(int fd, ssize_t *reslen);
 
 #endif

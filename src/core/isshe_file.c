@@ -5,6 +5,7 @@
 #include "isshe_file.h"
 #include "isshe_error.h"
 #include "isshe_common.h"
+#include "isshe_unistd.h"
 
 static int isshe_lock_unlock(int fd, short type) {
     struct flock fl;
@@ -186,5 +187,25 @@ void isshe_fstat(int fd, struct stat *ptr)
     if (fstat(fd, ptr) == -1) {
         isshe_sys_error_exit("fstat error");
     }
+}
+
+char *isshe_read_all(int fd, ssize_t *reslen)
+{
+    isshe_file_info_t info;
+    char *buf;
+    ssize_t len;
+
+    isshe_fstat(fd, &info);
+    if (info.st_size > 0) {
+        buf = isshe_malloc(info.st_size);           // remember to free
+        len = isshe_read(fd, buf, info.st_size);
+        *reslen = len;
+        if (len != info.st_size) {
+            return NULL;
+        }
+        return buf;
+    }
+
+    return NULL;
 }
 
