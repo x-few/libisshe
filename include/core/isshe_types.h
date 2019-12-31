@@ -23,6 +23,7 @@ typedef int             isshe_errno_t;
 
 typedef time_t          isshe_time_t;
 typedef struct tm       isshe_tm_t;
+typedef struct timeval  isshe_timeval_t;
 
 
 typedef pid_t           isshe_pid_t;

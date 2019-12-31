@@ -54,12 +54,12 @@ int isshe_open(const char *pathname, int oflag, ...)
         va_start(ap, oflag);
         mode = va_arg(ap, va_mode_t);
         if ( (fd = open(pathname, oflag, mode)) == ISSHE_FAILURE ) {
-            return ISSHE_FAILURE;
+            return ISSHE_INVALID_FILE;
         }
         va_end(ap);
     } else {
         if ( (fd = open(pathname, oflag)) == ISSHE_FAILURE ) {
-            return ISSHE_FAILURE;
+            return ISSHE_INVALID_FILE;
         }
     }
 

@@ -18,7 +18,7 @@
 #define ISSHE_LOG_DEBUG     7
 
 typedef void (*isshe_log_writer_pt) (isshe_log_t *log, isshe_uint_t level,
-    isshe_uchar_t *buf, isshe_size_t len);
+    isshe_char_t *buf, isshe_size_t len);
 
 
 struct isshe_log_s {
@@ -28,10 +28,15 @@ struct isshe_log_s {
     void                   *wdata;
 };
 
-isshe_log_t *isshe_log_instance_get(isshe_log_t *hint);
-void isshe_log_free(isshe_log_t *log);
+isshe_log_t *isshe_log_instance_get(
+    isshe_uint_t level, isshe_char_t *filename);
 
-void isshe_log(isshe_uint_t level, isshe_log_t *log, 
+void isshe_log_free();
+
+void isshe_log(isshe_uint_t level,
+    isshe_log_t *log, const char *fmt, ...);
+
+void isshe_log_errno(isshe_uint_t level, isshe_log_t *log,
     isshe_errno_t errcode, const char *fmt, ...);
 
 void isshe_log_debug(isshe_log_t *log, const char *fmt, ...);

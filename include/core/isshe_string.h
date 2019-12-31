@@ -17,8 +17,8 @@
 #define isshe_sprintf       sprintf
 
 struct isshe_str_s{
-    size_t      len;
-    uint8_t     *data;
+    isshe_size_t      len;
+    isshe_char_t     *data;
 };
 
 #endif
