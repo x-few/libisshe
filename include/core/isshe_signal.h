@@ -1,7 +1,7 @@
 #ifndef _ISSHE_SIGNAL_H_
 #define _ISSHE_SIGNAL_H_
 
-#include <signal.h>
+#include "isshe_common.h"
 
 /*
 typedef void (* sigfunc)(int)

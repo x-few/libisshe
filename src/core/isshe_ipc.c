@@ -1,14 +1,4 @@
 
-#include <limits.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/mman.h>
-#include <sys/stat.h>        /* For mode constants */
-#include <fcntl.h>           /* For O_* constants */
-
-#include "isshe_ipc.h"
-#include "isshe_error.h"
 #include "isshe_common.h"
 
 static char *posix_ipc_name(const char *name)

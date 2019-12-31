@@ -1,11 +1,7 @@
 
-#include <syslog.h>
-#include <fcntl.h>
 
-#include "isshe_file.h"
-#include "isshe_error.h"
 #include "isshe_common.h"
-#include "isshe_unistd.h"
+
 
 static int isshe_lock_unlock(int fd, short type) {
     struct flock fl;
@@ -58,12 +54,12 @@ int isshe_open(const char *pathname, int oflag, ...)
         va_start(ap, oflag);
         mode = va_arg(ap, va_mode_t);
         if ( (fd = open(pathname, oflag, mode)) == ISSHE_FAILURE ) {
-            isshe_sys_error_exit("open error for %s", pathname);
+            return ISSHE_FAILURE;
         }
         va_end(ap);
     } else {
         if ( (fd = open(pathname, oflag)) == ISSHE_FAILURE ) {
-            isshe_sys_error_exit("open error for %s", pathname);
+            return ISSHE_FAILURE;
         }
     }
 

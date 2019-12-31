@@ -1,7 +1,5 @@
-#include "isshe_sbuf.h"
-#include "isshe_unistd.h"
+
 #include "isshe_common.h"
-#include "isshe_ipc.h"
 
 /* 临时文件 */
 static char *sbuf_mktemp(char *template)
@@ -31,9 +29,9 @@ void isshe_sbuf_init(isshe_sbuf_t *sp, int n, size_t size)
     printf("sem_nempty_name = %s\n", sp->sem_nempty_name);
     printf("sem_nstored_name = %s\n", sp->sem_nstored_name);
 
-    sp->mutex = isshe_sem_open(sp->sem_mutex_name, O_CREAT | O_EXCL, ISSHE_FILE_MODE, 1);
-    sp->nempty = isshe_sem_open(sp->sem_nempty_name, O_CREAT | O_EXCL, ISSHE_FILE_MODE, n);
-    sp->nstored = isshe_sem_open(sp->sem_nstored_name, O_CREAT | O_EXCL, ISSHE_FILE_MODE, 0);
+    sp->mutex = isshe_sem_open(sp->sem_mutex_name, O_CREAT | O_EXCL, ISSHE_FILE_DEFAULT_ACCESS, 1);
+    sp->nempty = isshe_sem_open(sp->sem_nempty_name, O_CREAT | O_EXCL, ISSHE_FILE_DEFAULT_ACCESS, n);
+    sp->nstored = isshe_sem_open(sp->sem_nstored_name, O_CREAT | O_EXCL, ISSHE_FILE_DEFAULT_ACCESS, 0);
 }
 
 /* 清除、销毁 */

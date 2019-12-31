@@ -2,7 +2,6 @@
  * Base on openssl
  */
 
-#include "isshe_sha2.h"
 #include "isshe_common.h"
 
 /*

@@ -1,9 +1,6 @@
 
 
-#include <assert.h>
-#include <stdlib.h>
-
-#include "isshe_aes.h"
+#include "isshe_common.h"
 
 //#ifndef AES_ASM
 /*-

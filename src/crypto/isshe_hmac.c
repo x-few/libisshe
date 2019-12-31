@@ -1,8 +1,4 @@
 #include "isshe_common.h"
-#include "isshe_md5.h"
-#include "isshe_hmac.h"
-#include "isshe_sha2.h"
-
 
 void isshe_hmac_md5(uint8_t* text, uint64_t text_len,
     uint8_t* key, uint64_t key_len,

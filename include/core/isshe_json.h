@@ -20,7 +20,7 @@ extern "C"
 #define ISSHE_JSON_VERSION_MINOR 0
 #define ISSHE_JSON_VERSION_PATCH 0
 
-#include <stddef.h>
+#include "isshe_common.h"
 
 /* isshe_json_t Types: */
 #define ISSHE_JSON_INVALID (0)

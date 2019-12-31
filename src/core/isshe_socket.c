@@ -1,6 +1,4 @@
 #include "isshe_common.h"
-#include "isshe_error.h"
-#include "isshe_socket.h"
 
 int isshe_socket(int domain, int type, int protocol)
 {

@@ -1,11 +1,3 @@
-#include <errno.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <stdlib.h>
-#include <sys/mman.h>
-
-#include "isshe_unistd.h"
-#include "isshe_error.h"
 #include "isshe_common.h"
 
 long isshe_pathconf(const char *pathname, int name)
@@ -88,37 +80,6 @@ int isshe_getopt(int argc, char *const *argv, const char *str)
     }
 
     return(opt);
-}
-
-void *isshe_calloc(size_t n, size_t size)
-{
-    void *ptr;
-
-    if ( (ptr = calloc(n, size)) == NULL) {
-        isshe_sys_error_exit("calloc error");
-    }
-
-    return(ptr);
-}
-
-void *isshe_malloc(size_t size)
-{
-    void    *ptr;
-
-    if ( (ptr = malloc(size)) == NULL) {
-        isshe_sys_error_exit("malloc error");
-    }
-
-    return(ptr);
-}
-
-void isshe_free(void *ptr)
-{
-    if (ptr) {
-        free(ptr);
-    } else {
-        isshe_error("want to free(NULL)");
-    }
 }
 
 void *isshe_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset)

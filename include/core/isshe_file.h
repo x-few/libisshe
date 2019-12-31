@@ -1,26 +1,29 @@
 #ifndef _ISSHE_FILE_H_
 #define _ISSHE_FILE_H_
 
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <stdlib.h>
+#include "isshe_common.h"
 
-#include "isshe_string.h"
+#define ISSHE_FILE_RDONLY           O_RDONLY
+#define ISSHE_FILE_WRONLY           O_WRONLY
+#define ISSHE_FILE_RDWR             O_RDWR
+#define ISSHE_FILE_CREATE_OR_OPEN   O_CREAT
+#define ISSHE_FILE_OPEN             0
+#define ISSHE_FILE_TRUNCATE         (O_CREAT|O_TRUNC)
+#define ISSHE_FILE_APPEND           (O_WRONLY|O_APPEND)
+#define ISSHE_FILE_NONBLOCK         O_NONBLOCK
+#define ISSHE_LOCKMODE              (S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH)
+#define ISSHE_FILE_DEFAULT_ACCESS   (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)     // 0644
+#define ISSHE_FILE_OWNER_ACCESS     (S_IRUSR | S_IWUSR)                         // 0600
+#define	ISSHE_DIR_DEFAULT_ACCESS    (FILE_MODE | S_IXUSR | S_IXGRP | S_IXOTH)
 
-#define LOCKMODE (S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH)
-#define ISSHE_FILE_RDONLY          O_RDONLY
-#define ISSHE_FILE_WRONLY          O_WRONLY
-#define ISSHE_FILE_RDWR            O_RDWR
-#define ISSHE_FILE_CREATE_OR_OPEN  O_CREAT
-#define ISSHE_FILE_OPEN            0
-#define ISSHE_FILE_TRUNCATE        (O_CREAT|O_TRUNC)
-#define ISSHE_FILE_APPEND          (O_WRONLY|O_APPEND)
-#define ISSHE_FILE_NONBLOCK        O_NONBLOCK
+#define ISSHE_INVALID_FILE          -1
 
-typedef int                     isshe_fd_t;
-typedef struct stat             isshe_file_info_t;
-typedef struct isshe_file_s     isshe_file_t;
+#define isshe_stdout                STDOUT_FILENO
+#define isshe_stderr                STDERR_FILENO
+
+typedef int                         isshe_fd_t;
+typedef struct stat                 isshe_file_info_t;
+typedef struct isshe_file_s         isshe_file_t;
 
 struct isshe_file_s
 {

@@ -1,7 +1,9 @@
 #ifndef _ISSHE_THREAD_H_
 #define _ISSHE_THREAD_H_
 
-#include <pthread.h>
+#include "isshe_common.h"
+
+#define isshe_gettid            gettid
 
 int isshe_pthread_create(pthread_t *tid, const pthread_attr_t *attr, void * (*func)(void *), void *arg);
 int isshe_pthread_join(pthread_t tid, void **status);

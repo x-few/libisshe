@@ -1,23 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/errno.h>
-#include <string.h>
-#include <sys/wait.h>
-#include <syslog.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <signal.h>
-
-#ifdef __linux__
-#include <sys/time.h>
-#include <sys/resource.h>
-#endif
-
-#include "isshe_process.h"
-#include "isshe_error.h"
 #include "isshe_common.h"
-#include "isshe_signal.h"
 
 extern int daemon_proc;    // defined in isshe_error.c
 

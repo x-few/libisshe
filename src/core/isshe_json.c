@@ -18,13 +18,6 @@
 #pragma warning (disable : 4001)
 #endif
 
-#include <string.h>
-#include <stdio.h>
-#include <math.h>
-#include <stdlib.h>
-#include <limits.h>
-#include <ctype.h>
-
 #ifdef ENABLE_LOCALES
 #include <locale.h>
 #endif
@@ -36,7 +29,7 @@
 #pragma GCC visibility pop
 #endif
 
-#include "isshe_json.h"
+#include "isshe_common.h"
 
 /* define our own boolean type */
 #ifdef true

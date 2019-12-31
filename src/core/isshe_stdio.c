@@ -1,8 +1,5 @@
 
-#include <stdio.h>
-
-#include "isshe_stdio.h"
-#include "isshe_error.h"
+#include "isshe_common.h"
 
 
 char *isshe_fgets(char *ptr, int n, FILE *stream)

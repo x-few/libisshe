@@ -1,6 +1,8 @@
 #ifndef _ISSHE_SOCKET_H_
 #define _ISSHE_SOCKET_H_
 
+#include "isshe_common.h"
+
 #define LISTENQ  1024  /* Second argument to listen() */
 #define SA  struct sockaddr
 

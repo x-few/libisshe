@@ -1,7 +1,3 @@
-#include <errno.h>
-
-#include "isshe_pthread.h"
-#include "isshe_error.h"
 #include "isshe_common.h"
 
 int isshe_pthread_create(pthread_t *tid, const pthread_attr_t *attr,

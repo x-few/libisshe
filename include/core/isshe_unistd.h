@@ -1,21 +1,7 @@
 #ifndef _ISSHE_UNISTD_H_
 #define _ISSHE_UNISTD_H_
 
-#include <sys/mman.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#include <poll.h>
-#include <unistd.h>
-
-
-#ifdef __linux__
-#include <sys/epoll.h>
-#endif
-
-#if defined(__bsdi__) || defined(__APPLE__)
-#include <sys/event.h>
-#endif
-
+#include "isshe_common.h"
 
 #ifndef INFTIM
 #define INFTIM          (-1)    /* infinite poll timeout */

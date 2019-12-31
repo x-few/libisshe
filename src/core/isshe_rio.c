@@ -1,6 +1,4 @@
 #include "isshe_common.h"
-#include "isshe_rio.h"
-#include "isshe_error.h"
 
 /****************************************
  * 健壮I/O函数：标准I/O的包装函数

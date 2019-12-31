@@ -2,6 +2,8 @@
 #ifndef _ISSHE_RIO_H_
 #define _ISSHE_RIO_H_
 
+#include "isshe_common.h"
+
 #define RIO_BUFSIZE 8192
 typedef struct {
     int rio_fd;                /* Descriptor for this internal buf */

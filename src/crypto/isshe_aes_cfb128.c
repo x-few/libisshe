@@ -1,6 +1,4 @@
-#include <stdio.h>
-
-#include "isshe_aes_cfg128.h"
+#include "isshe_common.h"
 
 
 void isshe_crypto_cfb128_encrypt(const unsigned char *in, unsigned char *out,

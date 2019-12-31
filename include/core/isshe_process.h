@@ -1,7 +1,9 @@
 #ifndef _ISSHE_PROCESS_H_
 #define _ISSHE_PROCESS_H_
 
-#include <unistd.h>
+#include "isshe_common.h"
+
+#define isshe_getpid            getpid
 
 pid_t isshe_fork(void);
 void isshe_print_exit_status(int status);

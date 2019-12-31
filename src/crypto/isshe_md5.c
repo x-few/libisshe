@@ -5,7 +5,6 @@
  * http://openwall.info/wiki/people/solar/software/public-domain-source-code/md5
  */
 
-#include "isshe_md5.h"
 #include "isshe_common.h"
 
 static const uint8_t *

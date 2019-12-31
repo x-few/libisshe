@@ -1,15 +1,4 @@
-#include <stdio.h>
-#include <errno.h>      // for "errno"
-#include <stdarg.h>     // for "可变参"
-#include <string.h>
-#include <stdlib.h>
-#include <syslog.h>     // for syslog()
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netdb.h>
-#include <arpa/inet.h>  // for inet_ntop()/inet_pton()
-
-#include "isshe_error.h"
+#include "isshe_common.h"
 
 int     daemon_proc;    /* 被daemon_init()设置为非0，表示守护进程 */
 

@@ -1,13 +1,3 @@
-#include <sys/time.h>
-#include <string.h>
-#include <stdio.h>
-
-#ifdef __linux__
-#include <time.h>
-#endif
-
-#include "isshe_time.h"
-#include "isshe_error.h"
 #include "isshe_common.h"
 
 int isshe_gettimeofday(struct timeval *tv, struct timezone *tz)

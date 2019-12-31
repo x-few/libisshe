@@ -1,7 +1,7 @@
 #ifndef _ISSHE_RPC_H_
 #define _ISSHE_RPC_H_
 
-#include <rpc/rpc.h>
+#include "isshe_common.h"
 
 CLIENT *isshe_clnt_create(char *host,
     unsigned long prog, unsigned long vers, char *proto);

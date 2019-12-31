@@ -1,5 +1,4 @@
-#include "isshe_rpc.h"
-#include "isshe_error.h"
+#include "isshe_common.h"
 
 CLIENT *isshe_clnt_create(char *host,
     unsigned long prog, unsigned long vers, char *proto)

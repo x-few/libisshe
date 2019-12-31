@@ -8,7 +8,7 @@
 #ifndef _ISSHE_SBUF_H_
 #define _ISSHE_SBUF_H_
 
-#include <semaphore.h>
+#include "isshe_common.h"
 
 #define SEM_MUTEX_TEMPLATE   "mutex.XXXXXX"
 #define SEM_NEMPTY_TEMPLATE  "nempty.XXXXXX"

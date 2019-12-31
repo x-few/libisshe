@@ -1,13 +1,7 @@
 #ifndef _ISSHE_IPC_H_
 #define _ISSHE_IPC_H_
 
-#include <sys/msg.h>
-#include <semaphore.h>
-#include <sys/types.h>
-#include <sys/ipc.h>
-#include <sys/sem.h>    // system v
-#include <sys/shm.h>    // system v
-
+#include "isshe_common.h"
 
 #ifndef SEM_FAILED
 #define SEM_FAILED  ((sem_t *)(-1))
