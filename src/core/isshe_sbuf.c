@@ -17,7 +17,7 @@ static char *sbuf_mktemp(char *template)
 /* 创建一个n个槽的空的、有界的、共享先进先出缓冲区 */
 void isshe_sbuf_init(isshe_sbuf_t *sp, int n, size_t size)
 {
-    sp->buf = isshe_calloc(n, sizeof(void *));
+    sp->buf = isshe_calloc(n * sizeof(void *));
     sp->n = n;                       /* Buffer holds max of n items */
     sp->size = size;
     sp->front = sp->rear = 0;        /* Empty buffer iff front == rear */

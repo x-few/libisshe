@@ -23,4 +23,7 @@ libisshe_a_SOURCES = \
     crypto/isshe_sha2.c \
     crypto/isshe_hmac.c \
     crypto/isshe_rand.c \
-    core/isshe_json.c
+    core/isshe_json.c \
+    core/isshe_log.c \
+    core/isshe_memory.c \
+    core/isshe_string.c

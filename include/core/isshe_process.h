@@ -3,7 +3,7 @@
 
 #include "isshe_common.h"
 
-#define isshe_getpid            getpid
+#define isshe_log_pid            getpid()
 
 pid_t isshe_fork(void);
 void isshe_print_exit_status(int status);

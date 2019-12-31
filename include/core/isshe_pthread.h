@@ -3,7 +3,7 @@
 
 #include "isshe_common.h"
 
-#define isshe_gettid            gettid
+#define isshe_log_tid            0
 
 int isshe_pthread_create(pthread_t *tid, const pthread_attr_t *attr, void * (*func)(void *), void *arg);
 int isshe_pthread_join(pthread_t tid, void **status);

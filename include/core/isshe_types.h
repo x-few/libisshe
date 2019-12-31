@@ -29,5 +29,4 @@ typedef pid_t           isshe_pid_t;
 
 typedef int             isshe_bool_t;
 
-
 #endif

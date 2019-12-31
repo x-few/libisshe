@@ -1,6 +1,5 @@
 #ifndef _ISSHE_COMMON_H_
 #define _ISSHE_COMMON_H_
-
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
@@ -44,9 +43,21 @@
 
 #if defined(__bsdi__) || defined(__APPLE__)
 #include <sys/event.h>
+#include <sys/syslimits.h>  // for OPEN_MAX
+#define va_mode_t   int
+#else
+#define va_mode_t   mode_t
 #endif
 
+typedef int                         isshe_fd_t;
+typedef struct isshe_str_s          isshe_str_t;
+typedef struct stat                 isshe_file_info_t;
+typedef struct isshe_file_s         isshe_file_t;
+typedef struct isshe_log_s          isshe_log_t;
+
+#include "isshe_types.h"
 #include "isshe_error.h"
+#include "isshe_string.h"
 #include "isshe_file.h"
 #include "isshe_ipc.h"
 #include "isshe_json.h"
@@ -60,9 +71,7 @@
 #include "isshe_signal.h"
 #include "isshe_socket.h"
 #include "isshe_stdio.h"
-#include "isshe_string.h"
 #include "isshe_time.h"
-#include "isshe_types.h"
 #include "isshe_unistd.h"
 #include "isshe_file.h"
 
@@ -70,15 +79,9 @@
 #include "isshe_md5.h"
 #include "isshe_hmac.h"
 #include "isshe_sha2.h"
+#include "isshe_aes.h"
 #include "isshe_aes_cfg128.h"
-
-#if defined(__bsdi__) || defined(__APPLE__)
-#include <sys/syslimits.h>  // for OPEN_MAX
-
-#define va_mode_t   int
-#else
-#define va_mode_t   mode_t
-#endif
+#include "isshe_rand.h"
 
 #ifndef OPEN_MAX
 #define OPEN_MAX FOPEN_MAX
@@ -97,8 +100,6 @@
 
 #define	min(a,b)    ((a) < (b) ? (a) : (b))
 #define	max(a,b)    ((a) > (b) ? (a) : (b))
-
-#define isshe_memzero(buf, size) memset(buf, 0, size)
 
 #if __BYTE_ORDER == __LITTLE_ENDIAN__
 #define ISSHE_LITTLE_ENDIAN

@@ -16,10 +16,6 @@
 #define isshe_snprintf      snprintf
 #define isshe_sprintf       sprintf
 
-
-
-typedef struct isshe_str_s  isshe_str_t;
-
 struct isshe_str_s{
     size_t      len;
     uint8_t     *data;

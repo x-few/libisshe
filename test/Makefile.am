@@ -11,7 +11,8 @@ bin_PROGRAMS = \
 	test_isshe_md5.out \
 	test_isshe_rand.out \
 	test_isshe_sha2.out \
-	test_isshe_json.out
+	test_isshe_json.out \
+	test_isshe_log.out
 
 test_isshe_crypto_out_SOURCE    = test_isshe_crypto.c
 
@@ -26,3 +27,5 @@ test_isshe_rand_out_SOURCE      = test_isshe_rand.c
 test_isshe_sha2_out_SOURCE      = test_isshe_sha2.c
 
 test_isshe_json_out_SOURCE      = test_isshe_json.c
+
+test_isshe_log_out_SOURCE 		= test_isshe_log.c

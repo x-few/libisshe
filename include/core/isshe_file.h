@@ -21,10 +21,6 @@
 #define isshe_stdout                STDOUT_FILENO
 #define isshe_stderr                STDERR_FILENO
 
-typedef int                         isshe_fd_t;
-typedef struct stat                 isshe_file_info_t;
-typedef struct isshe_file_s         isshe_file_t;
-
 struct isshe_file_s
 {
     isshe_fd_t                  fd;
