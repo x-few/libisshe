@@ -229,6 +229,8 @@ double isshe_json_set_number_helper(isshe_json_t *object, double number);
 void * isshe_json_malloc(size_t size);
 void isshe_json_free(void *object);
 
+isshe_json_t *isshe_read_json(const isshe_char_t *filename);
+
 #ifdef __cplusplus
 }
 #endif

@@ -257,7 +257,7 @@ void test_read_json_file(char *file)
     }
     // 解析json
     isshe_json_t* json = isshe_json_parse(buf);
-    if (json->type == ISSHE_JSON_NULL) {
+    if (!json) {
         printf("icnfig_parse error: json parse failed\n");
         exit(0);
     }

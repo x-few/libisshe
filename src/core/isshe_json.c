@@ -1073,7 +1073,7 @@ isshe_json_t * isshe_json_parse(const char *value)
     return isshe_json_parse_with_opts(value, 0, 0);
 }
 
-static unsigned char *print(const isshe_json_t * const item, isshe_json_bool_t format, const internal_hooks * const hooks)
+static unsigned char *json_print(const isshe_json_t * const item, isshe_json_bool_t format, const internal_hooks * const hooks)
 {
     static const size_t default_buffer_size = 256;
     print_buffer_t buffer[1];
@@ -1141,12 +1141,12 @@ print_fail:
 /* Render a isshe_json_t item/entity/structure to text. */
 char * isshe_json_print(const isshe_json_t *item)
 {
-    return (char*)print(item, true, &global_hooks);
+    return (char*)json_print(item, true, &global_hooks);
 }
 
 char * isshe_json_print_unformatted(const isshe_json_t *item)
 {
-    return (char*)print(item, false, &global_hooks);
+    return (char*)json_print(item, false, &global_hooks);
 }
 
 char * isshe_json_print_buffered(const isshe_json_t *item, int prebuffer, isshe_json_bool_t fmt)
@@ -2950,4 +2950,34 @@ void * isshe_json_malloc(size_t size)
 void isshe_json_free(void *object)
 {
     global_hooks.deallocate(object);
+}
+
+
+isshe_json_t *
+isshe_read_json(const isshe_char_t *filename)
+{
+    isshe_fd_t          fd;
+    ssize_t             len;
+    char                *buf;
+
+    // 打开文件
+    fd = isshe_open(filename, ISSHE_FILE_RDONLY);
+
+    // 读取文件
+    buf = isshe_read_all(fd, &len);
+    isshe_close(fd);
+    if (!buf) {
+        printf("isshe_read_json error: isshe_read_all\n");
+        return NULL;
+    }
+
+    // 解析json
+    isshe_json_t* json = isshe_json_parse(buf);
+    isshe_free(buf);
+    if (!json) {
+        printf("isshe_read_json error: json parse failed\n");
+        return NULL;
+    }
+
+    return json;
 }

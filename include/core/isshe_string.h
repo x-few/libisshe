@@ -21,4 +21,7 @@ struct isshe_str_s{
     isshe_char_t     *data;
 };
 
+isshe_int_t isshe_string_mirror(isshe_char_t **pdst,
+    isshe_char_t *src, isshe_size_t len);
+
 #endif
