@@ -3,7 +3,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/include/core \
 
 noinst_LIBRARIES = libisshe.a
 
-libisshe_a_SOURCES = \
+ISSHE_CORE_SRCS = \
     core/isshe_error.c \
     core/isshe_file.c \
     core/isshe_process.c \
@@ -17,13 +17,21 @@ libisshe_a_SOURCES = \
     core/isshe_socket.c \
     core/isshe_rio.c \
     core/isshe_sbuf.c \
+    core/isshe_json.c \
+    core/isshe_log.c \
+    core/isshe_memory.c \
+    core/isshe_string.c \
+    core/isshe_process_title.c
+
+ISSHE_CRYPTO_SRCS = \
     crypto/isshe_aes.c \
     crypto/isshe_aes_cfb128.c \
     crypto/isshe_md5.c \
     crypto/isshe_sha2.c \
     crypto/isshe_hmac.c \
-    crypto/isshe_rand.c \
-    core/isshe_json.c \
-    core/isshe_log.c \
-    core/isshe_memory.c \
-    core/isshe_string.c
+    crypto/isshe_rand.c
+
+libisshe_a_SOURCES = \
+    $(ISSHE_CORE_SRCS) \
+    $(ISSHE_CRYPTO_SRCS)
+

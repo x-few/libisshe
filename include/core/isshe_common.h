@@ -34,6 +34,7 @@
 #include <math.h>
 #include <sys/wait.h>
 #include <assert.h>
+#include <getopt.h>
 
 #ifdef __linux__
 #include <sys/epoll.h>
@@ -74,6 +75,7 @@ typedef struct isshe_log_s          isshe_log_t;
 #include "isshe_time.h"
 #include "isshe_unistd.h"
 #include "isshe_file.h"
+#include "isshe_process_title.h"
 
 // crypto
 #include "isshe_md5.h"

@@ -9,6 +9,8 @@
 #define isshe_memcpy(dst, src, n)   (void) memcpy(dst, src, n)
 #define isshe_cpymem(dst, src, n)   (((isshe_uchar_t *) memcpy(dst, src, n)) + (n))
 
+#define isshe_memcmp(dst, src, n)   memcmp(dst, src, n)
+
 void *isshe_malloc(isshe_size_t size);
 void *isshe_calloc(isshe_size_t size);
 void isshe_free(void *ptr);

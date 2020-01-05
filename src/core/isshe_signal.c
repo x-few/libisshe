@@ -8,7 +8,8 @@
  *  4. 一旦设置了信号处理程序，它就会一直保持，
  *      直到此函数带着handler参数为SIG_IGN或者SIG_DFL被调用。
  */
-sigfunc *signal(int signo, sigfunc *handler)
+isshe_signal_handler_t
+isshe_sigaction(isshe_int_t signo, isshe_signal_handler_t handler)
 {
     struct sigaction action;
     struct sigaction old_action;
@@ -36,13 +37,14 @@ sigfunc *signal(int signo, sigfunc *handler)
     return (old_action.sa_handler);
 }
 
-sigfunc *isshe_signal(int signo, sigfunc *handler)
+isshe_signal_handler_t
+isshe_signal(isshe_int_t signo, isshe_signal_handler_t handler)
 {
-    sigfunc *sfunc;
+    isshe_signal_handler_t func;
 
-    if ( (sfunc = signal(signo, handler)) == SIG_ERR) {
+    if ( (func = signal(signo, handler)) == SIG_ERR) {
         isshe_sys_error_exit("signal error");
     }
 
-    return(sfunc);
+    return(func);
 }

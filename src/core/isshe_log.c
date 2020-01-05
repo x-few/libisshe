@@ -17,6 +17,34 @@ log_levels[] = {
     "debug"
 };
 
+static isshe_char_t* 
+log_levels_color[] = {
+    "\033[31memerg\033[0m",
+    "\033[31malert\033[0m", 
+    "\033[31mcrit\033[0m", 
+    "\033[31merror\033[0m", 
+    "\033[33mwarning\033[0m", 
+    "\033[33mnotice\033[0m", 
+    "\033[32minfo\033[0m", 
+    "\033[35mdebug\033[0m", 
+};
+
+isshe_int_t isshe_log_level_to_number(const isshe_char_t *level)
+{
+    isshe_int_t i;
+    isshe_int_t len;
+
+    len = strlen(level);
+    for (i = 0; i < sizeof(log_levels); i++) {
+        if (strlen(log_levels[i]) == len 
+        && isshe_memcmp(log_levels[i], level, len) == 0) {
+            return i;
+        }
+    }
+
+    return ISSHE_FAILURE;
+}
+
 isshe_int_t
 ngx_log_errno(isshe_char_t *buf, isshe_int_t len, isshe_errno_t errcode)
 {
@@ -80,6 +108,7 @@ isshe_log_instance_get(isshe_uint_t level, isshe_char_t *filename)
 
     if (!filename) {
         isshe_log_ins->file->fd = isshe_stderr;
+        isshe_log_stderr(0, "[warning] set log file fd to stderr");
         return isshe_log_ins;
     }
 
@@ -148,8 +177,12 @@ isshe_log_core(isshe_uint_t level, isshe_log_t *log,
     n = 0;
     isshe_memzero(logstr, ISSHE_MAX_LOG_STR);
     n += isshe_log_time(logstr);
-
-    n += isshe_snprintf(logstr + n, ISSHE_MAX_LOG_STR - n, " [%s]", log_levels[level]);
+    if (log->file->fd == isshe_stderr) {
+        n += isshe_snprintf(logstr + n, ISSHE_MAX_LOG_STR - n, " [%s]", log_levels_color[level]);
+    } else {
+        n += isshe_snprintf(logstr + n, ISSHE_MAX_LOG_STR - n, " [%s]", log_levels[level]);
+    }
+    
 
     n += isshe_snprintf(logstr + n, ISSHE_MAX_LOG_STR - n, " %d#%d: ", isshe_log_pid, isshe_log_tid);
 
@@ -191,26 +224,6 @@ void isshe_log_errno(isshe_uint_t level, isshe_log_t *log,
     if (log->level >= level) {
         va_start(args, fmt);
         isshe_log_core(level, log, errcode, fmt, args);
-        va_end(args);
-    }
-}
-
-void isshe_log_error(isshe_log_t *log, const char *fmt, ...)
-{
-    va_list args;
-    if (log->level >= ISSHE_LOG_ERROR) {
-        va_start(args, fmt);
-        isshe_log_core(ISSHE_LOG_ERROR, log, 0, fmt, args);
-        va_end(args);
-    }
-}
-
-void isshe_log_debug(isshe_log_t *log,  const char *fmt, ...)
-{
-    va_list args;
-    if (log->level >= ISSHE_LOG_DEBUG) {
-        va_start(args, fmt);
-        isshe_log_core(ISSHE_LOG_DEBUG, log, 0, fmt, args);
         va_end(args);
     }
 }

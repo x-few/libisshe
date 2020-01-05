@@ -37,15 +37,49 @@ void test3()
     isshe_log_t *log;
 
     log = isshe_log_instance_get(ISSHE_LOG_DEBUG, "log.tmp");
+    //printf("pid = %d, log = %p\n", getpid(), log);
     isshe_char_t *b = "fjadlkdfjklasjfklds";
     //b[1] = '2';
     isshe_log(ISSHE_LOG_CRIT, log, "b = %s", b);
+    
+    isshe_log_free();
+}
+
+void test4()
+{
+    pid_t pid;
+    if ((pid = fork()) == 0) {
+        // child
+        test3();
+    } else {
+        test3();
+    }
+}
+
+void test5()
+{
+    isshe_log_t *log;
+    int i = 0;
+
+    log = isshe_log_instance_get(ISSHE_LOG_DEBUG, "log.tmp");
+    isshe_char_t *b = "fjadlkdfjklasjfklds";
+    //b[1] = '2';
+    fork();
+    printf("pid = %d, log = %p\n", getpid(), log);
+    for (i = 0; i < 10; i++) {
+        isshe_log(ISSHE_LOG_CRIT, log, "b = %s", b);
+    }
+    
     isshe_log_free();
 }
 
 int main()
 {
+    
     test1();
     test2();
     test3();
+    //test4();
+    test5();
+
 }
