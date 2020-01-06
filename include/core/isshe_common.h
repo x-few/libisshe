@@ -36,13 +36,15 @@
 #include <assert.h>
 #include <getopt.h>
 
-#ifdef __linux__
+#include "isshe_define.h"
+
+#ifdef ISSHE_LINUX
 #include <sys/epoll.h>
 #include <sys/time.h>
 #include <sys/resource.h>
 #endif
 
-#if defined(__bsdi__) || defined(__APPLE__)
+#ifdef ISSHE_APPLE
 #include <sys/event.h>
 #include <sys/syslimits.h>  // for OPEN_MAX
 #define va_mode_t   int
@@ -89,8 +91,8 @@ typedef struct isshe_log_s          isshe_log_t;
 #define OPEN_MAX FOPEN_MAX
 #endif
 
-#define ISSHE_SUCCESS    0
-#define ISSHE_FAILURE    (-1)
+#define ISSHE_SUCCESS   0
+#define ISSHE_FAILURE   (-1)
 #define ISSHE_TRUE      1
 #define ISSHE_FALSE     0
 #define MAXLINE         4096
@@ -102,11 +104,5 @@ typedef struct isshe_log_s          isshe_log_t;
 
 #define	min(a,b)    ((a) < (b) ? (a) : (b))
 #define	max(a,b)    ((a) > (b) ? (a) : (b))
-
-#if __BYTE_ORDER == __LITTLE_ENDIAN__
-#define ISSHE_LITTLE_ENDIAN
-#else
-#define ISSHE_BIG_ENDIAN
-#endif
 
 #endif
