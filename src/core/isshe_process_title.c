@@ -27,6 +27,7 @@ static char *
 argv_last_get(int argc, char *argv[])
 {
     char *last;
+    isshe_int_t i;
 
     last = argv[0];
     for (i = 0; i < argc || (i >= argc && argv[i]); i++) {
@@ -37,10 +38,11 @@ argv_last_get(int argc, char *argv[])
     return last;
 }
 
-static isshe_int_t
+static char *
 environ_reset(char *newenvp, char *last)
 {
     isshe_size_t size;
+    isshe_int_t i;
 
     for (i = 0; environ[i]; i++) {
         if (last == environ[i]) {
@@ -59,7 +61,7 @@ environ_reset(char *newenvp, char *last)
 
 
 isshe_int_t
-isshe_process_title_init(ilog_t *log, int argc, char *argv[])
+isshe_process_title_init(int argc, char *argv[])
 {
     isshe_char_t **env = environ;
     isshe_size_t size;
@@ -70,7 +72,6 @@ isshe_process_title_init(ilog_t *log, int argc, char *argv[])
 
     p = (isshe_char_t *)malloc(size);
     if (!p) {
-        ilog_alert(log, "isshe_process_title_init: malloc (%uz) failed", size);
         return ISSHE_FAILURE;
     }
 
@@ -79,7 +80,6 @@ isshe_process_title_init(ilog_t *log, int argc, char *argv[])
 
     ipt.argc = argc;
     ipt.argv = argv;
-    ipt.log = log;
 
     return ISSHE_SUCCESS;
 }
@@ -91,7 +91,8 @@ isshe_process_title_set(const char *fmt, ...)
     isshe_int_t len;
     isshe_int_t argv_len;
 
-    // To change the process title in Linux and Solaris we have to set argv[1] to NULL.
+    // To change the process title in Linux
+    // and Solaris we have to set argv[1] to NULL.
     ipt.argv[1] = NULL;
     argv_len = ipt.argv_last - ipt.argv[0];
 
@@ -100,10 +101,11 @@ isshe_process_title_set(const char *fmt, ...)
     va_end(args);
 
     if (argv_len > len) {
-        isshe_memset(ipt.argv[0] + len, ISSHE_PROCESS_TITLE_PAD, argv_len - len);
+        isshe_memset(ipt.argv[0] + len,
+                        ISSHE_PROCESS_TITLE_PAD,
+                        argv_len - len);
     }
 
-    ilog_debug(ipt.log, "isshe_process_title_set: %s\n", ipt.argv[0]);
 }
 
 #endif

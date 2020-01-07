@@ -1,20 +1,28 @@
 #ifndef _ISSHE_DEFINE_H_
 #define _ISSHE_DEFINE_H_
 
+#if (defined __bsd__)
+#define ISSHE_BSD
+#endif
+
 #if (defined __NetBSD__)
 #define ISSHE_NETBSD
+#define ISSHE_BSD
 #endif
 
 #if (defined __FreeBSD__)
 #define ISSHE_FREEBSD
+#define ISSHE_BSD
 #endif
 
 #if (defined __OpenBSD__)
 #define ISSHE_OPENBSD
+#define ISSHE_BSD
 #endif
 
 #if (defined __DragonFly__)
 #define ISSHE_DRAGONFLY
+#define ISSHE_BSD
 #endif
 
 #if (defined __linux__)
