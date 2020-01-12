@@ -15,6 +15,4 @@ void isshe_daemonize(const char *pname, int facility);
 
 pid_t isshe_waitpid(pid_t pid, int *iptr, int options);
 
-void isshe_kill(pid_t pid, int signo);
-
 #endif

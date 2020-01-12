@@ -15,9 +15,13 @@
 #define ISSHE_SIGNAL_CHILD          SIGCHLD
 #define ISSHE_SIGNAL_SYSTEM         SIGSYS
 #define ISSHE_SIGNAL_PIPE           SIGPIPE
+#define ISSHE_SIGNAL_KILL           SIGKILL
 
 //#define ISSHE_NOACCEPT_SIGNAL      SIGWINCH
 //#define ISSHE_CHANGEBIN_SIGNAL     SIGUSR2
+
+#define isshe_kill(pid, signo)      (isshe_int_t)kill(pid, signo)
+#define isshe_signal_send           isshe_kill
 
 typedef void (*isshe_signal_handler_t)(int);
 typedef struct isshe_signal_s isshe_signal_t;
