@@ -94,7 +94,7 @@ isshe_log_instance_get(isshe_uint_t level, isshe_char_t *filename)
     if (isshe_log_ins) {
         return isshe_log_ins;
     }
-    isshe_log_ins = (isshe_log_t *)isshe_malloc(sizeof(isshe_log_t));
+    isshe_log_ins = (isshe_log_t *)isshe_malloc(sizeof(isshe_log_t), NULL);
     if (!isshe_log_ins) {
         return NULL;
     }
@@ -113,7 +113,7 @@ isshe_log_instance_get(isshe_uint_t level, isshe_char_t *filename)
     }
 
     isshe_log_file.name.len = strlen(filename) + 1;
-    isshe_log_file.name.data = (isshe_char_t *)isshe_malloc(isshe_log_file.name.len);
+    isshe_log_file.name.data = (isshe_char_t *)isshe_malloc(isshe_log_file.name.len, NULL);
     isshe_memcpy(isshe_log_file.name.data, filename, isshe_log_file.name.len);
     isshe_log_file.name.data[isshe_log_file.name.len] = '\0';
 
@@ -140,13 +140,13 @@ void isshe_log_free()
             log->file->fd = ISSHE_INVALID_FILE;
         }
         if (log->file->name.data && log->file->name.len) {
-            isshe_free(log->file->name.data);
+            isshe_free(log->file->name.data, NULL);
             log->file->name.data = NULL;
             log->file->name.len = 0;
         }
     }
     // 释放内存
-    isshe_free(isshe_log_ins);
+    isshe_free(isshe_log_ins, NULL);
     isshe_log_ins = NULL;
 }
 

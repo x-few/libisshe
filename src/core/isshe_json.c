@@ -2973,7 +2973,7 @@ isshe_read_json(const isshe_char_t *filename)
 
     // 解析json
     isshe_json_t* json = isshe_json_parse(buf);
-    isshe_free(buf);
+    isshe_free(buf, NULL);
     if (!json) {
         printf("isshe_read_json error: json parse failed\n");
         return NULL;

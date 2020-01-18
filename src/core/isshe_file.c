@@ -193,7 +193,7 @@ char *isshe_read_all(int fd, ssize_t *reslen)
 
     isshe_fstat(fd, &info);
     if (info.st_size > 0) {
-        buf = isshe_malloc(info.st_size);           // remember to free
+        buf = isshe_malloc(info.st_size, NULL);           // remember to free
         len = isshe_read(fd, buf, info.st_size);
         *reslen = len;
         if (len != info.st_size) {

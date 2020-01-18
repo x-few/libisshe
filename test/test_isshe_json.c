@@ -262,12 +262,12 @@ void test_read_json_file(char *file)
         exit(0);
     }
 
-    isshe_free(buf);
+    isshe_free(buf, NULL);
     buf = isshe_json_print(json);
     printf("%s\n", buf);
 
     isshe_json_delete(json);
-    isshe_free(buf);
+    isshe_free(buf, NULL);
     isshe_close(fd);
 }
 
