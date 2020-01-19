@@ -12,7 +12,7 @@ void test1()
     int a = 100;
     isshe_log_debug(log, "hahah, a = %d", a);
     isshe_log_error(log, "hahah, a = %d", a);
-    isshe_log_free();
+    isshe_log_instance_free();
 }
 
 void test2()
@@ -29,7 +29,7 @@ void test2()
 
     isshe_log_t *log2 = isshe_log_instance_get(0, NULL);
     isshe_log(ISSHE_LOG_CRIT, log2, "b = %s", b);
-    isshe_log_free();
+    isshe_log_instance_free();
 }
 
 void test3()
@@ -42,7 +42,7 @@ void test3()
     //b[1] = '2';
     isshe_log(ISSHE_LOG_CRIT, log, "b = %s", b);
     
-    isshe_log_free();
+    isshe_log_instance_free();
 }
 
 void test4()
@@ -70,16 +70,36 @@ void test5()
         isshe_log(ISSHE_LOG_CRIT, log, "b = %s", b);
     }
     
-    isshe_log_free();
+    isshe_log_instance_free();
+}
+
+void test6()
+{
+    isshe_log_t *log;
+
+    log = isshe_log_create(ISSHE_LOG_DEBUG, NULL);
+    isshe_log_debug(log, "test6: pid = %d, log = %p", getpid(), log);
+    isshe_log_destroy(log);
+}
+
+void test7()
+{
+    isshe_log_t *log;
+
+    log = isshe_log_create(ISSHE_LOG_DEBUG, "log.tmp");
+    isshe_log_debug(log, "test7: pid = %d, log = %p", getpid(), log);
+    isshe_log_destroy(log);
 }
 
 int main()
 {
     
-    test1();
-    test2();
-    test3();
+    //test1();
+    //test2();
+    //test3();
     //test4();
-    test5();
+    //test5();
+    test6();
+    test7();
 
 }

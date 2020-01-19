@@ -1,6 +1,6 @@
 #include "isshe_mempool.h"
 /*
-              start  last      end
+                     last      end
 +-------+-------+------+--------+
 | small | large | used | unused |
 +-------+-------+------+--------+
@@ -27,7 +27,6 @@ isshe_mempool_create(isshe_size_t size, isshe_log_t *log)
     }
     
     small = (isshe_mempool_data_t *)((isshe_uchar_t *)pool + sizeof(isshe_mempool_t));
-    //small->start = (isshe_uchar_t *)small + sizeof(isshe_mempool_data_t);
     small->last = (isshe_uchar_t *)small + sizeof(isshe_mempool_data_t);
     small->end = (isshe_uchar_t *)pool + size;
     small->next = NULL;
@@ -59,7 +58,7 @@ isshe_mempool_destroy(isshe_mempool_t *pool)
     // free large
     for (tmp = pool->large; tmp; tmp = tmp->next)
     {
-        isshe_free(tmp->start, pool->log);
+        isshe_free(tmp->last, pool->log);
     }
 
     // free small
@@ -89,7 +88,6 @@ isshe_mpdata_create(isshe_mempool_t *pool, isshe_size_t size)
         return NULL;
     }
 
-    //tmp->start = (isshe_uchar_t *)tmp + sizeof(isshe_mempool_data_t);
     tmp->last = (isshe_uchar_t *)tmp + sizeof(isshe_mempool_data_t);
     tmp->end = (isshe_uchar_t *)tmp + size;
     tmp->next = NULL;
@@ -167,9 +165,8 @@ isshe_mpalloc_large(isshe_mempool_t *pool, isshe_size_t size)
         return NULL;
     }
 
-    large->start = (isshe_uchar_t *)data;
-    //large->last = large->start;
-    //large->end = large->start + size;
+    large->last = (isshe_uchar_t *)data;
+    large->end = large->last + size;
 
     // 尾插
     large->next = pool->large;
@@ -199,9 +196,9 @@ isshe_mpfree(isshe_mempool_t *pool, void *ptr, isshe_size_t hint_size)
 
     for (tmp = pool->large; tmp; tmp = tmp->next)
     {
-        if (tmp->start == ptr) {
-            isshe_free(tmp->start, pool->log);
-            tmp->start = NULL;
+        if (tmp->last == ptr) {
+            isshe_free(tmp->last, pool->log);
+            tmp->last = NULL;
             return ;
         }
     }

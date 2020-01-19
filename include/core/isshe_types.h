@@ -30,4 +30,7 @@ typedef pid_t           isshe_pid_t;
 
 typedef int             isshe_bool_t;
 
+typedef struct sockaddr_storage isshe_sockaddr_t;
+
+
 #endif

@@ -1,8 +1,7 @@
 #include "isshe_common.h"
 
 // 单例模式
-static isshe_log_t *isshe_log_ins = NULL;
-static isshe_file_t isshe_log_file;
+static isshe_log_t *isshe_log_instance = NULL;
 
 //
 static isshe_char_t* 
@@ -29,7 +28,14 @@ log_levels_color[] = {
     "\033[35mdebug\033[0m", 
 };
 
-isshe_int_t isshe_log_level_to_number(const isshe_char_t *level)
+isshe_char_t *
+isshe_log_level_to_string(isshe_int_t level)
+{
+    return (isshe_char_t *)log_levels[level];
+}
+
+isshe_int_t
+isshe_log_level_to_number(const isshe_char_t *level)
 {
     isshe_int_t i;
     isshe_int_t len;
@@ -87,52 +93,62 @@ isshe_log_stderr(isshe_errno_t errcode, const char *fmt, ...)
     isshe_write(isshe_stderr, logstr, p - logstr);
 }
 
-
 isshe_log_t *
-isshe_log_instance_get(isshe_uint_t level, isshe_char_t *filename)
+isshe_log_create(isshe_uint_t level, isshe_char_t *filename)
 {
-    if (isshe_log_ins) {
-        return isshe_log_ins;
-    }
-    isshe_log_ins = (isshe_log_t *)isshe_malloc(sizeof(isshe_log_t), NULL);
-    if (!isshe_log_ins) {
+    isshe_log_t *log;
+    isshe_file_t *file;
+
+    log = (isshe_log_t *)isshe_malloc(sizeof(isshe_log_t), NULL);
+    if (!log) {
         return NULL;
     }
 
-    isshe_memzero(isshe_log_ins, sizeof(isshe_log_t));
-    isshe_memzero(&isshe_log_file, sizeof(isshe_file_t));
+    file = (isshe_file_t *)isshe_malloc(sizeof(isshe_file_t), NULL);
+    if (!file) {
+        isshe_free(log, NULL);
+        return NULL;
+    }
+
+    isshe_memzero(log, sizeof(isshe_log_t));
+    isshe_memzero(file, sizeof(isshe_file_t));
 
     // 初始化log
-    isshe_log_ins->file = &isshe_log_file;
-    isshe_log_ins->level = level;
+    log->file = file;
+    log->level = level;
 
     if (!filename) {
-        isshe_log_ins->file->fd = isshe_stderr;
+        log->file->fd = isshe_stderr;
         isshe_log_stderr(0, "[warning] set log file fd to stderr");
-        return isshe_log_ins;
+        return log;
     }
 
-    isshe_log_file.name.len = strlen(filename) + 1;
-    isshe_log_file.name.data = (isshe_char_t *)isshe_malloc(isshe_log_file.name.len, NULL);
-    isshe_memcpy(isshe_log_file.name.data, filename, isshe_log_file.name.len);
-    isshe_log_file.name.data[isshe_log_file.name.len] = '\0';
+    file->name.len = strlen(filename) + 1;
+    file->name.data = (isshe_char_t *)isshe_malloc(file->name.len, NULL);
+    isshe_memcpy(file->name.data, filename, file->name.len);
+    file->name.data[file->name.len] = '\0';
 
     // 打开文件
-    isshe_log_file.fd = isshe_open(filename,
+    file->fd = isshe_open(filename,
         ISSHE_FILE_APPEND | ISSHE_FILE_CREATE_OR_OPEN,
         ISSHE_FILE_DEFAULT_ACCESS);
-    if (isshe_log_file.fd == ISSHE_INVALID_FILE) {
-        isshe_log_stderr(errno, "[alert] could not open log file: \"%s\"", isshe_log_file.name.data);
+    if (file->fd == ISSHE_INVALID_FILE) {
+        isshe_log_stderr(errno, "[alert] could not open log file: \"%s\"", file->name.data);
     }
 
-    return isshe_log_ins;
+    return log;
 }
 
-void isshe_log_free()
+
+void isshe_log_destroy(isshe_log_t *log)
 {
+    if (!log) {
+        isshe_log_warning(log, "isshe_log_destroy: log == NULL");
+        return;
+    }
+
     // 关闭打开的资源
-    isshe_log_t *log = isshe_log_ins;
-    if (log && log->file) {
+    if (log->file) {
         if (log->file->fd != ISSHE_INVALID_FILE
             && log->file->fd != isshe_stderr
             && log->file->fd != isshe_stdout) {
@@ -144,11 +160,36 @@ void isshe_log_free()
             log->file->name.data = NULL;
             log->file->name.len = 0;
         }
+        isshe_free(log->file, NULL);
+        log->file = NULL;
     }
+
     // 释放内存
-    isshe_free(isshe_log_ins, NULL);
-    isshe_log_ins = NULL;
+    isshe_free(log, NULL);
 }
+
+
+isshe_log_t *
+isshe_log_instance_get(isshe_uint_t level, isshe_char_t *filename)
+{
+    if (isshe_log_instance) {
+        return isshe_log_instance;
+    }
+
+    isshe_log_instance = isshe_log_create(level, filename);
+
+    return isshe_log_instance;
+}
+
+
+void
+isshe_log_instance_free()
+{
+    isshe_log_destroy(isshe_log_instance);
+    isshe_log_instance = NULL;
+}
+
+
 
 static isshe_uint_t
 isshe_log_time(isshe_char_t *logstr)

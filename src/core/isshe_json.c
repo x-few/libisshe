@@ -304,17 +304,17 @@ loop_end:
     item->vdouble = number;
 
     /* use saturation in case of overflow */
-    if (number >= INT_MAX)
+    if (number >= LLONG_MAX)
     {
-        item->vint = INT_MAX;
+        item->vint = LLONG_MAX;
     }
-    else if (number <= (double)INT_MIN)
+    else if (number <= (double)LLONG_MIN)
     {
-        item->vint = INT_MIN;
+        item->vint = LLONG_MIN;
     }
     else
     {
-        item->vint = (int)number;
+        item->vint = (long long)number;
     }
 
     item->type = ISSHE_JSON_NUMBER;
@@ -326,17 +326,17 @@ loop_end:
 /* don't ask me, but the original isshe_json_set_number_value returns an integer or double */
 double isshe_json_set_number_helper(isshe_json_t *object, double number)
 {
-    if (number >= INT_MAX)
+    if (number >= LLONG_MAX)
     {
-        object->vint = INT_MAX;
+        object->vint = LLONG_MAX;
     }
-    else if (number <= (double)INT_MIN)
+    else if (number <= (double)LLONG_MIN)
     {
-        object->vint = INT_MIN;
+        object->vint = LLONG_MIN;
     }
     else
     {
-        object->vint = (int)number;
+        object->vint = (long long)number;
     }
 
     return object->vdouble = number;

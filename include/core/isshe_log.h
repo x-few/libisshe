@@ -47,12 +47,18 @@ struct isshe_log_s {
     void                   *wdata;
 };
 
+isshe_char_t *isshe_log_level_to_string(isshe_int_t level);
+
 isshe_int_t isshe_log_level_to_number(const isshe_char_t *level);
+
+isshe_log_t * isshe_log_create(isshe_uint_t level, isshe_char_t *filename);
+
+void isshe_log_destroy(isshe_log_t *log);
 
 isshe_log_t *isshe_log_instance_get(
     isshe_uint_t level, isshe_char_t *filename);
 
-void isshe_log_free();
+void isshe_log_instance_free();
 
 void isshe_log(isshe_uint_t level,
     isshe_log_t *log, const char *fmt, ...);

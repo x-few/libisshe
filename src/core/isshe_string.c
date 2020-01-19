@@ -1,6 +1,20 @@
 
 #include "isshe_common.h"
 
+isshe_char_t *
+isshe_strdup(isshe_char_t *src, isshe_size_t size)
+{
+    isshe_char_t *dst;
+
+    dst = (isshe_char_t *)isshe_malloc(size, NULL);
+    if (!dst) {
+        return NULL;
+    }
+
+    isshe_memcpy(dst, src, size);
+
+    return dst;
+}
 
 isshe_int_t
 isshe_string_mirror(
@@ -9,14 +23,10 @@ isshe_string_mirror(
     isshe_size_t len)
 {
     len += 1;       // for '\0'
-    isshe_char_t *dst = (isshe_char_t *)malloc(len);
-    if (!dst) {
+    *pdst = isshe_strdup(src, len);
+    if (!*pdst) {
         return ISSHE_FAILURE;
     }
-
-    isshe_memcpy(dst, src, len);
-
-    *pdst = dst;
 
     return ISSHE_SUCCESS;
 }

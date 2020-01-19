@@ -55,7 +55,7 @@ struct isshe_json_s
     /* The item's string, if type==ISSHE_JSON_STRING  and type == ISSHE_JSON_RAW */
     char *vstring;
     /* writing to vint is DEPRECATED, use isshe_json_set_number_value instead */
-    int vint;
+    long long vint;
     /* The item's number, if type==ISSHE_JSON_NUMBER */
     double vdouble;
 
