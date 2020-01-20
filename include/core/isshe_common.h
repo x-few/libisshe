@@ -79,6 +79,7 @@ typedef struct isshe_log_s          isshe_log_t;
 #include "isshe_file.h"
 #include "isshe_process_title.h"
 #include "isshe_mempool.h"
+#include "isshe_connpool.h"
 
 // crypto
 #include "isshe_md5.h"

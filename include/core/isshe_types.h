@@ -31,6 +31,8 @@ typedef pid_t           isshe_pid_t;
 typedef int             isshe_bool_t;
 
 typedef struct sockaddr_storage isshe_sockaddr_t;
+typedef int             isshe_socket_t;
+typedef socklen_t       isshe_socklen_t;
 
 
 #endif

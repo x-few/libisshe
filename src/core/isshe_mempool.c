@@ -1,4 +1,4 @@
-#include "isshe_mempool.h"
+#include "isshe_common.h"
 /*
                      last      end
 +-------+-------+------+--------+
@@ -180,9 +180,11 @@ void *
 isshe_mpalloc(isshe_mempool_t *pool, isshe_size_t size)
 {
     if (size <= pool->max) {
+        isshe_log_debug(pool->log, "isshe_mpalloc called isshe_mpalloc_small");
         return isshe_mpalloc_small(pool, size);
     }
 
+    isshe_log_debug(pool->log, "isshe_mpalloc called isshe_mpalloc_large");
     return isshe_mpalloc_large(pool, size);
 }
 
@@ -191,7 +193,7 @@ isshe_mpfree(isshe_mempool_t *pool, void *ptr, isshe_size_t hint_size)
 {
     isshe_mempool_data_t *tmp;
 
-    if (hint_size == 0 || (hint_size != 0 && hint_size < pool->max)) {
+    if (hint_size > 0 && hint_size < pool->max) {
         return ;
     }
 

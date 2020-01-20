@@ -22,7 +22,8 @@ ISSHE_CORE_SRCS = \
     core/isshe_memory.c \
     core/isshe_string.c \
     core/isshe_process_title.c \
-    core/isshe_mempool.c
+    core/isshe_mempool.c \
+    core/isshe_connpool.c
 
 ISSHE_CRYPTO_SRCS = \
     crypto/isshe_aes.c \
