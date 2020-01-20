@@ -39,7 +39,7 @@ isshe_mempool_create(isshe_size_t size, isshe_log_t *log)
     pool->log = log;
 
     pagesize = getpagesize();
-    isshe_log_info(log, "page size: %u", pagesize);
+    //isshe_log_info(log, "page size: %u", pagesize);
     pool->max = size < pagesize ? size : pagesize;      // 最大一页！
 
     return pool;
@@ -133,6 +133,7 @@ isshe_mpalloc_small(isshe_mempool_t *pool, isshe_size_t size)
     // new data block
     tmp = isshe_mpdata_create(pool, size);
     if (!tmp) {
+        isshe_log_alert(pool->log, "isshe_mpdata_create failed");
         return NULL;
     }
 
