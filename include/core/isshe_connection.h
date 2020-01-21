@@ -18,7 +18,7 @@ struct isshe_connection_s
 {
     isshe_socket_t      fd;
     isshe_uint16_t      port;
-    isshe_sockaddr_t    sockaddr;
+    isshe_sockaddr_t    *sockaddr;
     isshe_socklen_t     socklen;
     isshe_int_t         protocol;
     isshe_char_t        *addr_text;

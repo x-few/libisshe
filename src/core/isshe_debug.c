@@ -1,8 +1,7 @@
 #include "isshe_common.h"
 
 
-
-void isshe_debug_print_addr(struct sockaddr *sockaddr)
+void isshe_debug_print_addr(struct sockaddr *sockaddr, isshe_log_t *log)
 {
     char                    addr[INET6_ADDRSTRLEN];
     struct sockaddr_in      *in4;
@@ -21,5 +20,9 @@ void isshe_debug_print_addr(struct sockaddr *sockaddr)
     }
 
     // 打印对端的信息
-    printf("addr:%s, port:%d\n", addr, ntohs(port));
+    if (log) {
+        isshe_log_debug(log, "addr: %s, port: %d", addr, ntohs(port));
+    } else {
+        printf("addr:%s, port:%d\n", addr, ntohs(port));
+    }
 }
