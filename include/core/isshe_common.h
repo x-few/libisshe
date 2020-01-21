@@ -35,6 +35,7 @@
 #include <sys/wait.h>
 #include <assert.h>
 #include <getopt.h>
+#include <execinfo.h>   // for backtrace
 
 #include "isshe_define.h"
 
@@ -59,6 +60,7 @@ typedef struct isshe_file_s         isshe_file_t;
 typedef struct isshe_log_s          isshe_log_t;
 
 #include "isshe_types.h"
+#include "isshe_debug.h"
 #include "isshe_error.h"
 #include "isshe_string.h"
 #include "isshe_file.h"
@@ -79,6 +81,7 @@ typedef struct isshe_log_s          isshe_log_t;
 #include "isshe_file.h"
 #include "isshe_process_title.h"
 #include "isshe_mempool.h"
+#include "isshe_connection.h"
 #include "isshe_connpool.h"
 
 // crypto

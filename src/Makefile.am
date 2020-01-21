@@ -4,6 +4,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/include/core \
 noinst_LIBRARIES = libisshe.a
 
 ISSHE_CORE_SRCS = \
+    core/isshe_debug.c \
     core/isshe_error.c \
     core/isshe_file.c \
     core/isshe_process.c \
@@ -23,6 +24,7 @@ ISSHE_CORE_SRCS = \
     core/isshe_string.c \
     core/isshe_process_title.c \
     core/isshe_mempool.c \
+    core/isshe_connection.c \
     core/isshe_connpool.c
 
 ISSHE_CRYPTO_SRCS = \

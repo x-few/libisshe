@@ -35,10 +35,10 @@ isshe_connpool_create(isshe_int_t n,
     // 连起来，方便获取
     for (i = 0; i < n - 1; i++) {
         connpool->conns[i].next = &connpool->conns[i + 1];
-        connpool->conns[i].data = (void *)i;      // TODO ONLY DEBUG!
+        //connpool->conns[i].data = (void *)i;      // TODO ONLY DEBUG!
     }
     connpool->conns[i].next = NULL;
-    connpool->conns[i].data = (void *)i;          // TODO ONLY DEBUG!
+    //connpool->conns[i].data = (void *)i;          // TODO ONLY DEBUG!
 
     return connpool;
 }
@@ -88,7 +88,7 @@ isshe_connection_free(
     isshe_connpool_t *connpool, isshe_connection_t *conn)
 {
     // TODO free all resources
-    //isshe_memzero(conn, sizeof(isshe_connection_t));  // TODO
+    //isshe_memzero(conn, sizeof(isshe_connection_t));
     conn->next = connpool->free_conn;
     connpool->free_conn = conn;
 }

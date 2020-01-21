@@ -58,18 +58,18 @@ isshe_mempool_destroy(isshe_mempool_t *pool)
     // free large
     for (tmp = pool->large; tmp; tmp = tmp->next)
     {
-        isshe_free(tmp->last, pool->log);
+        isshe_free(tmp->last, NULL);
     }
 
     // free small
     for (tmp = pool->small->next; tmp; )
     {
         next = tmp->next;
-        isshe_free(tmp, pool->log);
+        isshe_free(tmp, NULL);
         tmp = next;
     }
 
-    isshe_free(pool, pool->log);
+    isshe_free(pool, NULL);
 }
 
 static isshe_mempool_data_t *

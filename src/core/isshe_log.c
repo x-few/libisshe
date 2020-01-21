@@ -160,6 +160,7 @@ void isshe_log_destroy(isshe_log_t *log)
             log->file->name.data = NULL;
             log->file->name.len = 0;
         }
+
         isshe_free(log->file, NULL);
         log->file = NULL;
     }

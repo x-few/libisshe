@@ -5,24 +5,7 @@
 
 #define ISSHE_CONNPOOL_DEFAULT_SIZE     1024
 
-typedef struct isshe_connection_s isshe_connection_t;
 typedef struct isshe_connpool_s isshe_connpool_t;
-
-struct isshe_connection_s
-{
-    isshe_socket_t      fd;
-    isshe_uint16_t      port;
-    isshe_sockaddr_t    sockaddr;
-    isshe_socklen_t     socklen;
-    isshe_int_t         protocol;
-    isshe_char_t        *addr_text;
-    isshe_char_t        *protocol_text;
-    isshe_int_t         status;
-    isshe_mempool_t     *mempool;
-    void                *data;
-    isshe_connection_t  *next;
-
-};
 
 struct isshe_connpool_s
 {
