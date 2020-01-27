@@ -17,6 +17,7 @@
 #define	ISSHE_DIR_DEFAULT_ACCESS    (FILE_MODE | S_IXUSR | S_IXGRP | S_IXOTH)
 
 #define ISSHE_INVALID_FILE          -1
+#define ISSHE_INVALID_FD            -1
 
 #define isshe_stdout                STDOUT_FILENO
 #define isshe_stderr                STDERR_FILENO

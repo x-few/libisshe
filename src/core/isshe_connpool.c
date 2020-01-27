@@ -34,6 +34,7 @@ isshe_connpool_create(isshe_int_t n,
 
     // 连起来，方便获取
     for (i = 0; i < n - 1; i++) {
+        connpool->conns[i].fd = ISSHE_INVALID_FILE;
         connpool->conns[i].next = &connpool->conns[i + 1];
         //connpool->conns[i].data = (void *)i;      // TODO ONLY DEBUG!
     }
@@ -57,7 +58,7 @@ isshe_connpool_destroy(isshe_connpool_t *connpool)
     }
 }
 
-
+// 获取到的连接，记得不能使用memset对整个结构进行清零。（next指针需要保持）
 isshe_connection_t *
 isshe_connection_get(isshe_connpool_t *connpool)
 {
@@ -89,6 +90,7 @@ isshe_connection_free(
 {
     // TODO free all resources
     //isshe_memzero(conn, sizeof(isshe_connection_t));
+    conn->fd = ISSHE_INVALID_FILE;
     conn->next = connpool->free_conn;
     connpool->free_conn = conn;
 }

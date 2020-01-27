@@ -42,6 +42,8 @@ isshe_mempool_create(isshe_size_t size, isshe_log_t *log)
     //isshe_log_info(log, "page size: %u", pagesize);
     pool->max = size < pagesize ? size : pagesize;      // 最大一页！
 
+    isshe_log_debug(log, "create mempool: %p", pool);
+
     return pool;
 }
 
@@ -55,6 +57,7 @@ isshe_mempool_destroy(isshe_mempool_t *pool)
         return;
     }
 
+    isshe_log_debug(pool->log, "destroy mempool: %p", pool);
     // free large
     for (tmp = pool->large; tmp; tmp = tmp->next)
     {

@@ -3,6 +3,9 @@
 
 #include "isshe_common.h"
 
+#define ISSHE_IPV4_ADDR_LEN         4
+#define ISSHE_IPV6_ADDR_LEN         16
+
 typedef struct isshe_connection_s isshe_connection_t;
 typedef enum isshe_conn_addr_type_e isshe_conn_addr_type_t;
 
