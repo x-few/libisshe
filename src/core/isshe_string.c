@@ -16,6 +16,21 @@ isshe_strdup(isshe_char_t *src, isshe_size_t size)
     return dst;
 }
 
+isshe_char_t *
+isshe_strdup_mp(isshe_char_t *src, isshe_size_t size, isshe_mempool_t *mempool)
+{
+    isshe_char_t *dst;
+
+    dst = (isshe_char_t *)isshe_mpalloc(mempool, size);
+    if (!dst) {
+        return NULL;
+    }
+
+    isshe_memcpy(dst, src, size);
+
+    return dst;
+}
+
 isshe_int_t
 isshe_string_mirror(
     isshe_char_t **pdst,
