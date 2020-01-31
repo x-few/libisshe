@@ -26,3 +26,15 @@ void isshe_debug_print_addr(struct sockaddr *sockaddr, isshe_log_t *log)
         printf("addr:%s, port:%d\n", addr, ntohs(port));
     }
 }
+
+void
+isshe_debug_print_buffer(char *buf, int buf_len, int print_len)
+{
+    size_t n;
+    size_t i;
+
+    n = buf_len > print_len ? print_len : buf_len;
+    for (i=0; i<n; ++i) {
+        printf("%u(%x), ", buf[i], buf[i]);
+    }
+}

@@ -5,8 +5,6 @@
 
 #define ISSHE_CONNPOOL_DEFAULT_SIZE     1024
 
-typedef struct isshe_connpool_s isshe_connpool_t;
-
 struct isshe_connpool_s
 {
     isshe_int_t         nconn;

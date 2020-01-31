@@ -12,8 +12,6 @@
 #define ISSHE_PROCESS_TITLE_PAD         '\0'
 //#define ISSHE_PROCESS_TITLE_MAX         255
 
-typedef struct isshe_process_title_s isshe_process_title_t;
-
 struct isshe_process_title_s{
     int             argc;
     char            **argv;

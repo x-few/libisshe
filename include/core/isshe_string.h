@@ -1,7 +1,6 @@
 #ifndef _ISSHE_STRING_H_
 #define _ISSHE_STRING_H_
 
-
 #include "isshe_common.h"
 
 #define LF                  (isshe_uchar_t) '\n'
@@ -15,6 +14,8 @@
 #define isshe_vsnprintf     vsnprintf
 #define isshe_snprintf      snprintf
 #define isshe_sprintf       sprintf
+
+typedef struct isshe_str_s          isshe_str_t;
 
 struct isshe_str_s{
     isshe_size_t      len;

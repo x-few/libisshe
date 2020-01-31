@@ -3,6 +3,8 @@
 
 #include "isshe_common.h"
 
+#define ISSHE_DEFAULT_BUFFER_LEN    1024
+
 #define isshe_memzero(buf, n)       (void) memset(buf, 0, n)
 #define isshe_memset(buf, c, n)     (void) memset(buf, c, n)
 

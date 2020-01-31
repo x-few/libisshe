@@ -53,20 +53,14 @@
 #define va_mode_t   mode_t
 #endif
 
-typedef int                         isshe_fd_t;
-typedef struct isshe_str_s          isshe_str_t;
-typedef struct stat                 isshe_file_info_t;
-typedef struct isshe_file_s         isshe_file_t;
-typedef struct isshe_log_s          isshe_log_t;
-
 #include "isshe_types.h"
-#include "isshe_debug.h"
 #include "isshe_error.h"
-#include "isshe_string.h"
-#include "isshe_file.h"
 #include "isshe_ipc.h"
 #include "isshe_json.h"
+#include "isshe_string.h"
+#include "isshe_file.h"
 #include "isshe_log.h"
+#include "isshe_debug.h"
 #include "isshe_memory.h"
 #include "isshe_process.h"
 #include "isshe_pthread.h"
@@ -78,10 +72,9 @@ typedef struct isshe_log_s          isshe_log_t;
 #include "isshe_stdio.h"
 #include "isshe_time.h"
 #include "isshe_unistd.h"
-#include "isshe_file.h"
 #include "isshe_process_title.h"
-#include "isshe_mempool.h"
 #include "isshe_connection.h"
+#include "isshe_mempool.h"
 #include "isshe_connpool.h"
 
 // crypto

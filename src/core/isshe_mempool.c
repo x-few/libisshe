@@ -182,6 +182,10 @@ isshe_mpalloc_large(isshe_mempool_t *pool, isshe_size_t size)
 void *
 isshe_mpalloc(isshe_mempool_t *pool, isshe_size_t size)
 {
+    if (!pool) {
+        return NULL;
+    }
+
     if (size <= pool->max) {
         isshe_log_debug(pool->log, "isshe_mpalloc called isshe_mpalloc_small");
         return isshe_mpalloc_small(pool, size);

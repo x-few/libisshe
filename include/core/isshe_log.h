@@ -35,7 +35,6 @@
 #define isshe_log_info_errno(log, ecode, fmt, ...)       isshe_log_errno(ISSHE_LOG_INFO, log, ecode, fmt, ##__VA_ARGS__)
 #define isshe_log_debug_errno(log, ecode, fmt, ...)      isshe_log_errno(ISSHE_LOG_DEBUG, log, ecode, fmt, ##__VA_ARGS__)
 
-
 typedef void (*isshe_log_writer_pt) (isshe_log_t *log, isshe_uint_t level,
     isshe_char_t *buf, isshe_size_t len);
 

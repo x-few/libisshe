@@ -9,9 +9,6 @@
 
 #define ISSHE_MEMPOOL_MAX_FAILED            5
 
-typedef struct isshe_mempool_s isshe_mempool_t;
-typedef struct isshe_mempool_data_s isshe_mempool_data_t;
-
 struct isshe_mempool_data_s
 {
     isshe_uchar_t           *last;
