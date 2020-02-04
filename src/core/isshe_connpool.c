@@ -79,6 +79,7 @@ isshe_connection_get(isshe_connpool_t *connpool)
     conn = connpool->free_conn;
     connpool->free_conn = connpool->free_conn->next;
     connpool->nfree_conn--;
+    isshe_log_debug(connpool->log, "number of free connection: %d", connpool->nfree_conn);
 
     return conn;
 }
@@ -93,4 +94,6 @@ isshe_connection_free(
     conn->fd = ISSHE_INVALID_FILE;
     conn->next = connpool->free_conn;
     connpool->free_conn = conn;
+    connpool->nfree_conn++;
+    isshe_log_debug(connpool->log, "number of free connection: %d", connpool->nfree_conn);
 }
