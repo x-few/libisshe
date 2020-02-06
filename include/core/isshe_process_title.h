@@ -4,7 +4,7 @@
 #include "isshe_common.h"
 
 #if (defined ISSHE_BSD)
-#define isshe_process_title_init(log, argc, argv)
+#define isshe_process_title_init(argc, argv)
 #define isshe_process_title_set                     setproctitle
 
 #elif (defined ISSHE_LINUX || defined ISSHE_APPLE)
@@ -22,7 +22,7 @@ isshe_int_t isshe_process_title_init(int argc, char *argv[]);
 void isshe_process_title_set(const char *fmt, ...);
 #else
 
-#define isshe_process_title_init(log, argc, argv)
+#define isshe_process_title_init(argc, argv)
 #define isshe_process_title_set(fmt, ...)
 
 #endif

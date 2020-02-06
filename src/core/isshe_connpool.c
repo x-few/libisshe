@@ -89,6 +89,10 @@ void
 isshe_connection_free(
     isshe_connpool_t *connpool, isshe_connection_t *conn)
 {
+    if (!connpool || !conn) {
+        return;
+    }
+
     // TODO free all resources
     //isshe_memzero(conn, sizeof(isshe_connection_t));
     conn->fd = ISSHE_INVALID_FILE;
