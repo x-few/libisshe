@@ -77,9 +77,14 @@ isshe_connection_get(isshe_connpool_t *connpool)
     }
 
     conn = connpool->free_conn;
+
     connpool->free_conn = connpool->free_conn->next;
     connpool->nfree_conn--;
     isshe_log_debug(connpool->log, "number of free connection: %d", connpool->nfree_conn);
+
+    if (conn) {
+        isshe_memzero(conn, sizeof(isshe_connection_t));
+    }
 
     return conn;
 }

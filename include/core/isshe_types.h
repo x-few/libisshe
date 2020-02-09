@@ -8,6 +8,10 @@
 #define ISSHE_FALSE     0
 
 typedef int             isshe_int_t;
+typedef int8_t          isshe_int8_t;
+typedef int16_t         isshe_int16_t;
+typedef int32_t         isshe_int32_t;
+typedef int64_t         isshe_int64_t;
 typedef unsigned int    isshe_uint_t;
 typedef uint8_t         isshe_uint8_t;
 typedef uint16_t        isshe_uint16_t;
@@ -40,15 +44,16 @@ typedef struct stat                 isshe_file_info_t;
 typedef struct isshe_log_s          isshe_log_t;
 typedef struct isshe_file_s         isshe_file_t;
 
-typedef struct isshe_connection_s isshe_connection_t;
+typedef struct isshe_addr_info_s    isshe_addr_info_t;
+typedef struct isshe_connection_s   isshe_connection_t;
 typedef enum isshe_conn_addr_type_e isshe_conn_addr_type_t;
 
-typedef struct isshe_connpool_s isshe_connpool_t;
+typedef struct isshe_connpool_s     isshe_connpool_t;
 
-typedef struct isshe_mempool_s isshe_mempool_t;
+typedef struct isshe_mempool_s      isshe_mempool_t;
 typedef struct isshe_mempool_data_s isshe_mempool_data_t;
 
-typedef struct isshe_process_title_s isshe_process_title_t;
+typedef struct isshe_process_title_s    isshe_process_title_t;
 
 
 #endif

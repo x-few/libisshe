@@ -14,6 +14,15 @@ enum isshe_conn_addr_type_e
 };
 
 
+struct isshe_addr_info_s
+{
+    isshe_sockaddr_t        *addr;
+    isshe_char_t            *addr_text;
+    isshe_int_t             addr_type;
+    isshe_uint8_t           addr_len;
+    isshe_uint16_t          port;
+};
+
 struct isshe_connection_s
 {
     isshe_socket_t      fd;

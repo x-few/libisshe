@@ -187,11 +187,11 @@ isshe_mpalloc(isshe_mempool_t *pool, isshe_size_t size)
     }
 
     if (size <= pool->max) {
-        isshe_log_debug(pool->log, "isshe_mpalloc called isshe_mpalloc_small");
+        //isshe_log_debug(pool->log, "isshe_mpalloc called isshe_mpalloc_small");
         return isshe_mpalloc_small(pool, size);
     }
 
-    isshe_log_debug(pool->log, "isshe_mpalloc called isshe_mpalloc_large");
+    //isshe_log_debug(pool->log, "isshe_mpalloc called isshe_mpalloc_large");
     return isshe_mpalloc_large(pool, size);
 }
 

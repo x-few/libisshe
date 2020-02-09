@@ -89,18 +89,19 @@
 #define OPEN_MAX FOPEN_MAX
 #endif
 
-#define ISSHE_SUCCESS   0
-#define ISSHE_FAILURE   (-1)
-#define ISSHE_TRUE      1
-#define ISSHE_FALSE     0
-#define MAXLINE         4096
-#define ISSHE_MAXLINE   MAXLINE
+#define ISSHE_SUCCESS       0
+#define ISSHE_FAILURE       (-1)
+#define ISSHE_RETRY         1
+#define ISSHE_TRUE          1
+#define ISSHE_FALSE         0
+#define MAXLINE             4096
+#define ISSHE_MAXLINE       MAXLINE
 
-#ifndef	PATH_MAX                /* should be in <limits.h> */
-#define	PATH_MAX        1024    /* max # of characters in a pathname */
+#ifndef	PATH_MAX                    /* should be in <limits.h> */
+#define	PATH_MAX            1024    /* max # of characters in a pathname */
 #endif
 
-#define	min(a,b)    ((a) < (b) ? (a) : (b))
-#define	max(a,b)    ((a) > (b) ? (a) : (b))
+#define	min(a,b)            ((a) < (b) ? (a) : (b))
+#define	max(a,b)            ((a) > (b) ? (a) : (b))
 
 #endif
