@@ -76,12 +76,10 @@ isshe_conn_addr_pton(const isshe_char_t *addr_str,
         break;
     case ISSHE_CONN_ADDR_TYPE_DOMAIN:
         // TODO 域名解析后存在到addr，然后直接return
-        isshe_log_debug(log, "---isshe---: isshe_conn_addr_pton---1---");
         if (isshe_conn_dns(addr_str, &ais) != ISSHE_SUCCESS || !ais) {
             isshe_log_error(log, "dns failed!");
             return ISSHE_FAILURE;
         }
-        isshe_log_debug(log, "---isshe---: isshe_conn_addr_pton---2---");
         ai = isshe_conn_select_addrinfo(ais);
         if (!ai) {
             isshe_log_error(log, "select addrinfo failed!");
@@ -89,13 +87,9 @@ isshe_conn_addr_pton(const isshe_char_t *addr_str,
             return ISSHE_FAILURE;
         }
 
-        isshe_log_debug(log, "---isshe---: isshe_conn_addr_pton---3---");
         *socklen = ai->ai_addrlen;
-        isshe_log_debug(log, "---isshe---: isshe_conn_addr_pton---4---ai->ai_addrlen = %d", ai->ai_addrlen);
         isshe_memcpy(res_addr, ai->ai_addr, ai->ai_addrlen);
-        isshe_log_debug(log, "---isshe---: isshe_conn_addr_pton---5---");
         freeaddrinfo(ais);
-        isshe_log_debug(log, "---isshe---: isshe_conn_addr_pton---6---");
         break;
     }
 
