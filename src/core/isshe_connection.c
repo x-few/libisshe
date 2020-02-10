@@ -23,8 +23,7 @@ isshe_conn_dns(
 }
 
 isshe_addrinfo_t *
-isshe_conn_select_addrinfo(
-    isshe_addrinfo_t *ai)
+isshe_conn_select_addrinfo(isshe_addrinfo_t *ai)
 {
     while(ai) {
         if (!ai->ai_addr) {
@@ -42,7 +41,7 @@ isshe_conn_select_addrinfo(
 isshe_int_t
 isshe_conn_addr_pton(const isshe_char_t *addr_str,
     isshe_int_t type, void *res_addr,
-    isshe_socklen_t *socklen)
+    isshe_socklen_t *socklen, isshe_log_t *log)
 {
     struct sockaddr_in  *in4;
     struct sockaddr_in6 *in6;
@@ -50,6 +49,7 @@ isshe_conn_addr_pton(const isshe_char_t *addr_str,
     isshe_addrinfo_t    *ai;
 
     if (!addr_str || !res_addr) {
+        isshe_log_error(log, "addr pton: invalid parameters");
         return ISSHE_FAILURE;
     }
 
@@ -73,9 +73,16 @@ isshe_conn_addr_pton(const isshe_char_t *addr_str,
         break;
     case ISSHE_CONN_ADDR_TYPE_DOMAIN:
         // TODO 域名解析后存在到addr，然后直接return
+        isshe_log_debug(log, "---isshe---: isshe_conn_addr_pton---1---");
         isshe_conn_dns(addr_str, &ais);
+        if (!ais) {
+            isshe_log_error(log, "dns failed!");
+            return ISSHE_FAILURE;
+        }
+        isshe_log_debug(log, "---isshe---: isshe_conn_addr_pton---2---");
         ai = isshe_conn_select_addrinfo(ais);
         if (!ai) {
+            isshe_log_error(log, "select addrinfo failed!");
             freeaddrinfo(ais);
             return ISSHE_FAILURE;
         }

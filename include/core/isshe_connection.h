@@ -41,9 +41,10 @@ struct isshe_connection_s
 
 isshe_int_t isshe_conn_addr_type_get(const isshe_char_t *addr_str);
 
-isshe_int_t isshe_conn_addr_pton(const isshe_char_t *addr_str,
-                            isshe_int_t type, void *res_addr
-                            , isshe_socklen_t *socklen);
+isshe_int_t isshe_conn_addr_pton(
+    const isshe_char_t *addr_str,
+    isshe_int_t type, void *res_addr,
+    isshe_socklen_t *socklen, isshe_log_t *log);
 
 isshe_int_t
 isshe_conn_port_set(isshe_sockaddr_t *sockaddr, isshe_uint16_t port);
