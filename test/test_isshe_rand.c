@@ -17,7 +17,7 @@ int main(void)
 {
     char buf[16];
     print_hex_buf((uint8_t *)buf, sizeof(buf));
-    isshe_rand_bytes((unsigned char *)buf, sizeof(buf));
+    isshe_rand_bytes(buf, sizeof(buf));
     printf("buf = %s\n", buf);
     print_hex_buf((uint8_t *)buf, sizeof(buf));
 }
