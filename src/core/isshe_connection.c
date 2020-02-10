@@ -18,8 +18,11 @@ isshe_conn_dns(
     hints.ai_family = AF_INET;  // 协议族
     hints.ai_flags = AI_CANONNAME;
 
+    if (getaddrinfo(domain_name, NULL, &hints, res) != ISSHE_SUCCESS) {
+        return ISSHE_FAILURE;
+    }
     // 记得使用freeaddrinfo进行释放！
-    return getaddrinfo(domain_name, NULL, &hints, res);
+    return ISSHE_SUCCESS;
 }
 
 isshe_addrinfo_t *
@@ -74,8 +77,7 @@ isshe_conn_addr_pton(const isshe_char_t *addr_str,
     case ISSHE_CONN_ADDR_TYPE_DOMAIN:
         // TODO 域名解析后存在到addr，然后直接return
         isshe_log_debug(log, "---isshe---: isshe_conn_addr_pton---1---");
-        isshe_conn_dns(addr_str, &ais);
-        if (!ais) {
+        if (isshe_conn_dns(addr_str, &ais) != ISSHE_SUCCESS || !ais) {
             isshe_log_error(log, "dns failed!");
             return ISSHE_FAILURE;
         }
@@ -87,9 +89,13 @@ isshe_conn_addr_pton(const isshe_char_t *addr_str,
             return ISSHE_FAILURE;
         }
 
+        isshe_log_debug(log, "---isshe---: isshe_conn_addr_pton---3---");
         *socklen = ai->ai_addrlen;
+        isshe_log_debug(log, "---isshe---: isshe_conn_addr_pton---4---ai->ai_addrlen = %d", ai->ai_addrlen);
         isshe_memcpy(res_addr, ai->ai_addr, ai->ai_addrlen);
+        isshe_log_debug(log, "---isshe---: isshe_conn_addr_pton---5---");
         freeaddrinfo(ais);
+        isshe_log_debug(log, "---isshe---: isshe_conn_addr_pton---6---");
         break;
     }
 
