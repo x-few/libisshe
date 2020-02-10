@@ -201,10 +201,10 @@ isshe_log_time(isshe_char_t *logstr)
     gettimeofday(&tv, NULL);
     tm = localtime(&tv.tv_sec);
 
-    isshe_sprintf(logstr, "%4d/%02d/%02d %02d:%02d:%02d.%06d",
+    isshe_sprintf(logstr, "%4d/%02d/%02d %02d:%02d:%02d.%06ld",
                     tm->tm_year + 1900, tm->tm_mon,
                     tm->tm_mday, tm->tm_hour,
-                    tm->tm_min, tm->tm_sec, tv.tv_usec);
+                    tm->tm_min, tm->tm_sec, (long)tv.tv_usec);
     return strlen(logstr);
 }
 
