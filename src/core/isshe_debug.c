@@ -8,6 +8,13 @@ void isshe_debug_print_addr(struct sockaddr *sockaddr, isshe_log_t *log)
     struct sockaddr_in6     *in6;
     int                     port;
 
+    if (!sockaddr) {
+        if (log) {
+            isshe_log_debug(log, "print addr failed: addr == NULL");
+        }
+        return;
+    }
+
     isshe_memzero(addr, INET6_ADDRSTRLEN);
     if (sockaddr->sa_family == AF_INET6) {
         in6 = (struct sockaddr_in6 *)sockaddr;
