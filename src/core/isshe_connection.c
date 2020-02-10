@@ -49,6 +49,10 @@ isshe_conn_addr_pton(const isshe_char_t *addr_str,
     isshe_addrinfo_t    *ais;
     isshe_addrinfo_t    *ai;
 
+    if (!addr_str || !res_addr) {
+        return ISSHE_FAILURE;
+    }
+
     switch (type)
     {
     case ISSHE_CONN_ADDR_TYPE_IPV4:
