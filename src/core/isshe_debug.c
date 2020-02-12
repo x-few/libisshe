@@ -7,6 +7,7 @@ void isshe_debug_print_addr(struct sockaddr *sockaddr, isshe_log_t *log)
     struct sockaddr_in      *in4;
     struct sockaddr_in6     *in6;
     int                     port;
+    isshe_char_t            *type;
 
     if (!sockaddr) {
         if (log) {
@@ -20,17 +21,19 @@ void isshe_debug_print_addr(struct sockaddr *sockaddr, isshe_log_t *log)
         in6 = (struct sockaddr_in6 *)sockaddr;
         inet_ntop(AF_INET6, &in6->sin6_addr, addr, sizeof(struct sockaddr_in6));
         port = in6->sin6_port;
+        type = "IPV6";
     } else {
         in4 = (struct sockaddr_in *)sockaddr;
         inet_ntop(AF_INET, &in4->sin_addr, addr, sizeof(struct sockaddr_in));
         port = in4->sin_port;
+        type = "IPV4";
     }
 
     // 打印对端的信息
     if (log) {
-        isshe_log_debug(log, "addr: %s, port: %d", addr, ntohs(port));
+        isshe_log_debug(log, "addr: (%s)%s, port: %d", type, addr, ntohs(port));
     } else {
-        printf("addr:%s, port:%d\n", addr, ntohs(port));
+        printf("addr: (%s)%s, port:%d\n", type, addr, ntohs(port));
     }
 }
 

@@ -83,10 +83,10 @@ isshe_address_pton(const isshe_char_t *addr_text, isshe_uint8_t addr_len,
     isshe_uint8_t addr_type, isshe_sockaddr_t *res_sockaddr,
     isshe_socklen_t *res_socklen, isshe_log_t *log)
 {
-    struct sockaddr_in  *in4;
-    struct sockaddr_in6 *in6;
-    isshe_addrinfo_t    *ais;
-    isshe_addrinfo_t    *ai;
+    isshe_sockaddr_in4_t    *in4;
+    isshe_sockaddr_in6_t    *in6;
+    isshe_addrinfo_t        *ais;
+    isshe_addrinfo_t        *ai;
 
     if (!addr_text || !res_sockaddr) {
         isshe_log_error(log, "addr pton: invalid parameters");
@@ -113,30 +113,30 @@ isshe_address_pton(const isshe_char_t *addr_text, isshe_uint8_t addr_len,
         freeaddrinfo(ais);
         break;
     case ISSHE_ADDR_TYPE_IPV4_TEXT:
-        *res_socklen = sizeof(struct sockaddr_in);
-        in4 = (struct sockaddr_in *)res_sockaddr;
+        *res_socklen = sizeof(isshe_sockaddr_in4_t);
+        in4 = (isshe_sockaddr_in4_t *)res_sockaddr;
         in4->sin_family = AF_INET;
         if (inet_pton(in4->sin_family, addr_text, (void *)&in4->sin_addr) != 1) {
             return ISSHE_FAILURE;
         }
         break;
     case ISSHE_ADDR_TYPE_IPV6_TEXT:
-        *res_socklen = sizeof(struct sockaddr_in6);
-        in6 = (struct sockaddr_in6 *)res_sockaddr;
+        *res_socklen = sizeof(isshe_sockaddr_in6_t);
+        in6 = (isshe_sockaddr_in6_t *)res_sockaddr;
         in6->sin6_family = AF_INET6;
         if (inet_pton(in6->sin6_family, addr_text, (void *)&in6->sin6_addr) != 1) {
             return ISSHE_FAILURE;
         }
         break;
     case ISSHE_ADDR_TYPE_IPV4:
-        *res_socklen = ISSHE_IPV4_ADDR_LEN;
+        *res_socklen = sizeof(isshe_sockaddr_in4_t);
         in4 = (isshe_sockaddr_in4_t *)res_sockaddr;
         in4->sin_family = AF_INET;
         // TODO htonl ?
-        in4->sin_addr.s_addr = (in_addr_t)addr_text;
+        in4->sin_addr.s_addr = *(in_addr_t *)addr_text;
         break;
     case ISSHE_ADDR_TYPE_IPV6:
-        *res_socklen = ISSHE_IPV6_ADDR_LEN;
+        *res_socklen = sizeof(isshe_sockaddr_in6_t);
         in6 = (isshe_sockaddr_in6_t *)res_sockaddr;
         in6->sin6_family = AF_INET6;
         isshe_memcpy(&in6->sin6_addr,
@@ -257,13 +257,13 @@ isshe_address_addrinfo_create()
 isshe_int_t
 isshe_sockaddr_port_set(isshe_sockaddr_t *sockaddr, isshe_uint16_t port)
 {
-    struct sockaddr_in  *in4;
+    isshe_sockaddr_in4_t  *in4;
 
     if (!sockaddr || port == 0) {
         return ISSHE_FAILURE;
     }
 
-    in4 = (struct sockaddr_in *)sockaddr;
+    in4 = (isshe_sockaddr_in4_t *)sockaddr;
     in4->sin_port = htons(port);
 
     return ISSHE_SUCCESS;
