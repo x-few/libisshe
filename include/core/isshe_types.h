@@ -38,13 +38,15 @@ typedef struct sockaddr_storage isshe_sockaddr_t;
 typedef int             isshe_socket_t;
 typedef socklen_t       isshe_socklen_t;
 typedef struct addrinfo isshe_addrinfo_t;
+typedef struct sockaddr_in      isshe_sockaddr_in4_t;
+typedef struct sockaddr_in6     isshe_sockaddr_in6_t;
 
 typedef int                         isshe_fd_t;
 typedef struct stat                 isshe_file_info_t;
 typedef struct isshe_log_s          isshe_log_t;
 typedef struct isshe_file_s         isshe_file_t;
 
-typedef struct isshe_addr_info_s    isshe_addr_info_t;
+typedef struct isshe_address_s      isshe_address_t;
 typedef struct isshe_connection_s   isshe_connection_t;
 typedef enum isshe_conn_addr_type_e isshe_conn_addr_type_t;
 
