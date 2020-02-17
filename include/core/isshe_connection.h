@@ -14,6 +14,10 @@
 #define ISSHE_ADDR_TYPE_IPV4_TEXT   0x5
 #define ISSHE_ADDR_TYPE_IPV6_TEXT   0x6
 
+// protocol
+//#define ISSHE_PROTOCOL_SOCKS_V4     0x4
+#define ISSHE_PROTOCOL_INVALID      0
+
 struct isshe_address_s
 {
     isshe_char_t            *addr;
@@ -29,14 +33,6 @@ struct isshe_connection_s
 {
     isshe_socket_t      fd;
     isshe_address_t     *addr;
-    /*
-    isshe_uint16_t      port;
-    isshe_uint8_t       addr_len;
-    isshe_uint8_t       addr_type;
-    isshe_char_t        *addr;
-    isshe_sockaddr_t    *sockaddr;
-    isshe_socklen_t     socklen;
-    */
     isshe_char_t        *protocol_text;
     isshe_uint8_t       protocol;
     isshe_int_t         status;
