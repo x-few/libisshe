@@ -7,7 +7,7 @@ void print_connpool(isshe_connpool_t *connpool, isshe_int_t n)
     isshe_connection_t *conn = connpool->free_conn;
 
     for (i = 0; i < n; i++) {
-        printf("%d ", (int)conn->data);
+        printf("%d ", *(int *)conn->data);
         conn = conn->next;
     }
     printf("\n");
@@ -48,7 +48,7 @@ void test()
     }
 
     isshe_log_debug(log, "conn1 = %d, conn2 = %d, conn3 = %d",
-        (int)conn->data, (int)conn2->data, (int)conn3->data);
+        *(int *)conn->data, *(int *)conn2->data, *(int *)conn3->data);
     print_connpool(connpool, 10);
 
     isshe_connection_free(connpool, conn);
