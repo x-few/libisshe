@@ -5,7 +5,7 @@ int isshe_pthread_create(pthread_t *tid, const pthread_attr_t *attr,
 {
     int rc;
 
-    if ( (rc = pthread_create(tid, attr, func, arg)) != ISSHE_SUCCESS) {
+    if ( (rc = pthread_create(tid, attr, func, arg)) != ISSHE_OK) {
         isshe_posix_error_exit(rc, "pthread_create error");
     }
 
@@ -16,7 +16,7 @@ int isshe_pthread_join(pthread_t tid, void **status)
 {
     int rc;
 
-    if ( (rc = pthread_join(tid, status)) != ISSHE_SUCCESS) {
+    if ( (rc = pthread_join(tid, status)) != ISSHE_OK) {
         isshe_posix_error_exit(rc, "pthread_join error");
     }
 
@@ -27,7 +27,7 @@ int isshe_pthread_cancel(pthread_t tid)
 {
     int rc;
 
-    if ((rc = pthread_cancel(tid)) != ISSHE_SUCCESS) {
+    if ((rc = pthread_cancel(tid)) != ISSHE_OK) {
         isshe_posix_error_exit(rc, "pthread_cancel error");
     }
 
@@ -38,7 +38,7 @@ int isshe_pthread_detach(pthread_t tid)
 {
     int rc;
 
-    if ((rc = pthread_detach(tid)) != ISSHE_SUCCESS) {
+    if ((rc = pthread_detach(tid)) != ISSHE_OK) {
         isshe_posix_error_exit(rc, "pthread_detach error");
     }
 
@@ -64,7 +64,7 @@ int isshe_pthread_mutex_lock(pthread_mutex_t *mptr)
 {
     int rc;
 
-    if ( (rc = pthread_mutex_lock(mptr)) != ISSHE_SUCCESS) {
+    if ( (rc = pthread_mutex_lock(mptr)) != ISSHE_OK) {
         isshe_posix_error_exit(rc, "pthread_mutex_lock error");
     }
 
@@ -76,7 +76,7 @@ int isshe_pthread_mutex_unlock(pthread_mutex_t *mptr)
 {
     int rc;
 
-    if ( (rc = pthread_mutex_unlock(mptr)) != ISSHE_SUCCESS) {
+    if ( (rc = pthread_mutex_unlock(mptr)) != ISSHE_OK) {
         isshe_posix_error_exit(rc, "pthread_mutex_unlock error");
     }
 
@@ -87,7 +87,7 @@ int isshe_pthread_cond_signal(pthread_cond_t *cptr)
 {
     int rc;
 
-    if ( (rc = pthread_cond_signal(cptr)) != ISSHE_SUCCESS) {
+    if ( (rc = pthread_cond_signal(cptr)) != ISSHE_OK) {
         isshe_posix_error_exit(rc, "pthread_cond_signal error");
     }
 
@@ -98,7 +98,7 @@ int isshe_pthread_cond_wait(pthread_cond_t *cptr, pthread_mutex_t *mptr)
 {
     int rc;
 
-    if ( (rc = pthread_cond_wait(cptr, mptr)) != ISSHE_SUCCESS) {
+    if ( (rc = pthread_cond_wait(cptr, mptr)) != ISSHE_OK) {
         isshe_posix_error_exit(rc, "pthread_cond_wait error");
     }
 
@@ -110,7 +110,7 @@ int isshe_pthread_cond_timedwait(pthread_cond_t *cptr, pthread_mutex_t *mptr,
 {
     int rc;
 
-    if ( (rc = pthread_cond_timedwait(cptr, mptr, tsptr)) != ISSHE_SUCCESS) {
+    if ( (rc = pthread_cond_timedwait(cptr, mptr, tsptr)) != ISSHE_OK) {
         isshe_posix_error_exit(rc, "pthread_cond_timedwait error");
     }
 

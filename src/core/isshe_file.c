@@ -46,7 +46,7 @@ isshe_lock_reg(isshe_fd_t fd, isshe_int_t cmd,
     isshe_int_t type, isshe_off_t offset,
     isshe_int_t whence, isshe_off_t len)
 {
-    if (lock_reg(fd, cmd, type, offset, whence, len) == ISSHE_FAILURE) {
+    if (lock_reg(fd, cmd, type, offset, whence, len) == ISSHE_ERROR) {
         isshe_sys_error_exit("lock_reg error");
     }
 }
@@ -61,12 +61,12 @@ isshe_open(const isshe_char_t *pathname, isshe_int_t oflag, ...)
     if (oflag & O_CREAT) {
         va_start(ap, oflag);
         mode = va_arg(ap, isshe_mode_t);
-        if ( (fd = open(pathname, oflag, mode)) == ISSHE_FAILURE ) {
+        if ( (fd = open(pathname, oflag, mode)) == ISSHE_ERROR ) {
             return ISSHE_INVALID_FILE;
         }
         va_end(ap);
     } else {
-        if ( (fd = open(pathname, oflag)) == ISSHE_FAILURE ) {
+        if ( (fd = open(pathname, oflag)) == ISSHE_ERROR ) {
             return ISSHE_INVALID_FILE;
         }
     }
@@ -76,7 +76,7 @@ isshe_open(const isshe_char_t *pathname, isshe_int_t oflag, ...)
 
 isshe_void_t isshe_close(isshe_fd_t fd)
 {
-    if (close(fd) == ISSHE_FAILURE) {
+    if (close(fd) == ISSHE_ERROR) {
         isshe_sys_error_exit("close error");
     }
 }
@@ -86,7 +86,7 @@ isshe_read(isshe_fd_t fd, isshe_void_t *ptr, isshe_size_t nbytes)
 {
     isshe_ssize_t n;
 
-    if ( (n = read(fd, ptr, nbytes)) == ISSHE_FAILURE) {
+    if ( (n = read(fd, ptr, nbytes)) == ISSHE_ERROR) {
         isshe_sys_error_exit("read error");
     }
 
@@ -104,7 +104,7 @@ isshe_write(isshe_fd_t fd, isshe_void_t *ptr, isshe_size_t nbytes)
 isshe_void_t
 isshe_unlink(const isshe_char_t *pathname)
 {
-    if (unlink(pathname) == ISSHE_FAILURE) {
+    if (unlink(pathname) == ISSHE_ERROR) {
         isshe_sys_error_exit("unlink error for %s", pathname);
     }
 }
@@ -180,7 +180,7 @@ isshe_lseek(isshe_fd_t fd, isshe_off_t offset, isshe_int_t whence)
 {
     isshe_off_t pos;
 
-    if ( (pos = lseek(fd, offset, whence)) == (isshe_off_t) ISSHE_FAILURE) {
+    if ( (pos = lseek(fd, offset, whence)) == (isshe_off_t) ISSHE_ERROR) {
         isshe_sys_error_exit("lseek error");
     }
 
@@ -190,7 +190,7 @@ isshe_lseek(isshe_fd_t fd, isshe_off_t offset, isshe_int_t whence)
 isshe_void_t
 isshe_ftruncate(isshe_fd_t fd, isshe_off_t length)
 {
-    if (ftruncate(fd, length) == ISSHE_FAILURE) {
+    if (ftruncate(fd, length) == ISSHE_ERROR) {
         isshe_sys_error_exit("ftruncate error");
     }
 }

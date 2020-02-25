@@ -6,7 +6,7 @@ isshe_gettimeofday(
 {
     isshe_int_t rc;
 
-    if ((rc = gettimeofday(tv, tz)) < ISSHE_SUCCESS) {
+    if ((rc = gettimeofday(tv, tz)) < ISSHE_OK) {
         isshe_sys_error_exit("gettimeofday error");
     }
 

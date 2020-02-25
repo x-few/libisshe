@@ -5,7 +5,7 @@ isshe_long_t isshe_pathconf(const isshe_char_t *pathname, isshe_int_t name)
     isshe_long_t    val;
 
     errno = 0;  /* in case pathconf() does not change this */
-    if ( (val = pathconf(pathname, name)) == ISSHE_FAILURE) {
+    if ( (val = pathconf(pathname, name)) == ISSHE_ERROR) {
         if (errno != 0) {
             isshe_sys_error_exit("pathconf error");
         }
@@ -21,7 +21,7 @@ isshe_long_t isshe_sysconf(isshe_int_t name)
     isshe_long_t    val;
 
     errno = 0;  /* in case sysconf() does not change this */
-    if ( (val = sysconf(name)) == ISSHE_FAILURE) {
+    if ( (val = sysconf(name)) == ISSHE_ERROR) {
         if (errno != 0) {
             isshe_sys_error_exit("sysconf error");
         }
@@ -37,7 +37,7 @@ isshe_fcntl(isshe_int_t fd, isshe_int_t cmd, isshe_void_t *arg)
 {
     isshe_int_t	n;
 
-    if ( (n = fcntl(fd, cmd, arg)) == ISSHE_FAILURE) {
+    if ( (n = fcntl(fd, cmd, arg)) == ISSHE_ERROR) {
         isshe_sys_error_exit("fcntl error");
     }
 
@@ -55,8 +55,8 @@ lock_test(isshe_int_t fd, isshe_int_t type,
     lock.l_whence = whence;	/* SEEK_SET, SEEK_CUR, SEEK_END */
     lock.l_len = len;		/* #bytes (0 means to EOF) */
 
-    if (fcntl(fd, F_GETLK, &lock) == ISSHE_FAILURE)
-        return(ISSHE_FAILURE);			/* unexpected error */
+    if (fcntl(fd, F_GETLK, &lock) == ISSHE_ERROR)
+        return(ISSHE_ERROR);			/* unexpected error */
 
     if (lock.l_type == F_UNLCK)
         return(0);			/* false, region not locked by another proc */
@@ -69,7 +69,7 @@ isshe_lock_test(isshe_int_t fd, isshe_int_t type,
 {
     isshe_pid_t pid;
 
-    if ( (pid = lock_test(fd, type, offset, whence, len)) == ISSHE_FAILURE) {
+    if ( (pid = lock_test(fd, type, offset, whence, len)) == ISSHE_ERROR) {
         isshe_sys_error_exit("lock_test error");
     }
 
@@ -231,7 +231,7 @@ isshe_int_t isshe_kqueue(isshe_void_t)
 {
     isshe_int_t rc;
 
-    if ((rc = kqueue()) == ISSHE_FAILURE){
+    if ((rc = kqueue()) == ISSHE_ERROR){
         isshe_sys_error_exit("kqueue error");
     }
 
@@ -246,7 +246,7 @@ isshe_kevent(isshe_int_t kq, const struct kevent *changelist,
     isshe_int_t rc;
 
     rc = kevent(kq, changelist, nchanges, eventlist, nevents, timeout);
-    if (rc == ISSHE_FAILURE){
+    if (rc == ISSHE_ERROR){
         isshe_sys_error_exit("kevent error");
     }
 
@@ -262,7 +262,7 @@ isshe_kevent64(isshe_int_t kq,
     isshe_int_t rc;
 
     rc = kevent64(kq, changelist, nchanges, eventlist, nevents, flags, timeout);
-    if (rc == ISSHE_FAILURE){
+    if (rc == ISSHE_ERROR){
         isshe_sys_error_exit("kevent64 error");
     }
 

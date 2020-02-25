@@ -8,7 +8,7 @@ isshe_address_type_get(
     isshe_sockaddr_in6_t    in6;
 
     if (!addr || addr_len == 0) {
-        return ISSHE_FAILURE;
+        return ISSHE_ERROR;
     }
 
     if (inet_pton(AF_INET, addr, (isshe_void_t *)&in4.sin_addr) == 1) {
@@ -53,11 +53,11 @@ isshe_address_dns(
     hints.ai_family = AF_INET;  // 协议族
     hints.ai_flags = AI_CANONNAME;
 
-    if (getaddrinfo(domain_name, NULL, &hints, res) != ISSHE_SUCCESS) {
-        return ISSHE_FAILURE;
+    if (getaddrinfo(domain_name, NULL, &hints, res) != ISSHE_OK) {
+        return ISSHE_ERROR;
     }
     // 记得使用freeaddrinfo进行释放！
-    return ISSHE_SUCCESS;
+    return ISSHE_OK;
 }
 
 isshe_addrinfo_t *
@@ -90,22 +90,22 @@ isshe_address_pton(const isshe_char_t *addr_text, isshe_uint8_t addr_len,
 
     if (!addr_text || !res_sockaddr) {
         isshe_log_error(log, "addr pton: invalid parameters");
-        return ISSHE_FAILURE;
+        return ISSHE_ERROR;
     }
 
     switch (addr_type)
     {
     case ISSHE_ADDR_TYPE_DOMAIN:
         // TODO 域名解析后存在到addr，然后直接return
-        if (isshe_address_dns(addr_text, &ais) != ISSHE_SUCCESS || !ais) {
+        if (isshe_address_dns(addr_text, &ais) != ISSHE_OK || !ais) {
             isshe_log_error(log, "dns failed!");
-            return ISSHE_FAILURE;
+            return ISSHE_ERROR;
         }
         ai = isshe_conn_select_addrinfo(ais);
         if (!ai) {
             isshe_log_error(log, "select addrinfo failed!");
             freeaddrinfo(ais);
-            return ISSHE_FAILURE;
+            return ISSHE_ERROR;
         }
 
         *res_socklen = ai->ai_addrlen;
@@ -117,7 +117,7 @@ isshe_address_pton(const isshe_char_t *addr_text, isshe_uint8_t addr_len,
         in4 = (isshe_sockaddr_in4_t *)res_sockaddr;
         in4->sin_family = AF_INET;
         if (inet_pton(in4->sin_family, addr_text, (isshe_void_t *)&in4->sin_addr) != 1) {
-            return ISSHE_FAILURE;
+            return ISSHE_ERROR;
         }
         break;
     case ISSHE_ADDR_TYPE_IPV6_TEXT:
@@ -125,7 +125,7 @@ isshe_address_pton(const isshe_char_t *addr_text, isshe_uint8_t addr_len,
         in6 = (isshe_sockaddr_in6_t *)res_sockaddr;
         in6->sin6_family = AF_INET6;
         if (inet_pton(in6->sin6_family, addr_text, (isshe_void_t *)&in6->sin6_addr) != 1) {
-            return ISSHE_FAILURE;
+            return ISSHE_ERROR;
         }
         break;
     case ISSHE_ADDR_TYPE_IPV4:
@@ -144,7 +144,7 @@ isshe_address_pton(const isshe_char_t *addr_text, isshe_uint8_t addr_len,
         break;
     }
 
-    return ISSHE_SUCCESS;
+    return ISSHE_OK;
 }
 
 
@@ -234,7 +234,7 @@ isshe_address_sockaddr_create(isshe_address_t *address,
     // 进行地址转换/域名解析
     if (isshe_address_pton(address->addr,
     address->addr_len, address->addr_type,
-    sockaddr, &socklen, log) == ISSHE_FAILURE) {
+    sockaddr, &socklen, log) == ISSHE_ERROR) {
         isshe_log_alert(log, "convert addr string to socksaddr failed: %s", addr_text);
         return NULL;
     }
@@ -251,7 +251,7 @@ isshe_int_t
 isshe_address_addrinfo_create()
 {
     // TODO
-    return ISSHE_SUCCESS;
+    return ISSHE_OK;
 }
 
 isshe_int_t
@@ -260,27 +260,27 @@ isshe_sockaddr_port_set(isshe_sockaddr_t *sockaddr, isshe_uint16_t port)
     isshe_sockaddr_in4_t  *in4;
 
     if (!sockaddr || port == 0) {
-        return ISSHE_FAILURE;
+        return ISSHE_ERROR;
     }
 
     in4 = (isshe_sockaddr_in4_t *)sockaddr;
     in4->sin_port = htons(port);
 
-    return ISSHE_SUCCESS;
+    return ISSHE_OK;
 }
 
 isshe_int_t
 isshe_address_port_set(isshe_address_t *address, isshe_uint16_t port)
 {
     if (!address) {
-        return ISSHE_FAILURE;
+        return ISSHE_ERROR;
     }
     address->port = port;
     if (address->sockaddr) {
         return isshe_sockaddr_port_set(address->sockaddr, port);
     }
 
-    return ISSHE_SUCCESS;
+    return ISSHE_OK;
 }
 
 isshe_void_t isshe_address_print(

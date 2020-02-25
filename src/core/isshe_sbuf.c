@@ -40,7 +40,7 @@ void isshe_sbuf_destroy(isshe_sbuf_t *sp)
     void *item;
 
     isshe_sem_wait(sp->mutex);                     /* Lock the buffer */
-    while(isshe_sem_trywait(sp->nstored) != ISSHE_FAILURE) {   /* Wait for available item */
+    while(isshe_sem_trywait(sp->nstored) != ISSHE_ERROR) {   /* Wait for available item */
         item = sp->buf[(++sp->front)%(sp->n)];      /* Remove the item */
         isshe_free(item, NULL);
         isshe_sem_post(sp->nempty);                /* Announce available slot */

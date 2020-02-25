@@ -72,7 +72,7 @@ isshe_process_title_init(isshe_int_t argc, isshe_char_t *argv[])
 
     p = (isshe_char_t *)malloc(size);
     if (!p) {
-        return ISSHE_FAILURE;
+        return ISSHE_ERROR;
     }
 
     ipt.argv_last = argv_last_get(argc, argv);
@@ -81,7 +81,7 @@ isshe_process_title_init(isshe_int_t argc, isshe_char_t *argv[])
     ipt.argc = argc;
     ipt.argv = argv;
 
-    return ISSHE_SUCCESS;
+    return ISSHE_OK;
 }
 
 isshe_void_t

@@ -48,7 +48,7 @@ isshe_log_level_to_number(const isshe_char_t *level)
         }
     }
 
-    return ISSHE_FAILURE;
+    return ISSHE_ERROR;
 }
 
 isshe_int_t

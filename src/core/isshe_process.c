@@ -101,7 +101,7 @@ isshe_waitpid(isshe_pid_t pid,
 {
     isshe_pid_t ret_pid;
 
-    if ( (ret_pid = waitpid(pid, iptr, options)) == ISSHE_FAILURE ) {
+    if ( (ret_pid = waitpid(pid, iptr, options)) == ISSHE_ERROR ) {
         isshe_sys_error_exit("waitpid error");
     }
 

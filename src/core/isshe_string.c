@@ -41,8 +41,8 @@ isshe_string_mirror(
     len += 1;       // for '\0'
     *pdst = isshe_strdup(src, len);
     if (!*pdst) {
-        return ISSHE_FAILURE;
+        return ISSHE_ERROR;
     }
 
-    return ISSHE_SUCCESS;
+    return ISSHE_OK;
 }

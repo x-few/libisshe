@@ -30,7 +30,7 @@ isshe_sigaction(isshe_int_t signo, isshe_signal_handler_t handler)
 #endif
     }
 
-    if (sigaction(signo, &action, &old_action) < ISSHE_SUCCESS) {
+    if (sigaction(signo, &action, &old_action) < ISSHE_OK) {
         return SIG_ERR;
     }
 

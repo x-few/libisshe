@@ -37,10 +37,10 @@
 #define ISSHE_NETBSD
 #endif
 
-#if __BYTE_ORDER == __LITTLE_ENDIAN__
-#define ISSHE_LITTLE_ENDIAN
-#else
+#if __BYTE_ORDER == __BIG_ENDIAN__
 #define ISSHE_BIG_ENDIAN
+#else
+#define ISSHE_LITTLE_ENDIAN
 #endif
 
 #ifdef OPEN_MAX
@@ -51,16 +51,19 @@
 
 #define ISSHE_FILENAME_MAX  FILENAME_MAX
 
-#define ISSHE_SUCCESS       0
-#define ISSHE_FAILURE       (-1)
-#define ISSHE_RETRY         1
+#define ISSHE_AGAIN         1
+#define ISSHE_OK            0
+#define ISSHE_ERROR         (-1)
+
 #define ISSHE_TRUE          1
 #define ISSHE_FALSE         0
-#define MAXLINE             4096
-#define ISSHE_MAXLINE       MAXLINE
 
-#ifndef	PATH_MAX                    /* should be in <limits.h> */
-#define	PATH_MAX            1024    /* max # of characters in a pathname */
+#define ISSHE_MAXLINE       4096
+
+#ifdef PATH_MAX                     /* should be in <limits.h> */
+#define ISSHE_PATH_MAX      PATH_MAX
+#else
+#define ISSHE_PATH_MAX      1024    /* max # of characters in a pathname */
 #endif
 
 #define	min(a, b)           ((a) < (b) ? (a) : (b))
