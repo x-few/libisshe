@@ -36,16 +36,16 @@ isshe_connpool_create(isshe_int_t n,
     for (i = 0; i < n - 1; i++) {
         connpool->conns[i].fd = ISSHE_INVALID_FILE;
         connpool->conns[i].next = &connpool->conns[i + 1];
-        //connpool->conns[i].data = (void *)i;      // TODO ONLY DEBUG!
+        //connpool->conns[i].data = (isshe_void_t *)i;      // TODO ONLY DEBUG!
     }
     connpool->conns[i].next = NULL;
-    //connpool->conns[i].data = (void *)i;          // TODO ONLY DEBUG!
+    //connpool->conns[i].data = (isshe_void_t *)i;          // TODO ONLY DEBUG!
 
     return connpool;
 }
 
 
-void
+isshe_void_t
 isshe_connpool_destroy(isshe_connpool_t *connpool)
 {
     // TODO 如何保证连接全部被关闭呢？
@@ -90,7 +90,7 @@ isshe_connection_get(isshe_connpool_t *connpool)
 }
 
 
-void
+isshe_void_t
 isshe_connection_free(
     isshe_connpool_t *connpool, isshe_connection_t *conn)
 {

@@ -3,8 +3,9 @@
 
 #include "isshe_common.h"
 
-int isshe_gettimeofday(struct timeval *tv, struct timezone *tz);
+isshe_int_t isshe_gettimeofday(
+    isshe_timeval_t *tv, isshe_timezone_t *tz);
 
-char * isshe_gf_time(void);
+isshe_char_t *isshe_gf_time(isshe_void_t);
 
 #endif

@@ -1,8 +1,10 @@
 #include "isshe_common.h"
 
-int isshe_gettimeofday(struct timeval *tv, struct timezone *tz)
+isshe_int_t
+isshe_gettimeofday(
+    isshe_timeval_t *tv, isshe_timezone_t *tz)
 {
-    int rc;
+    isshe_int_t rc;
 
     if ((rc = gettimeofday(tv, tz)) < ISSHE_SUCCESS) {
         isshe_sys_error_exit("gettimeofday error");
@@ -11,11 +13,11 @@ int isshe_gettimeofday(struct timeval *tv, struct timezone *tz)
     return rc;
 }
 
-char *isshe_gf_time(void)
+isshe_char_t *isshe_gf_time(isshe_void_t)
 {
-    struct timeval  tv;
-    static char     str[30];
-    char            *ptr;
+    isshe_timeval_t  tv;
+    static isshe_char_t     str[30];
+    isshe_char_t            *ptr;
 
     isshe_gettimeofday(&tv, NULL);
 

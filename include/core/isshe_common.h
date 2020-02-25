@@ -37,7 +37,7 @@
 #include <getopt.h>
 #include <execinfo.h>   // for backtrace
 
-#include "isshe_define.h"
+#include "isshe_defines.h"
 
 #ifdef ISSHE_LINUX
 #include <sys/epoll.h>
@@ -48,9 +48,6 @@
 #ifdef ISSHE_APPLE
 #include <sys/event.h>
 #include <sys/syslimits.h>  // for OPEN_MAX
-#define va_mode_t   int
-#else
-#define va_mode_t   mode_t
 #endif
 
 #include "isshe_types.h"
@@ -84,24 +81,5 @@
 #include "isshe_aes.h"
 #include "isshe_aes_cfg128.h"
 #include "isshe_rand.h"
-
-#ifndef OPEN_MAX
-#define OPEN_MAX FOPEN_MAX
-#endif
-
-#define ISSHE_SUCCESS       0
-#define ISSHE_FAILURE       (-1)
-#define ISSHE_RETRY         1
-#define ISSHE_TRUE          1
-#define ISSHE_FALSE         0
-#define MAXLINE             4096
-#define ISSHE_MAXLINE       MAXLINE
-
-#ifndef	PATH_MAX                    /* should be in <limits.h> */
-#define	PATH_MAX            1024    /* max # of characters in a pathname */
-#endif
-
-#define	min(a,b)            ((a) < (b) ? (a) : (b))
-#define	max(a,b)            ((a) > (b) ? (a) : (b))
 
 #endif

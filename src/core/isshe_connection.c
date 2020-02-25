@@ -11,11 +11,11 @@ isshe_address_type_get(
         return ISSHE_FAILURE;
     }
 
-    if (inet_pton(AF_INET, addr, (void *)&in4.sin_addr) == 1) {
+    if (inet_pton(AF_INET, addr, (isshe_void_t *)&in4.sin_addr) == 1) {
         return ISSHE_ADDR_TYPE_IPV4_TEXT;
     }
 
-    if (inet_pton(AF_INET6, addr, (void *)&in6.sin6_addr) == 1) {
+    if (inet_pton(AF_INET6, addr, (isshe_void_t *)&in6.sin6_addr) == 1) {
         return ISSHE_ADDR_TYPE_IPV6_TEXT;
     }
 
@@ -116,7 +116,7 @@ isshe_address_pton(const isshe_char_t *addr_text, isshe_uint8_t addr_len,
         *res_socklen = sizeof(isshe_sockaddr_in4_t);
         in4 = (isshe_sockaddr_in4_t *)res_sockaddr;
         in4->sin_family = AF_INET;
-        if (inet_pton(in4->sin_family, addr_text, (void *)&in4->sin_addr) != 1) {
+        if (inet_pton(in4->sin_family, addr_text, (isshe_void_t *)&in4->sin_addr) != 1) {
             return ISSHE_FAILURE;
         }
         break;
@@ -124,7 +124,7 @@ isshe_address_pton(const isshe_char_t *addr_text, isshe_uint8_t addr_len,
         *res_socklen = sizeof(isshe_sockaddr_in6_t);
         in6 = (isshe_sockaddr_in6_t *)res_sockaddr;
         in6->sin6_family = AF_INET6;
-        if (inet_pton(in6->sin6_family, addr_text, (void *)&in6->sin6_addr) != 1) {
+        if (inet_pton(in6->sin6_family, addr_text, (isshe_void_t *)&in6->sin6_addr) != 1) {
             return ISSHE_FAILURE;
         }
         break;
@@ -283,7 +283,7 @@ isshe_address_port_set(isshe_address_t *address, isshe_uint16_t port)
     return ISSHE_SUCCESS;
 }
 
-void isshe_address_print(
+isshe_void_t isshe_address_print(
     isshe_address_t *addr, isshe_log_t *log)
 {
     isshe_log_info(log, "--------------------------------------");

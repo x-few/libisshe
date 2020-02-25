@@ -3,8 +3,10 @@
 
 #include "isshe_common.h"
 
-char *isshe_fgets(char *ptr, int n, FILE *stream);
+isshe_char_t *isshe_fgets(isshe_char_t *ptr,
+    isshe_int_t n, isshe_fstream_t *stream);
 
-void isshe_fputs(const char *ptr, FILE *stream);
+isshe_void_t isshe_fputs(
+    const isshe_char_t *ptr, isshe_fstream_t *stream);
 
 #endif

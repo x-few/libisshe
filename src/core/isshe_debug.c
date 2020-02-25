@@ -1,7 +1,7 @@
 #include "isshe_common.h"
 
 
-void isshe_debug_print_addr(struct sockaddr *sockaddr, isshe_log_t *log)
+isshe_void_t isshe_debug_print_addr(struct sockaddr *sockaddr, isshe_log_t *log)
 {
     char                    addr[INET6_ADDRSTRLEN];
     struct sockaddr_in      *in4;
@@ -37,7 +37,7 @@ void isshe_debug_print_addr(struct sockaddr *sockaddr, isshe_log_t *log)
     }
 }
 
-void
+isshe_void_t
 isshe_debug_print_buffer(char *buf, int buf_len, int print_len)
 {
     size_t n;

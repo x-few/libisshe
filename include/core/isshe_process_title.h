@@ -5,7 +5,7 @@
 
 #if (defined ISSHE_BSD)
 #define isshe_process_title_init(argc, argv)
-#define isshe_process_title_set                     setproctitle
+#define isshe_process_title_set         setproctitle
 
 #elif (defined ISSHE_LINUX || defined ISSHE_APPLE)
 
@@ -13,13 +13,13 @@
 //#define ISSHE_PROCESS_TITLE_MAX         255
 
 struct isshe_process_title_s{
-    int             argc;
-    char            **argv;
-    char            *argv_last;
+    isshe_int_t             argc;
+    isshe_char_t            **argv;
+    isshe_char_t            *argv_last;
 };
 
-isshe_int_t isshe_process_title_init(int argc, char *argv[]);
-void isshe_process_title_set(const char *fmt, ...);
+isshe_int_t isshe_process_title_init(isshe_int_t argc, isshe_char_t *argv[]);
+isshe_void_t isshe_process_title_set(const isshe_char_t *fmt, ...);
 #else
 
 #define isshe_process_title_init(argc, argv)

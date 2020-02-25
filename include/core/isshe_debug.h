@@ -3,7 +3,9 @@
 
 #include "isshe_common.h"
 
-void isshe_debug_print_addr(struct sockaddr *sockaddr, isshe_log_t *log);
-void isshe_debug_print_buffer(char *buf, int buf_len, int print_len);
+isshe_void_t isshe_debug_print_addr(
+    isshe_sa_t *sockaddr, isshe_log_t *log);
+isshe_void_t isshe_debug_print_buffer(
+    isshe_char_t *buf, isshe_int_t buf_len, isshe_int_t print_len);
 
 #endif

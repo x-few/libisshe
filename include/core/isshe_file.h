@@ -26,15 +26,20 @@ struct isshe_file_s
 {
     isshe_fd_t                  fd;
     isshe_str_t                 name;
-    isshe_file_info_t           info;
+    isshe_finfo_t               info;
 };
 
-int isshe_lock_file(int fd);
-int isshe_unlock_file(int fd);
+isshe_int_t isshe_lock_file(isshe_fd_t fd);
+isshe_int_t isshe_unlock_file(isshe_fd_t fd);
 
 // 简化fcntl锁相关的调用
-int lock_reg(int, int, int, off_t, int, off_t); /* {Prog lockreg} */
-pid_t lock_test(int, int, off_t, int, off_t); /* {Prog locktest} */
+isshe_int_t lock_reg(
+    isshe_fd_t, isshe_int_t,isshe_int_t,
+    isshe_off_t, isshe_int_t, isshe_off_t); /* {Prog lockreg} */
+
+isshe_pid_t lock_test(
+    isshe_fd_t, isshe_int_t, isshe_off_t,
+    isshe_int_t, isshe_off_t); /* {Prog locktest} */
 
 // 几个记录锁的宏
 #define read_lock(fd, offset, whence, len) \
@@ -53,8 +58,12 @@ pid_t lock_test(int, int, off_t, int, off_t); /* {Prog locktest} */
             (lock_test((fd), F_WRLCK, (offset), (whence), (len)) == 0)
 
 // 失败退出
-void isshe_lock_reg(int fd, int cmd, int type, off_t offset, int whence, off_t len);
-pid_t isshe_lock_test(int fd, int type, off_t offset, int whence, off_t len);
+isshe_void_t isshe_lock_reg(
+    isshe_fd_t fd, isshe_int_t cmd, isshe_int_t type,
+    isshe_off_t offset, isshe_int_t whence, isshe_off_t len);
+isshe_pid_t isshe_lock_test(
+    isshe_fd_t fd, isshe_int_t type, isshe_off_t offset,
+    isshe_int_t whence, isshe_off_t len);
 
 #define isshe_read_lock(fd, offset, whence, len) \
             isshe_lock_reg((fd), F_SETLK, F_RDLCK, (offset), (whence), (len))
@@ -71,15 +80,15 @@ pid_t isshe_lock_test(int fd, int type, off_t offset, int whence, off_t len);
 #define	isshe_is_write_lockable(fd, offset, whence, len) \
             (isshe_lock_test((fd), F_WRLCK, (offset), (whence), (len)) == 0)
 
-int isshe_open(const char *pathname, int oflag, ...);
-void isshe_close(int fd);
-void isshe_unlink(const char *pathname);
-ssize_t isshe_read(int fd, void *ptr, size_t nbytes);
-void isshe_write(int fd, void *ptr, size_t nbytes);
-ssize_t isshe_readline(int fd, void *ptr, size_t maxlen);
-off_t isshe_lseek(int fd, off_t offset, int whence);
-void isshe_ftruncate(int fd, off_t length);
-void isshe_fstat(int fd, struct stat *ptr);
-char *isshe_read_all(int fd, ssize_t *reslen);
+isshe_int_t isshe_open(const isshe_char_t *pathname, isshe_int_t oflag, ...);
+isshe_void_t isshe_close(isshe_fd_t fd);
+isshe_void_t isshe_unlink(const isshe_char_t *pathname);
+isshe_ssize_t isshe_read(isshe_fd_t fd, isshe_void_t *ptr, isshe_size_t nbytes);
+isshe_void_t isshe_write(isshe_fd_t fd, isshe_void_t *ptr, isshe_size_t nbytes);
+isshe_ssize_t isshe_readline(isshe_fd_t fd, isshe_void_t *ptr, isshe_size_t maxlen);
+isshe_off_t isshe_lseek(isshe_fd_t fd, isshe_off_t offset, isshe_int_t whence);
+isshe_void_t isshe_ftruncate(isshe_fd_t fd, isshe_off_t length);
+isshe_void_t isshe_fstat(isshe_fd_t fd, isshe_finfo_t *ptr);
+isshe_char_t *isshe_read_all(isshe_fd_t fd, isshe_ssize_t *reslen);
 
 #endif

@@ -88,7 +88,7 @@ sem_t * isshe_sem_open(const char *pathname, int oflag, ...)
 
     if (oflag & O_CREAT) {
         va_start(ap, oflag);        /* init ap to final named argument */
-        mode = va_arg(ap, va_mode_t);
+        mode = va_arg(ap, isshe_mode_t);
         value = va_arg(ap, unsigned int);
         if ( (sem = sem_open(pathname, oflag, mode, value)) == SEM_FAILED) {
             isshe_sys_error_exit("sem_open error for %s", pathname);

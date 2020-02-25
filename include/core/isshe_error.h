@@ -1,6 +1,8 @@
 #ifndef _ISSHE_ERROR_H_
 #define _ISSHE_ERROR_H_
 
+// !!! deprecated
+
 #include "isshe_common.h"
 
 #define ISSHE_ERROR_MAX_LINE    4096

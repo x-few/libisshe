@@ -3,9 +3,13 @@
 
 #include "isshe_common.h"
 
-CLIENT *isshe_clnt_create(char *host,
-    unsigned long prog, unsigned long vers, char *proto);
+typedef struct CLIENT isshe_rpc_client_t;
 
-bool_t isshe_clnt_control(CLIENT *cl, int req, char *info);
+
+isshe_rpc_client_t *isshe_clnt_create(isshe_char_t *host,
+    isshe_ulong_t prog, isshe_ulong_t vers, isshe_char_t *proto);
+
+bool_t isshe_clnt_control(isshe_rpc_client_t *cl,
+    isshe_int_t req, isshe_char_t *info);
 
 #endif

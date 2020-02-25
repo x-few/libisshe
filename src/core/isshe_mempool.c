@@ -47,7 +47,7 @@ isshe_mempool_create(isshe_size_t size, isshe_log_t *log)
     return pool;
 }
 
-void
+isshe_void_t
 isshe_mempool_destroy(isshe_mempool_t *pool)
 {
     isshe_mempool_data_t *tmp;
@@ -102,7 +102,7 @@ isshe_mpdata_create(isshe_mempool_t *pool, isshe_size_t size)
     return tmp;
 }
 
-static void
+static isshe_void_t
 isshe_mempool_current_update(isshe_mempool_t *pool)
 {
     isshe_mempool_data_t    *tmp;
@@ -117,7 +117,7 @@ isshe_mempool_current_update(isshe_mempool_t *pool)
     }
 }
 
-static void *
+static isshe_void_t *
 isshe_mpalloc_small(isshe_mempool_t *pool, isshe_size_t size)
 {
     isshe_mempool_data_t    *tmp;
@@ -150,11 +150,11 @@ isshe_mpalloc_small(isshe_mempool_t *pool, isshe_size_t size)
 }
 
 
-static void *
+static isshe_void_t *
 isshe_mpalloc_large(isshe_mempool_t *pool, isshe_size_t size)
 {
     isshe_mempool_data_t    *large;
-    void                    *data;
+    isshe_void_t                    *data;
 
     // alloc size from system
     data = isshe_malloc(size, pool->log);
@@ -179,7 +179,7 @@ isshe_mpalloc_large(isshe_mempool_t *pool, isshe_size_t size)
     return data;
 }
 
-void *
+isshe_void_t *
 isshe_mpalloc(isshe_mempool_t *pool, isshe_size_t size)
 {
     if (!pool) {
@@ -195,8 +195,8 @@ isshe_mpalloc(isshe_mempool_t *pool, isshe_size_t size)
     return isshe_mpalloc_large(pool, size);
 }
 
-void
-isshe_mpfree(isshe_mempool_t *pool, void *ptr, isshe_size_t hint_size)
+isshe_void_t
+isshe_mpfree(isshe_mempool_t *pool, isshe_void_t *ptr, isshe_size_t hint_size)
 {
     isshe_mempool_data_t *tmp;
 

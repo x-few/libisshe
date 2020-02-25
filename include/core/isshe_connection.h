@@ -31,13 +31,13 @@ struct isshe_address_s
 
 struct isshe_connection_s
 {
-    isshe_socket_t      fd;
+    isshe_fd_t          fd;
     isshe_address_t     *addr;
     isshe_char_t        *protocol_text;
     isshe_uint8_t       protocol;
     isshe_int_t         status;
     isshe_mempool_t     *mempool;
-    void                *data;
+    isshe_void_t        *data;
     isshe_connection_t  *next;
 };
 

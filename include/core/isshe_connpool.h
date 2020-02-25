@@ -20,12 +20,12 @@ isshe_connpool_t *isshe_connpool_create(isshe_int_t n,
     isshe_mempool_t *mempool, isshe_log_t *log);
 
 
-void isshe_connpool_destroy(isshe_connpool_t *connpool);
+isshe_void_t isshe_connpool_destroy(isshe_connpool_t *connpool);
 
 isshe_connection_t *isshe_connection_get(
     isshe_connpool_t *connpool);
 
-void isshe_connection_free(isshe_connpool_t *connpool,
+isshe_void_t isshe_connection_free(isshe_connpool_t *connpool,
     isshe_connection_t *conn);
 
 #endif

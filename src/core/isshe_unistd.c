@@ -1,8 +1,8 @@
 #include "isshe_common.h"
 
-long isshe_pathconf(const char *pathname, int name)
+isshe_long_t isshe_pathconf(const isshe_char_t *pathname, isshe_int_t name)
 {
-    long    val;
+    isshe_long_t    val;
 
     errno = 0;  /* in case pathconf() does not change this */
     if ( (val = pathconf(pathname, name)) == ISSHE_FAILURE) {
@@ -16,9 +16,9 @@ long isshe_pathconf(const char *pathname, int name)
     return(val);
 }
 
-long isshe_sysconf(int name)
+isshe_long_t isshe_sysconf(isshe_int_t name)
 {
-    long    val;
+    isshe_long_t    val;
 
     errno = 0;  /* in case sysconf() does not change this */
     if ( (val = sysconf(name)) == ISSHE_FAILURE) {
@@ -32,9 +32,10 @@ long isshe_sysconf(int name)
     return(val);
 }
 
-int isshe_fcntl(int fd, int cmd, void *arg)
+isshe_int_t
+isshe_fcntl(isshe_int_t fd, isshe_int_t cmd, isshe_void_t *arg)
 {
-    int	n;
+    isshe_int_t	n;
 
     if ( (n = fcntl(fd, cmd, arg)) == ISSHE_FAILURE) {
         isshe_sys_error_exit("fcntl error");
@@ -43,7 +44,9 @@ int isshe_fcntl(int fd, int cmd, void *arg)
     return(n);
 }
 
-pid_t lock_test(int fd, int type, off_t offset, int whence, off_t len)
+isshe_pid_t
+lock_test(isshe_int_t fd, isshe_int_t type,
+    isshe_off_t offset, isshe_int_t whence, isshe_off_t len)
 {
     struct flock lock;
 
@@ -60,9 +63,11 @@ pid_t lock_test(int fd, int type, off_t offset, int whence, off_t len)
     return(lock.l_pid);		/* true, return positive PID of lock owner */
 }
 
-pid_t isshe_lock_test(int fd, int type, off_t offset, int whence, off_t len)
+isshe_pid_t
+isshe_lock_test(isshe_int_t fd, isshe_int_t type,
+    isshe_off_t offset, isshe_int_t whence, isshe_off_t len)
 {
-    pid_t pid;
+    isshe_pid_t pid;
 
     if ( (pid = lock_test(fd, type, offset, whence, len)) == ISSHE_FAILURE) {
         isshe_sys_error_exit("lock_test error");
@@ -71,9 +76,11 @@ pid_t isshe_lock_test(int fd, int type, off_t offset, int whence, off_t len)
     return(pid);
 }
 
-int isshe_getopt(int argc, char *const *argv, const char *str)
+isshe_int_t
+isshe_getopt(isshe_int_t argc,
+    isshe_char_t *const *argv, const isshe_char_t *str)
 {
-    int opt;
+    isshe_int_t opt;
 
     if ( ( opt = getopt(argc, argv, str)) == '?') {
         exit(1);        /* getopt() has already written to stderr */
@@ -82,17 +89,20 @@ int isshe_getopt(int argc, char *const *argv, const char *str)
     return(opt);
 }
 
-void *isshe_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset)
+isshe_void_t *
+isshe_mmap(isshe_void_t *addr, isshe_size_t len,
+    isshe_int_t prot, isshe_int_t flags,
+    isshe_int_t fd, isshe_off_t offset)
 {
-    void    *ptr;
+    isshe_void_t    *ptr;
 
-    if ( (ptr = mmap(addr, len, prot, flags, fd, offset)) == MAP_FAILED ) {
+    if ( (ptr = mmap(addr, len, prot, flags, fd, offset)) == ISSHE_MAP_FAILED ) {
         isshe_sys_error_exit("mmap error");
     }
     return(ptr);
 }
 
-void isshe_munmap(void *addr, size_t len)
+isshe_void_t isshe_munmap(isshe_void_t *addr, isshe_size_t len)
 {
     if (munmap(addr, len) == -1) {
         isshe_sys_error_exit("munmap error");
@@ -100,7 +110,7 @@ void isshe_munmap(void *addr, size_t len)
 }
 
 
-int sleep_us(unsigned int nusecs)
+isshe_int_t sleep_us(isshe_uint_t nusecs)
 {
     struct timeval  tval;
 
@@ -120,7 +130,7 @@ int sleep_us(unsigned int nusecs)
          * much we can do, since the timeval{} isn't updated with the time
          * remaining.  We could obtain the clock time before the call, and
          * then obtain the clock time here, subtracting them to determine
-         * how long select() blocked before it was interrupted, but that
+         * how isshe_long_t select() blocked before it was interrupted, but that
          * seems like too much work :-)
          */
         if (errno != EINTR)
@@ -129,17 +139,19 @@ int sleep_us(unsigned int nusecs)
     }
 }
 
-void isshe_sleep_us(unsigned int nusecs)
+isshe_void_t isshe_sleep_us(isshe_uint_t nusecs)
 {
     if (sleep_us(nusecs) == -1) {
         isshe_sys_error_exit("sleep_us error");
     }
 }
 
-int isshe_select(int nfds, fd_set *readfds,
-    fd_set *writefds,  fd_set *exceptfds, struct timeval *timeout)
+isshe_int_t
+isshe_select(isshe_int_t nfds,
+    fd_set *readfds, fd_set *writefds,
+    fd_set *exceptfds, struct timeval *timeout)
 {
-    int n;
+    isshe_int_t n;
 
 again_select:
     if ( (n = select(nfds, readfds, writefds, exceptfds, timeout)) < 0) {
@@ -155,21 +167,23 @@ again_select:
     return(n);  /* can return 0 on timeout */
 }
 
-int isshe_poll(struct pollfd *fdarray, unsigned long nfds, int timeout)
+isshe_int_t
+isshe_poll(struct pollfd *fdarray,
+    isshe_ulong_t nfds, isshe_int_t timeout)
 {
-    int n;
+    isshe_int_t n;
 
     if ( (n = poll(fdarray, nfds, timeout)) < 0) {
         isshe_error_exit("poll error");
     }
 
     return(n);
- }
+}
 
-#ifdef __linux__
-int isshe_epoll_create(int flags)
+#ifdef ISSHE_LINUX
+isshe_fd_t isshe_epoll_create(isshe_int_t flags)
 {
-    int rc;
+    isshe_fd_t rc;
 
     if ( (rc = epoll_create1(flags)) < 0 ) {
         isshe_sys_error_exit("epoll_create1 error");
@@ -178,9 +192,11 @@ int isshe_epoll_create(int flags)
     return(rc);
 }
 
-int isshe_epoll_ctl(int epfd, int op, int fd, struct epoll_event *event)
+isshe_int_t
+isshe_epoll_ctl(isshe_fd_t epfd, isshe_int_t op,
+    isshe_int_t fd, struct epoll_event *event)
 {
-    int rc;
+    isshe_int_t rc;
 
     if ( (rc = epoll_ctl(epfd, op, fd, event)) < 0 ) {
         isshe_sys_error_exit("epoll_ctl error");
@@ -189,30 +205,31 @@ int isshe_epoll_ctl(int epfd, int op, int fd, struct epoll_event *event)
     return(rc);
 }
 
-int isshe_epoll_wait(int epfd, struct epoll_event *events,
-               int maxevents, int timeout,
-               const sigset_t *sigmask)
+isshe_int_t
+isshe_epoll_wait(isshe_fd_t epfd,
+struct epoll_event *events, isshe_int_t maxevents,
+isshe_int_t timeout, const sigset_t *sigmask)
 {
-    int rc;
+    isshe_int_t rc = 0;
 
     if (sigmask) {
-        if ( (rc = epoll_pwait(epfd, events, maxevents, timeout, sigmask)) < 0 ) {
-            isshe_sys_error_exit("epoll_pwait error");
-        }
+        rc = epoll_pwait(epfd, events, maxevents, timeout, sigmask);
     } else {
-        if ( (rc = epoll_wait(epfd, events, maxevents, timeout)) < 0 ) {
-            isshe_sys_error_exit("epoll_wait error");
-        }
+        rc = epoll_wait(epfd, events, maxevents, timeout);
+    }
+
+    if ( rc < 0 ) {
+        isshe_sys_error_exit("epoll_pwait error");
     }
 
     return(rc);
 }
 #endif
 
-#if defined(__bsdi__) || defined(__APPLE__)
-int isshe_kqueue(void)
+#if defined(ISSHE_BSD) || defined(ISSHE_APPLE)
+isshe_int_t isshe_kqueue(isshe_void_t)
 {
-    int rc;
+    isshe_int_t rc;
 
     if ((rc = kqueue()) == ISSHE_FAILURE){
         isshe_sys_error_exit("kqueue error");
@@ -221,26 +238,31 @@ int isshe_kqueue(void)
     return rc;
 }
 
-int isshe_kevent(int kq, const struct kevent *changelist, int nchanges,
-        struct kevent *eventlist, int nevents,
-        const struct timespec *timeout)
+isshe_int_t
+isshe_kevent(isshe_int_t kq, const struct kevent *changelist,
+    isshe_int_t nchanges, struct kevent *eventlist,
+    isshe_int_t nevents, const struct timespec *timeout)
 {
-    int rc;
+    isshe_int_t rc;
 
-    if ((rc = kevent(kq, changelist, nchanges, eventlist, nevents, timeout)) == ISSHE_FAILURE){
+    rc = kevent(kq, changelist, nchanges, eventlist, nevents, timeout);
+    if (rc == ISSHE_FAILURE){
         isshe_sys_error_exit("kevent error");
     }
 
     return rc;
 }
 
-int isshe_kevent64(int kq, const struct kevent64_s *changelist, int nchanges,
-        struct kevent64_s *eventlist, int nevents, unsigned int flags,
-        const struct timespec *timeout)
+isshe_int_t
+isshe_kevent64(isshe_int_t kq,
+    const struct kevent64_s *changelist, isshe_int_t nchanges,
+    struct kevent64_s *eventlist, isshe_int_t nevents,
+    isshe_uint_t flags, const struct timespec *timeout)
 {
-    int rc;
+    isshe_int_t rc;
 
-    if ((rc = kevent64(kq, changelist, nchanges, eventlist, nevents, flags, timeout)) == ISSHE_FAILURE){
+    rc = kevent64(kq, changelist, nchanges, eventlist, nevents, flags, timeout);
+    if (rc == ISSHE_FAILURE){
         isshe_sys_error_exit("kevent64 error");
     }
 

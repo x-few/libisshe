@@ -1,8 +1,10 @@
 #include "isshe_common.h"
 
-int isshe_socket(int domain, int type, int protocol)
+isshe_fd_t
+isshe_socket(isshe_int_t domain,
+    isshe_int_t type, isshe_int_t protocol)
 {
-    int rc;
+    isshe_int_t rc;
 
     if ((rc = socket(domain, type, protocol)) < 0) {
         isshe_sys_error_exit("socket error");
@@ -11,55 +13,65 @@ int isshe_socket(int domain, int type, int protocol)
     return rc;
 }
 
-int isshe_setsockopt(int s, int level, int optname, const void *optval, int optlen)
+isshe_int_t
+isshe_setsockopt(isshe_fd_t fd,
+    isshe_int_t level, isshe_int_t optname,
+    const isshe_void_t *optval, isshe_int_t optlen)
 {
-    int rc;
+    isshe_int_t rc;
 
-    if ((rc = setsockopt(s, level, optname, optval, optlen)) < 0) {
+    if ((rc = setsockopt(fd, level, optname, optval, optlen)) < 0) {
         isshe_sys_error_exit("setsockopt error");
     }
 
     return rc;
 }
 
-int isshe_bind(int sockfd, struct sockaddr *my_addr, int addrlen)
+isshe_int_t
+isshe_bind(isshe_fd_t fd,
+    isshe_sa_t *my_addr, isshe_socklen_t addrlen)
 {
-    int rc;
+    isshe_int_t rc;
 
-    if ((rc = bind(sockfd, my_addr, addrlen)) < 0) {
+    if ((rc = bind(fd, my_addr, addrlen)) < 0) {
         isshe_sys_error_exit("bind error");
     }
 
     return rc;
 }
 
-int isshe_listen(int s, int backlog)
+isshe_int_t
+isshe_listen(isshe_fd_t fd, isshe_int_t backlog)
 {
-    int rc;
+    isshe_int_t rc;
 
-    if ((rc = listen(s,  backlog)) < 0) {
+    if ((rc = listen(fd,  backlog)) < 0) {
         isshe_sys_error_exit("listen error");
     }
 
     return rc;
 }
 
-int isshe_accept(int s, struct sockaddr *addr, socklen_t *addrlen)
+isshe_int_t
+isshe_accept(isshe_fd_t fd,
+    isshe_sa_t *addr, isshe_socklen_t *addrlen)
 {
-    int rc;
+    isshe_int_t rc;
 
-    if ((rc = accept(s, addr, addrlen)) < 0) {
+    if ((rc = accept(fd, addr, addrlen)) < 0) {
         isshe_sys_error_exit("accept error");
     }
 
     return rc;
 }
 
-int isshe_connect(int sockfd, struct sockaddr *serv_addr, int addrlen)
+isshe_int_t
+isshe_connect(isshe_fd_t fd,
+    isshe_sa_t *serv_addr, isshe_socklen_t addrlen)
 {
-    int rc;
+    isshe_int_t rc;
 
-    if ((rc = connect(sockfd, serv_addr, addrlen)) < 0) {
+    if ((rc = connect(fd, serv_addr, addrlen)) < 0) {
         isshe_sys_error_exit("connect error");
     }
 
@@ -69,10 +81,12 @@ int isshe_connect(int sockfd, struct sockaddr *serv_addr, int addrlen)
 /*
  * 协议无关包裹函数
  */
-int isshe_getaddrinfo(const char *node, const char *service,
-                 const struct addrinfo *hints, struct addrinfo **res)
+isshe_int_t
+isshe_addrinfo_get(
+    const isshe_char_t *node, const isshe_char_t *service,
+    const struct addrinfo *hints, struct addrinfo **res)
 {
-    int rc;
+    isshe_int_t rc;
 
     if ((rc = getaddrinfo(node, service, hints, res)) != 0) {
         isshe_gai_error_exit(rc, "getaddrinfo error");
@@ -81,10 +95,13 @@ int isshe_getaddrinfo(const char *node, const char *service,
     return rc;
 }
 
-int isshe_getnameinfo(const struct sockaddr *sa, socklen_t salen, char *host,
-                 size_t hostlen, char *serv, size_t servlen, int flags)
+isshe_int_t
+isshe_nameinfo_get(
+    const isshe_sa_t *sa, isshe_socklen_t salen,
+    isshe_char_t *host, isshe_size_t hostlen,
+    isshe_char_t *serv, isshe_size_t servlen, isshe_int_t flags)
 {
-    int rc;
+    isshe_int_t rc;
 
     if ((rc = getnameinfo(sa, salen, host, hostlen, serv, servlen, flags)) != 0) {
         isshe_gai_error_exit(rc, "getnameinfo error");
@@ -93,14 +110,17 @@ int isshe_getnameinfo(const struct sockaddr *sa, socklen_t salen, char *host,
     return rc;
 }
 
-void isshe_freeaddrinfo(struct addrinfo *res)
+isshe_void_t
+isshe_addrinfo_free(struct addrinfo *res)
 {
     freeaddrinfo(res);
 }
 
-const char * isshe_inet_ntop(int af, const void *src, char *dst, socklen_t size)
+const isshe_char_t *
+isshe_inet_ntop(isshe_sa_family_t af, const isshe_void_t *src,
+    isshe_char_t *dst, isshe_socklen_t size)
 {
-    const char *res;
+    const isshe_char_t *res;
 
     if ((res = inet_ntop(af, src, dst, size)) == NULL) {
         isshe_sys_error_exit("inet_ntop error");
@@ -109,13 +129,16 @@ const char * isshe_inet_ntop(int af, const void *src, char *dst, socklen_t size)
     return res;
 }
 
-int isshe_inet_pton(int af, const char *src, void *dst)
+isshe_int_t
+isshe_inet_pton(isshe_sa_family_t af,
+    const isshe_char_t *src, isshe_void_t *dst)
 {
-    int rc;
+    isshe_int_t rc;
 
     rc = inet_pton(af, src, dst);
     if (rc == 0) {
-        isshe_app_error_exit("inet_pton error: invalid dotted-decimal address");
+        isshe_app_error_exit(
+            "inet_pton error: invalid dotted-decimal address");
     }
     else if (rc < 0) {
         isshe_sys_error_exit("inet_pton error");
@@ -127,9 +150,10 @@ int isshe_inet_pton(int af, const char *src, void *dst)
 /*
  * 一些方便使用的包裹函数
  */
-int open_client_fd(char *hostname, char *port)
+isshe_fd_t
+open_client_fd(isshe_char_t *hostname, isshe_char_t *port)
 {
-    int clientfd, rc;
+    isshe_int_t clientfd, rc;
     struct addrinfo hints, *listp, *p;
 
     /* 获取潜在服务器地址列表 */
@@ -138,7 +162,8 @@ int open_client_fd(char *hostname, char *port)
     hints.ai_flags = AI_NUMERICSERV;  /* 数字化的地址/端口字符串，不能是域名 */
     hints.ai_flags |= AI_ADDRCONFIG;  /* 仅当本地系统配置了IPv4/IPv6地址，listp才返回IPv4/IPv6地址 */
     if ((rc = getaddrinfo(hostname, port, &hints, &listp)) != 0) {
-        fprintf(stderr, "getaddrinfo failed (%s:%s): %s\n", hostname, port, gai_strerror(rc));
+        fprintf(stderr, "getaddrinfo failed (%s:%s): %s\n",
+            hostname, port, gai_strerror(rc));
         return -2;
     }
 
@@ -153,7 +178,8 @@ int open_client_fd(char *hostname, char *port)
             break; /* Success */
         }
 
-        if (close(clientfd) < 0) { /* Connect failed, try another */  //line:netp:openclientfd:closefd
+        /* Connect failed, try another */  //line:netp:openclientfd:closefd
+        if (close(clientfd) < 0) { 
             fprintf(stderr, "open_client_fd: close failed: %s\n", strerror(errno));
             return -1;
         }
@@ -169,10 +195,10 @@ int open_client_fd(char *hostname, char *port)
     return clientfd;
 }
 
-int open_listen_fd(char *port)
+isshe_fd_t open_listen_fd(isshe_char_t *port)
 {
     struct addrinfo hints, *listp, *p;
-    int listenfd, rc, optval=1;
+    isshe_int_t listenfd, rc, optval=1;
 
     /* 获取潜在服务器地址列表 */
     /* AI_PASSIVE: 如果getaddrinfo第一个参数为NULL，则返回可以用于bind和accept的地址 */
@@ -194,7 +220,7 @@ int open_listen_fd(char *port)
 
         /* 消除bind的"Address already in use"错误 */
         setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR,    //line:netp:csapp:setsockopt
-                   (const void *)&optval , sizeof(int));
+                   (const isshe_void_t *)&optval , sizeof(isshe_int_t));
 
         /* Bind the descriptor to the address */
         if (bind(listenfd, p->ai_addr, p->ai_addrlen) == 0)
@@ -212,7 +238,7 @@ int open_listen_fd(char *port)
     }
 
     /* Make it a listening socket ready to accept connection requests */
-    if (listen(listenfd, LISTENQ) < 0) {
+    if (listen(listenfd, ISSHE_DEFAULT_LISTEN_BACKLOG) < 0) {
         close(listenfd);
         return -1;
     }
@@ -220,20 +246,22 @@ int open_listen_fd(char *port)
     return listenfd;
 }
 
-int isshe_open_client_fd(char *hostname, char *port)
+isshe_fd_t
+isshe_open_client_fd(isshe_char_t *hostname, isshe_char_t *port)
 {
-    int rc;
+    isshe_fd_t fd;
 
-    if ((rc = open_client_fd(hostname, port)) < 0) {
+    if ((fd = open_client_fd(hostname, port)) < 0) {
         isshe_sys_error_exit("open_client_fd error");
     }
 
-    return rc;
+    return fd;
 }
 
-int isshe_open_listen_fd(char *port)
+isshe_fd_t
+isshe_open_listen_fd(isshe_char_t *port)
 {
-    int rc;
+    isshe_fd_t rc;
 
     if ((rc = open_listen_fd(port)) < 0) {
         isshe_sys_error_exit("open_listen_fd error");
@@ -242,24 +270,27 @@ int isshe_open_listen_fd(char *port)
     return rc;
 }
 
-ssize_t isshe_sendto(int sockfd, const void *buf, size_t len, int flags,
-              const struct sockaddr *dest_addr, socklen_t addrlen)
+isshe_ssize_t
+isshe_sendto(isshe_fd_t fd, const isshe_void_t *buf,
+    isshe_size_t len, isshe_int_t flags,
+    const isshe_sa_t *dest_addr, isshe_socklen_t addrlen)
 {
-    ssize_t rc;
+    isshe_ssize_t rc;
 
-    if ((rc = sendto(sockfd, buf, len, flags, dest_addr, addrlen)) < 0) {
+    if ((rc = sendto(fd, buf, len, flags, dest_addr, addrlen)) < 0) {
         isshe_sys_error_exit("sendto error");
     }
 
     return rc;
 }
 
-ssize_t isshe_recvfrom(int sockfd, void *buf, size_t len, int flags,
-                struct sockaddr *src_addr, socklen_t *addrlen)
+isshe_ssize_t isshe_recvfrom(isshe_fd_t fd, isshe_void_t *buf,
+    isshe_size_t len, isshe_int_t flags,
+    isshe_sa_t *src_addr, isshe_socklen_t *addrlen)
 {
-    ssize_t rc;
+    isshe_ssize_t rc;
 
-    if ((rc = recvfrom(sockfd, buf, len, flags, src_addr, addrlen)) < 0) {
+    if ((rc = recvfrom(fd, buf, len, flags, src_addr, addrlen)) < 0) {
         isshe_sys_error_exit("recvfrom error");
     }
 

@@ -66,7 +66,7 @@ ngx_log_errno(isshe_char_t *buf, isshe_int_t len, isshe_errno_t errcode)
 }
 
 
-void
+isshe_void_t
 isshe_log_stderr(isshe_errno_t errcode, const char *fmt, ...)
 {
     isshe_char_t   *p;
@@ -140,7 +140,7 @@ isshe_log_create(isshe_uint_t level, isshe_char_t *filename)
 }
 
 
-void isshe_log_destroy(isshe_log_t *log)
+isshe_void_t isshe_log_destroy(isshe_log_t *log)
 {
     if (!log) {
         isshe_log_warning(log, "isshe_log_destroy: log == NULL");
@@ -183,7 +183,7 @@ isshe_log_instance_get(isshe_uint_t level, isshe_char_t *filename)
 }
 
 
-void
+isshe_void_t
 isshe_log_instance_free()
 {
     isshe_log_destroy(isshe_log_instance);
@@ -208,7 +208,7 @@ isshe_log_time(isshe_char_t *logstr)
     return strlen(logstr);
 }
 
-static void 
+static isshe_void_t 
 isshe_log_core(isshe_uint_t level, isshe_log_t *log, 
     isshe_errno_t errcode, const char *fmt, va_list args)
 {
@@ -248,7 +248,7 @@ isshe_log_core(isshe_uint_t level, isshe_log_t *log,
     }
 }
 
-void isshe_log(isshe_uint_t level,
+isshe_void_t isshe_log(isshe_uint_t level,
     isshe_log_t *log, const char *fmt, ...)
 {
     va_list args;
@@ -259,7 +259,7 @@ void isshe_log(isshe_uint_t level,
     }
 }
 
-void isshe_log_errno(isshe_uint_t level, isshe_log_t *log,
+isshe_void_t isshe_log_errno(isshe_uint_t level, isshe_log_t *log,
     isshe_errno_t errcode, const char *fmt, ...)
 {
     va_list args;

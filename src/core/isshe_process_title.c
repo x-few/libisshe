@@ -7,7 +7,7 @@
 
 #if (defined ISSHE_LINUX || defined ISSHE_APPLE)
 // 全局变量
-extern char **environ;
+extern isshe_char_t **environ;
 
 static isshe_process_title_t ipt;
 
@@ -23,10 +23,10 @@ environ_lenght_get()
     return size;
 }
 
-static char *
-argv_last_get(int argc, char *argv[])
+static isshe_char_t *
+argv_last_get(isshe_int_t argc, isshe_char_t *argv[])
 {
-    char *last;
+    isshe_char_t *last;
     isshe_int_t i;
 
     last = argv[0];
@@ -38,8 +38,8 @@ argv_last_get(int argc, char *argv[])
     return last;
 }
 
-static char *
-environ_reset(char *newenvp, char *last)
+static isshe_char_t *
+environ_reset(isshe_char_t *newenvp, isshe_char_t *last)
 {
     isshe_size_t size;
     isshe_int_t i;
@@ -50,7 +50,7 @@ environ_reset(char *newenvp, char *last)
             last = environ[i] + size;
 
             isshe_memcpy(newenvp, environ[i], size);
-            environ[i] = (char *)newenvp;
+            environ[i] = (isshe_char_t *)newenvp;
             newenvp += size;
         }
     }
@@ -61,7 +61,7 @@ environ_reset(char *newenvp, char *last)
 
 
 isshe_int_t
-isshe_process_title_init(int argc, char *argv[])
+isshe_process_title_init(isshe_int_t argc, isshe_char_t *argv[])
 {
     isshe_char_t **env = environ;
     isshe_size_t size;
@@ -84,8 +84,8 @@ isshe_process_title_init(int argc, char *argv[])
     return ISSHE_SUCCESS;
 }
 
-void
-isshe_process_title_set(const char *fmt, ...)
+isshe_void_t
+isshe_process_title_set(const isshe_char_t *fmt, ...)
 {
     va_list     args;
     isshe_int_t len;

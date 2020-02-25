@@ -35,15 +35,15 @@
 #define isshe_log_info_errno(log, ecode, fmt, ...)       isshe_log_errno(ISSHE_LOG_INFO, log, ecode, fmt, ##__VA_ARGS__)
 #define isshe_log_debug_errno(log, ecode, fmt, ...)      isshe_log_errno(ISSHE_LOG_DEBUG, log, ecode, fmt, ##__VA_ARGS__)
 
-typedef void (*isshe_log_writer_pt) (isshe_log_t *log, isshe_uint_t level,
+typedef isshe_void_t (*isshe_log_writer_pt) (isshe_log_t *log, isshe_uint_t level,
     isshe_char_t *buf, isshe_size_t len);
 
 
 struct isshe_log_s {
-    isshe_uint_t            level;
+    isshe_int_t             level;
     isshe_file_t            *file;
     isshe_log_writer_pt     writer;
-    void                   *wdata;
+    isshe_void_t            *wdata;
 };
 
 isshe_char_t *isshe_log_level_to_string(isshe_int_t level);
@@ -52,17 +52,17 @@ isshe_int_t isshe_log_level_to_number(const isshe_char_t *level);
 
 isshe_log_t * isshe_log_create(isshe_uint_t level, isshe_char_t *filename);
 
-void isshe_log_destroy(isshe_log_t *log);
+isshe_void_t isshe_log_destroy(isshe_log_t *log);
 
 isshe_log_t *isshe_log_instance_get(
     isshe_uint_t level, isshe_char_t *filename);
 
-void isshe_log_instance_free();
+isshe_void_t isshe_log_instance_free();
 
-void isshe_log(isshe_uint_t level,
+isshe_void_t isshe_log(isshe_uint_t level,
     isshe_log_t *log, const char *fmt, ...);
 
-void isshe_log_errno(isshe_uint_t level, isshe_log_t *log,
+isshe_void_t isshe_log_errno(isshe_uint_t level, isshe_log_t *log,
     isshe_errno_t errcode, const char *fmt, ...);
 
 

@@ -24,7 +24,7 @@
 #define isshe_kill(pid, signo)      (isshe_int_t)kill(pid, signo)
 #define isshe_signal_send           isshe_kill
 
-typedef void (*isshe_signal_handler_t)(int);
+typedef void (*isshe_signal_handler_t)(isshe_int_t);
 typedef struct isshe_signal_s isshe_signal_t;
 
 struct isshe_signal_s{

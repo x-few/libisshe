@@ -5,14 +5,16 @@
 
 #define isshe_log_pid            getpid()
 
-pid_t isshe_fork(void);
-void isshe_print_exit_status(int status);
+isshe_pid_t isshe_fork(isshe_void_t);
+isshe_void_t isshe_print_exit_status(isshe_int_t status);
 
 /**
  * daemonize: 守护进程化——使一个进程"变为"守护进程
  */
-void isshe_daemonize(const char *pname, int facility);
+isshe_void_t isshe_daemonize(
+    const isshe_char_t *pname, isshe_int_t facility);
 
-pid_t isshe_waitpid(pid_t pid, int *iptr, int options);
+isshe_pid_t isshe_waitpid(isshe_pid_t pid,
+    isshe_int_t *iptr, isshe_int_t options);
 
 #endif

@@ -27,9 +27,15 @@ struct isshe_mempool_s {
     isshe_log_t                 *log;
 };
 
-isshe_mempool_t *isshe_mempool_create(isshe_size_t size, isshe_log_t *log);
-void isshe_mempool_destroy(isshe_mempool_t *pool);
-void *isshe_mpalloc(isshe_mempool_t *pool, isshe_size_t size);
-void isshe_mpfree(isshe_mempool_t *pool, void *ptr, isshe_size_t hint_size);
+isshe_mempool_t *isshe_mempool_create(
+    isshe_size_t size, isshe_log_t *log);
+
+isshe_void_t isshe_mempool_destroy(isshe_mempool_t *pool);
+
+isshe_void_t *isshe_mpalloc(
+    isshe_mempool_t *pool, isshe_size_t size);
+
+isshe_void_t isshe_mpfree(isshe_mempool_t *pool,
+    isshe_void_t *ptr, isshe_size_t hint_size);
 
 #endif

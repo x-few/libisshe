@@ -2,9 +2,9 @@
 
 #include "isshe_memory.h"
 
-void *isshe_malloc(isshe_size_t size, isshe_log_t *log)
+isshe_void_t *isshe_malloc(isshe_size_t size, isshe_log_t *log)
 {
-    void    *ptr;
+    isshe_void_t    *ptr;
 
     if ( (ptr = malloc(size)) == NULL) {
         if (log) {
@@ -21,9 +21,9 @@ void *isshe_malloc(isshe_size_t size, isshe_log_t *log)
 }
 
 
-void *isshe_calloc(isshe_size_t size, isshe_log_t *log)
+isshe_void_t *isshe_calloc(isshe_size_t size, isshe_log_t *log)
 {
-    void *ptr;
+    isshe_void_t *ptr;
 
     if ( (ptr = calloc(1, size)) == NULL) {
         if (log) {
@@ -40,7 +40,7 @@ void *isshe_calloc(isshe_size_t size, isshe_log_t *log)
 }
 
 
-void isshe_free(void *ptr, isshe_log_t *log)
+isshe_void_t isshe_free(isshe_void_t *ptr, isshe_log_t *log)
 {
     if (ptr) {
         if (log) {
