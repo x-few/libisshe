@@ -2,6 +2,7 @@
 
 #include "isshe_common.h"
 
+// TODO isshe_write_file/isshe_read_file: 参考ngx实现相关的文件操作
 
 static isshe_int_t
 isshe_lock_unlock(isshe_fd_t fd, isshe_int16_t type) {
@@ -15,6 +16,7 @@ isshe_lock_unlock(isshe_fd_t fd, isshe_int16_t type) {
     return(fcntl(fd, F_SETLK, &fl));
 }
 
+
 isshe_int_t isshe_lock_file(isshe_fd_t fd)
 {
     return isshe_lock_unlock(fd, F_WRLCK);
@@ -26,8 +28,9 @@ isshe_int_t isshe_unlock_file(isshe_fd_t fd)
     return isshe_lock_unlock(fd, F_UNLCK);
 }
 
+
 isshe_int_t
-lock_reg(isshe_fd_t fd, isshe_int_t cmd,
+isshe_lock_op(isshe_fd_t fd, isshe_int_t cmd,
     isshe_int_t type, isshe_off_t offset,
     isshe_int_t whence, isshe_off_t len)
 {
@@ -41,15 +44,26 @@ lock_reg(isshe_fd_t fd, isshe_int_t cmd,
     return( fcntl(fd, cmd, &lock) );    /* -1 upon error */
 }
 
-isshe_void_t
-isshe_lock_reg(isshe_fd_t fd, isshe_int_t cmd,
-    isshe_int_t type, isshe_off_t offset,
-    isshe_int_t whence, isshe_off_t len)
+
+isshe_pid_t
+isshe_lock_test(isshe_int_t fd, isshe_int_t type,
+    isshe_off_t offset, isshe_int_t whence, isshe_off_t len)
 {
-    if (lock_reg(fd, cmd, type, offset, whence, len) == ISSHE_ERROR) {
-        isshe_sys_error_exit("lock_reg error");
-    }
+    struct flock lock;
+
+    lock.l_type = type;		/* F_RDLCK or F_WRLCK */
+    lock.l_start = offset;	/* byte offset, relative to l_whence */
+    lock.l_whence = whence;	/* SEEK_SET, SEEK_CUR, SEEK_END */
+    lock.l_len = len;		/* #bytes (0 means to EOF) */
+
+    if (fcntl(fd, F_GETLK, &lock) == ISSHE_ERROR)
+        return(ISSHE_ERROR);			/* unexpected error */
+
+    if (lock.l_type == F_UNLCK)
+        return(0);			/* false, region not locked by another proc */
+    return(lock.l_pid);		/* true, return positive PID of lock owner */
 }
+
 
 isshe_int_t
 isshe_open(const isshe_char_t *pathname, isshe_int_t oflag, ...)
@@ -74,43 +88,18 @@ isshe_open(const isshe_char_t *pathname, isshe_int_t oflag, ...)
     return fd;
 }
 
-isshe_void_t isshe_close(isshe_fd_t fd)
+isshe_int_t isshe_close(isshe_fd_t fd)
 {
-    if (close(fd) == ISSHE_ERROR) {
-        isshe_sys_error_exit("close error");
-    }
-}
-
-isshe_ssize_t
-isshe_read(isshe_fd_t fd, isshe_void_t *ptr, isshe_size_t nbytes)
-{
-    isshe_ssize_t n;
-
-    if ( (n = read(fd, ptr, nbytes)) == ISSHE_ERROR) {
-        isshe_sys_error_exit("read error");
+    if (fd != ISSHE_INVALID_FD) {
+        return close(fd);
     }
 
-    return(n);
+    return ISSHE_OK;
 }
 
-isshe_void_t
-isshe_write(isshe_fd_t fd, isshe_void_t *ptr, isshe_size_t nbytes)
-{
-    if (write(fd, ptr, nbytes) != nbytes){
-        isshe_sys_error_exit("write error");
-    }
-}
-
-isshe_void_t
-isshe_unlink(const isshe_char_t *pathname)
-{
-    if (unlink(pathname) == ISSHE_ERROR) {
-        isshe_sys_error_exit("unlink error for %s", pathname);
-    }
-}
 
 static isshe_ssize_t
-restart_read(isshe_fd_t fd, isshe_char_t *ptr)
+isshe_restart_read(isshe_fd_t fd, isshe_char_t *ptr)
 {
     static isshe_int_t	read_cnt = 0;
     static isshe_char_t	*read_ptr;
@@ -136,15 +125,15 @@ restart_read(isshe_fd_t fd, isshe_char_t *ptr)
     return(1);
 }
 
-static isshe_ssize_t
-readline(isshe_fd_t fd, isshe_void_t *vptr, isshe_size_t maxlen)
+isshe_ssize_t
+isshe_read_line(isshe_fd_t fd, isshe_void_t *vptr, isshe_size_t maxlen)
 {
     isshe_int_t n, rc;
     isshe_char_t c, *ptr;
 
     ptr = vptr;
     for (n = 1; n < maxlen; n++) {
-        if ( (rc = restart_read(fd, &c)) == 1) {
+        if ( (rc = isshe_restart_read(fd, &c)) == 1) {
             *ptr++ = c;
             if (c == '\n')
                 break;      /* newline is stored, like fgets() */
@@ -162,46 +151,6 @@ readline(isshe_fd_t fd, isshe_void_t *vptr, isshe_size_t maxlen)
 }
 /* end readline */
 
-isshe_ssize_t
-isshe_readline(isshe_fd_t fd,
-    isshe_void_t *ptr, isshe_size_t maxlen)
-{
-    isshe_ssize_t n;
-
-    if ( (n = readline(fd, ptr, maxlen)) < 0) {
-        isshe_sys_error_exit("readline error");
-    }
-
-    return(n);
-}
-
-isshe_off_t
-isshe_lseek(isshe_fd_t fd, isshe_off_t offset, isshe_int_t whence)
-{
-    isshe_off_t pos;
-
-    if ( (pos = lseek(fd, offset, whence)) == (isshe_off_t) ISSHE_ERROR) {
-        isshe_sys_error_exit("lseek error");
-    }
-
-    return(pos);
-}
-
-isshe_void_t
-isshe_ftruncate(isshe_fd_t fd, isshe_off_t length)
-{
-    if (ftruncate(fd, length) == ISSHE_ERROR) {
-        isshe_sys_error_exit("ftruncate error");
-    }
-}
-
-isshe_void_t
-isshe_fstat(isshe_fd_t fd, struct stat *ptr)
-{
-    if (fstat(fd, ptr) == -1) {
-        isshe_sys_error_exit("fstat error");
-    }
-}
 
 isshe_char_t *
 isshe_read_all(isshe_fd_t fd, isshe_ssize_t *reslen)

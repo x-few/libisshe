@@ -44,37 +44,6 @@ isshe_fcntl(isshe_int_t fd, isshe_int_t cmd, isshe_void_t *arg)
     return(n);
 }
 
-isshe_pid_t
-lock_test(isshe_int_t fd, isshe_int_t type,
-    isshe_off_t offset, isshe_int_t whence, isshe_off_t len)
-{
-    struct flock lock;
-
-    lock.l_type = type;		/* F_RDLCK or F_WRLCK */
-    lock.l_start = offset;	/* byte offset, relative to l_whence */
-    lock.l_whence = whence;	/* SEEK_SET, SEEK_CUR, SEEK_END */
-    lock.l_len = len;		/* #bytes (0 means to EOF) */
-
-    if (fcntl(fd, F_GETLK, &lock) == ISSHE_ERROR)
-        return(ISSHE_ERROR);			/* unexpected error */
-
-    if (lock.l_type == F_UNLCK)
-        return(0);			/* false, region not locked by another proc */
-    return(lock.l_pid);		/* true, return positive PID of lock owner */
-}
-
-isshe_pid_t
-isshe_lock_test(isshe_int_t fd, isshe_int_t type,
-    isshe_off_t offset, isshe_int_t whence, isshe_off_t len)
-{
-    isshe_pid_t pid;
-
-    if ( (pid = lock_test(fd, type, offset, whence, len)) == ISSHE_ERROR) {
-        isshe_sys_error_exit("lock_test error");
-    }
-
-    return(pid);
-}
 
 isshe_int_t
 isshe_getopt(isshe_int_t argc,
