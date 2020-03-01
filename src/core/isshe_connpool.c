@@ -72,7 +72,7 @@ isshe_connection_get(isshe_connpool_t *connpool)
     if (connpool->nfree_conn <= 0
     || connpool->free_conn == NULL) {
         isshe_log_alert(connpool->log, 
-            "%u connections are not enough", connpool->nconn);
+            "%ud connections are not enough", connpool->nconn);
         return NULL;
     }
 

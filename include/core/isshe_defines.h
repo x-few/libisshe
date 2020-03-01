@@ -66,13 +66,16 @@
 #define ISSHE_PATH_MAX      1024    /* max # of characters in a pathname */
 #endif
 
-#define	min(a, b)           ((a) < (b) ? (a) : (b))
-#define	max(a, b)           ((a) > (b) ? (a) : (b))
+#define	isshe_min(a, b)           ((a) < (b) ? (a) : (b))
+#define	isshe_max(a, b)           ((a) > (b) ? (a) : (b))
 
 #ifdef MAP_FAILED
 #define ISSHE_MAP_FAILED    MAP_FAILED
 #else
 #define ISSHE_MAP_FAILED    ((void *)-1)
 #endif
+
+#define ISSHE_MAX_UINT32_VALUE  (uint32_t) 0xffffffff
+#define ISSHE_MAX_INT32_VALUE   (uint32_t) 0x7fffffff
 
 #endif

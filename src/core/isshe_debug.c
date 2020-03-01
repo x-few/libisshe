@@ -45,6 +45,6 @@ isshe_debug_print_buffer(char *buf, int buf_len, int print_len)
 
     n = buf_len > print_len ? print_len : buf_len;
     for (i=0; i<n; ++i) {
-        printf("%u(%x), ", buf[i], buf[i]);
+        printf("%ud(%x), ", buf[i], buf[i]);
     }
 }

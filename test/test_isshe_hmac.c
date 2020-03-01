@@ -21,13 +21,13 @@ int main(void)
     uint32_t key_len = 3;
 
     uint32_t res_len = 16;
-    printf("data = %u:%s\n", data_len, data);
+    printf("data = %ud:%s\n", data_len, data);
     isshe_hmac_md5(data, data_len, key, key_len, result);
     printf("result = %s\n", result);
     print_hex_buf(result, res_len);
 
     res_len = 32;
-    printf("data = %u:%s\n", data_len, data);
+    printf("data = %ud:%s\n", data_len, data);
     isshe_hmac_sha256(data, data_len, key, key_len, result);
     printf("result = %s\n", result);
     print_hex_buf(result, res_len);

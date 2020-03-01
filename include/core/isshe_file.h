@@ -34,7 +34,7 @@
 struct isshe_file_s
 {
     isshe_fd_t                  fd;
-    isshe_str_t                 name;
+    isshe_string_t              name;
     isshe_finfo_t               info;
 };
 

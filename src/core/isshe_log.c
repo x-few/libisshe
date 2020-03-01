@@ -55,7 +55,7 @@ isshe_int_t
 ngx_log_errno(isshe_char_t *buf, isshe_int_t len, isshe_errno_t errcode)
 {
     isshe_int_t n = 0;
-    n += isshe_snprintf(buf + n, len, " (%d %s)", errcode, strerror(errcode));
+    n += snprintf(buf + n, len, " (%d %s)", errcode, strerror(errcode));
     if (n >= len) {
         buf[len - 1] = '.';
         buf[len - 2] = '.';
@@ -76,6 +76,7 @@ isshe_log_stderr(isshe_errno_t errcode, const char *fmt, ...)
 
     n = 0;
     va_start(args, fmt);
+    // TODO isshe_vsnprintf isshe_snprintf
     n += isshe_vsnprintf(logstr + n, ISSHE_MAX_LOG_STR - n, fmt, args);
     va_end(args);
 
@@ -220,18 +221,18 @@ isshe_log_core(isshe_uint_t level, isshe_log_t *log,
     isshe_memzero(logstr, ISSHE_MAX_LOG_STR);
     n += isshe_log_time(logstr);
     if (log->file->fd == isshe_stderr) {
-        n += isshe_snprintf(logstr + n, ISSHE_MAX_LOG_STR - n, " [%s]", log_levels_color[level]);
+        n += snprintf(logstr + n, ISSHE_MAX_LOG_STR - n, " [%s]", log_levels_color[level]);
     } else {
-        n += isshe_snprintf(logstr + n, ISSHE_MAX_LOG_STR - n, " [%s]", log_levels[level]);
+        n += snprintf(logstr + n, ISSHE_MAX_LOG_STR - n, " [%s]", log_levels[level]);
     }
     
 
-    n += isshe_snprintf(logstr + n, ISSHE_MAX_LOG_STR - n, " %d#%d: ", isshe_log_pid, isshe_log_tid);
+    n += snprintf(logstr + n, ISSHE_MAX_LOG_STR - n, " %d#%d: ", isshe_log_pid, isshe_log_tid);
 
-    n += vsnprintf(logstr + n, ISSHE_MAX_LOG_STR - n, fmt, args);
+    n += isshe_vsnprintf(logstr + n, ISSHE_MAX_LOG_STR - n, fmt, args);
 
     if (n < ISSHE_MAX_LOG_STR && errcode) {
-        n += isshe_snprintf(logstr + n, ISSHE_MAX_LOG_STR - n, ": %s", strerror(errcode));
+        n += snprintf(logstr + n, ISSHE_MAX_LOG_STR - n, ": %s", strerror(errcode));
     }
 
     if (n > ISSHE_MAX_LOG_STR - ISSHE_LINEFEED_SIZE) {

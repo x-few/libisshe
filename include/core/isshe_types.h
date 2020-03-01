@@ -18,6 +18,8 @@ typedef void            isshe_void_t;
 typedef int             isshe_bool_t;
 typedef long            isshe_long_t;
 typedef unsigned long   isshe_ulong_t;
+typedef float           isshe_float_t;
+typedef double          isshe_double_t;
 
 #ifdef ISSHE_APPLE
 typedef int             isshe_mode_t;
@@ -50,6 +52,8 @@ typedef struct sockaddr_storage         isshe_sockaddr128_t;
 typedef struct sockaddr_in              isshe_sockaddr_in4_t;
 typedef struct sockaddr_in6             isshe_sockaddr_in6_t;
 typedef sa_family_t                     isshe_sa_family_t;
+
+typedef struct isshe_string_s           isshe_string_t;
 
 typedef int                             isshe_fd_t;
 typedef struct isshe_log_s              isshe_log_t;

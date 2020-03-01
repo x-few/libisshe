@@ -39,7 +39,7 @@ isshe_mempool_create(isshe_size_t size, isshe_log_t *log)
     pool->log = log;
 
     pagesize = getpagesize();
-    //isshe_log_info(log, "page size: %u", pagesize);
+    //isshe_log_info(log, "page size: %ud", pagesize);
     pool->max = size < pagesize ? size : pagesize;      // 最大一页！
 
     isshe_log_debug(log, "create mempool: %p", pool);

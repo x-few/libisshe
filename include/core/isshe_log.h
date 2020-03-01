@@ -42,7 +42,7 @@ typedef isshe_void_t (*isshe_log_writer_pt) (isshe_log_t *log, isshe_uint_t leve
 struct isshe_log_s {
     isshe_int_t             level;
     isshe_file_t            *file;
-    isshe_log_writer_pt     writer;
+    isshe_log_writer_pt     writer;     // 预留一个写日志函数，以支持自定义的写log。
     isshe_void_t            *wdata;
 };
 

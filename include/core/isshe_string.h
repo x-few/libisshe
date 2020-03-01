@@ -11,13 +11,13 @@
 #define ISSHE_LINEFEED_SIZE 1
 #define ISSHE_LINEFEED      "\x0a"
 
-#define isshe_vsnprintf     vsnprintf
-#define isshe_snprintf      snprintf
-#define isshe_sprintf       sprintf
+#define ISSHE_MAX_INT32_STR_LEN (sizeof("-2147483648") - 1)
+#define ISSHE_MAX_INT64_STR_LEN (sizeof("-9223372036854775808") - 1)
 
-typedef struct isshe_str_s          isshe_str_t;
+#define isshe_sprintf           sprintf
+#define isshe_strlen            strlen
 
-struct isshe_str_s{
+struct isshe_string_s{
     isshe_size_t      len;
     isshe_char_t     *data;
 };
@@ -29,5 +29,13 @@ isshe_char_t *isshe_strdup_mp(isshe_char_t *src,
 
 isshe_int_t isshe_string_mirror(isshe_char_t **pdst,
     isshe_char_t *src, isshe_size_t len);
+
+isshe_int_t isshe_vsnprintf(
+    isshe_char_t *buf, isshe_size_t size,
+    const char *fmt, va_list args);
+
+isshe_int_t isshe_snprintf(
+    isshe_char_t *buf, isshe_size_t max,
+    const isshe_char_t *fmt, ...);
 
 #endif
