@@ -12,7 +12,7 @@ isshe_connpool_create(isshe_int_t n,
     if (mempool) {
         connpool = (isshe_connpool_t *)isshe_mpalloc(mempool, size);
     } else {
-        connpool = (isshe_connpool_t *)isshe_malloc(size, NULL);
+        connpool = (isshe_connpool_t *)isshe_malloc(size);
     }
     if (!connpool) {
         if (log) {
@@ -54,7 +54,7 @@ isshe_connpool_destroy(isshe_connpool_t *connpool)
             connpool->nconn * sizeof(isshe_connection_t)
             + sizeof(isshe_connpool_t));
     } else {
-        isshe_free(connpool, NULL);
+        isshe_free(connpool);
     }
 }
 

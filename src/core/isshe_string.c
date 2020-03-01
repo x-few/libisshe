@@ -1,50 +1,90 @@
 
 #include "isshe_common.h"
 
-isshe_char_t *
-isshe_strdup(isshe_char_t *src, isshe_size_t size)
-{
-    isshe_char_t *dst;
 
-    dst = (isshe_char_t *)isshe_malloc(size, NULL);
-    if (!dst) {
-        return NULL;
-    }
-
-    isshe_memcpy(dst, src, size);
-
-    return dst;
-}
-
-isshe_char_t *
-isshe_strdup_mp(isshe_char_t *src,
+isshe_char_t *isshe_strdup(isshe_char_t *src,
     isshe_size_t size, isshe_mempool_t *mempool)
 {
-    isshe_char_t *dst;
+    return (isshe_char_t *)isshe_memdup((const void *)src, size, mempool);
+}
 
-    dst = (isshe_char_t *)isshe_mpalloc(mempool, size);
-    if (!dst) {
+isshe_string_t *
+isshe_string_create(const isshe_char_t *str,
+    isshe_size_t size, isshe_mempool_t *mempool)
+{
+    isshe_string_t *string;
+
+    if (mempool) {
+        string = (isshe_string_t *)isshe_mpalloc(mempool, sizeof(isshe_string_t));
+    } else {
+        string = (isshe_string_t *)isshe_malloc(sizeof(isshe_string_t));
+    }
+    if (!string) {
         return NULL;
     }
 
-    isshe_memcpy(dst, src, size);
+    isshe_memzero(string, sizeof(isshe_string_t));
+    if (!str) {
+        return string;
+    }
 
-    return dst;
+    if (mempool) {
+        string->data = (isshe_char_t *)isshe_mpalloc(mempool, size);
+    } else {
+        string->data = (isshe_char_t *)isshe_malloc(size);
+    }
+    if (!string->data) {
+        isshe_mpfree(mempool, string, sizeof(isshe_string_t));
+        return NULL;
+    }
+
+    string->len = size;
+    isshe_memcpy(string->data, str, size);
+
+    return string;
+}
+
+isshe_void_t
+isshe_string_destroy(isshe_string_t *string, isshe_mempool_t *mempool)
+{
+    if (string) {
+        if (string->data && string->len > 0) {
+            if (mempool) {
+                isshe_mpfree(mempool, string->data, string->len);
+            } else {
+                isshe_free(string->data);
+            }
+            string->data = NULL;
+            string->len = 0;
+        }
+
+        if(mempool) {
+            isshe_mpfree(mempool, string, sizeof(isshe_string_t));
+        } else {
+            isshe_free(string);
+        }
+    }
 }
 
 isshe_int_t
-isshe_string_mirror(
-    isshe_char_t **pdst,
-    isshe_char_t *src,
-    isshe_size_t len)
+isshe_string_set(isshe_string_t *string, isshe_char_t *str)
 {
-    len += 1;       // for '\0'
-    *pdst = isshe_strdup(src, len);
-    if (!*pdst) {
+    if (!string || !str) {
         return ISSHE_ERROR;
     }
 
+    string->data = str;
+    string->len = strlen(str);
     return ISSHE_OK;
+}
+
+isshe_string_t *
+isshe_string_dup(isshe_string_t *string, isshe_mempool_t *mempool)
+{
+    if (!string) {
+        return NULL;
+    }
+    return isshe_string_create(string->data, string->len, mempool);
 }
 
 

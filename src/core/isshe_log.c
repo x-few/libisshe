@@ -95,19 +95,30 @@ isshe_log_stderr(isshe_errno_t errcode, const char *fmt, ...)
 }
 
 isshe_log_t *
-isshe_log_create(isshe_uint_t level, isshe_char_t *filename)
+isshe_log_create(isshe_uint_t level,
+    isshe_char_t *filename, isshe_mempool_t *mempool)
 {
     isshe_log_t *log;
     isshe_file_t *file;
 
-    log = (isshe_log_t *)isshe_malloc(sizeof(isshe_log_t), NULL);
+    if (mempool) {
+        log = (isshe_log_t *)isshe_mpalloc(mempool, sizeof(isshe_log_t));
+    } else {
+        log = (isshe_log_t *)isshe_malloc(sizeof(isshe_log_t));
+    }
     if (!log) {
         return NULL;
     }
 
-    file = (isshe_file_t *)isshe_malloc(sizeof(isshe_file_t), NULL);
+    log->mempool = mempool;
+
+    if (mempool) {
+        file = (isshe_file_t *)isshe_mpalloc(mempool, sizeof(isshe_file_t));
+    } else {
+        file = (isshe_file_t *)isshe_malloc(sizeof(isshe_file_t));
+    }
     if (!file) {
-        isshe_free(log, NULL);
+        isshe_free(log);
         return NULL;
     }
 
@@ -124,17 +135,18 @@ isshe_log_create(isshe_uint_t level, isshe_char_t *filename)
         return log;
     }
 
-    file->name.len = strlen(filename) + 1;
-    file->name.data = (isshe_char_t *)isshe_malloc(file->name.len, NULL);
-    isshe_memcpy(file->name.data, filename, file->name.len);
-    file->name.data[file->name.len] = '\0';
+    file->name = isshe_string_create(filename, strlen(filename) + 1, mempool);
+    if (!file->name) {
+        isshe_log_stderr(0, "[error] log file create failed");
+        return NULL;
+    }
 
     // 打开文件
     file->fd = isshe_open(filename,
         ISSHE_FILE_APPEND | ISSHE_FILE_CREATE_OR_OPEN,
         ISSHE_FILE_DEFAULT_ACCESS);
     if (file->fd == ISSHE_INVALID_FILE) {
-        isshe_log_stderr(errno, "[alert] could not open log file: \"%s\"", file->name.data);
+        isshe_log_stderr(errno, "[alert] could not open log file: \"%V\"", file->name);
     }
 
     return log;
@@ -156,29 +168,28 @@ isshe_void_t isshe_log_destroy(isshe_log_t *log)
             isshe_close(log->file->fd);
             log->file->fd = ISSHE_INVALID_FILE;
         }
-        if (log->file->name.data && log->file->name.len) {
-            isshe_free(log->file->name.data, NULL);
-            log->file->name.data = NULL;
-            log->file->name.len = 0;
+        if (log->file->name) {
+            isshe_string_destroy(log->file->name, log->mempool);
+            log->file->name = NULL;
         }
 
-        isshe_free(log->file, NULL);
+        isshe_free(log->file);
         log->file = NULL;
     }
 
     // 释放内存
-    isshe_free(log, NULL);
+    isshe_free(log);
 }
 
 
 isshe_log_t *
-isshe_log_instance_get(isshe_uint_t level, isshe_char_t *filename)
+isshe_log_instance_get(isshe_uint_t level, isshe_char_t *filename, isshe_mempool_t *mempool)
 {
     if (isshe_log_instance) {
         return isshe_log_instance;
     }
 
-    isshe_log_instance = isshe_log_create(level, filename);
+    isshe_log_instance = isshe_log_create(level, filename, mempool);
 
     return isshe_log_instance;
 }
@@ -190,7 +201,6 @@ isshe_log_instance_free()
     isshe_log_destroy(isshe_log_instance);
     isshe_log_instance = NULL;
 }
-
 
 
 static isshe_uint_t

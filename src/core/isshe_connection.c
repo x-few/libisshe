@@ -170,7 +170,7 @@ isshe_address_create(
 
     isshe_memzero(newaddr, sizeof(isshe_address_t));
 
-    newaddr->addr = isshe_strdup_mp(addr, addr_len, mempool);
+    newaddr->addr = isshe_memdup(addr, addr_len, mempool);
     if (!newaddr->addr) {
         isshe_mpfree(mempool, newaddr, sizeof(isshe_address_t));
         return NULL;

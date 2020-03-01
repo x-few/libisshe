@@ -8,7 +8,7 @@ static char *sbuf_mktemp(char *template)
     char *temp;
 
     len = strlen(template) + 1;
-    temp = isshe_malloc(len, NULL);
+    temp = isshe_malloc(len);
     memcpy(temp, template, len);
 
     return mktemp(temp);    // mktemp会修改temp，因此temp是要可修改的
@@ -17,7 +17,7 @@ static char *sbuf_mktemp(char *template)
 /* 创建一个n个槽的空的、有界的、共享先进先出缓冲区 */
 void isshe_sbuf_init(isshe_sbuf_t *sp, int n, size_t size)
 {
-    sp->buf = isshe_calloc(n * sizeof(void *), NULL);
+    sp->buf = isshe_calloc(n * sizeof(void *));
     sp->n = n;                       /* Buffer holds max of n items */
     sp->size = size;
     sp->front = sp->rear = 0;        /* Empty buffer iff front == rear */
@@ -42,11 +42,11 @@ void isshe_sbuf_destroy(isshe_sbuf_t *sp)
     isshe_sem_wait(sp->mutex);                     /* Lock the buffer */
     while(isshe_sem_trywait(sp->nstored) != ISSHE_ERROR) {   /* Wait for available item */
         item = sp->buf[(++sp->front)%(sp->n)];      /* Remove the item */
-        isshe_free(item, NULL);
+        isshe_free(item);
         isshe_sem_post(sp->nempty);                /* Announce available slot */
     }
 
-    isshe_free(sp->buf, NULL);
+    isshe_free(sp->buf);
 
     isshe_sem_post(sp->mutex);                     /* Unlock the buffer */
     isshe_sem_close(sp->mutex);
@@ -55,15 +55,15 @@ void isshe_sbuf_destroy(isshe_sbuf_t *sp)
     isshe_sem_unlink(sp->sem_mutex_name);
     isshe_sem_unlink(sp->sem_nempty_name);
     isshe_sem_unlink(sp->sem_nstored_name);
-    isshe_free(sp->sem_mutex_name, NULL);
-    isshe_free(sp->sem_nempty_name, NULL);
-    isshe_free(sp->sem_nstored_name, NULL);
+    isshe_free(sp->sem_mutex_name);
+    isshe_free(sp->sem_nempty_name);
+    isshe_free(sp->sem_nstored_name);
 }
 
 /* 插入一个元素到缓冲区中 */
 void isshe_sbuf_insert(isshe_sbuf_t *sp, void *item)
 {
-    void *new_item = isshe_malloc(sp->size, NULL);
+    void *new_item = isshe_malloc(sp->size);
 
     memcpy(new_item, item, sp->size);
 
@@ -88,6 +88,6 @@ void isshe_sbuf_remove(isshe_sbuf_t *sp, void *output_item)
     }
 
     if (item) {
-        isshe_free(item, NULL);
+        isshe_free(item);
     }
 }

@@ -7,7 +7,7 @@ void print_connpool(isshe_connpool_t *connpool, isshe_int_t n)
     isshe_connection_t *conn = connpool->free_conn;
 
     for (i = 0; i < n; i++) {
-        printf("%d ", *(int *)conn->data);
+        printf("%p ", conn->data);
         conn = conn->next;
     }
     printf("\n");
@@ -19,7 +19,7 @@ void test()
     isshe_mempool_t *mempool;
     isshe_log_t *log;
     
-    log = isshe_log_instance_get(ISSHE_LOG_DEBUG, NULL);
+    log = isshe_log_instance_get(ISSHE_LOG_DEBUG, NULL, NULL);
     if (!log) {
         printf("error: log == NULL!!!\n");
         return;
@@ -47,18 +47,20 @@ void test()
         return;
     }
 
-    isshe_log_debug(log, "conn1 = %d, conn2 = %d, conn3 = %d",
-        *(int *)conn->data, *(int *)conn2->data, *(int *)conn3->data);
-    print_connpool(connpool, 10);
+    conn->data = (void *)1;
+    conn2->data = (void *)2;
+    conn3->data = (void *)3;
+
+    print_connpool(connpool, 5);
 
     isshe_connection_free(connpool, conn);
-    print_connpool(connpool, 10);
+    print_connpool(connpool, 5);
 
     isshe_connection_free(connpool, conn2);
-    print_connpool(connpool, 10);
+    print_connpool(connpool, 5);
 
     isshe_connection_free(connpool, conn3);
-    print_connpool(connpool, 10);
+    print_connpool(connpool, 5);
 
     isshe_connpool_destroy(connpool);
     isshe_mempool_destroy(mempool);

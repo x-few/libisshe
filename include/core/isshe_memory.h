@@ -13,8 +13,8 @@
 
 #define isshe_memcmp(dst, src, n)   memcmp(dst, src, n)
 
-isshe_void_t *isshe_malloc(isshe_size_t size, isshe_log_t *log);
-isshe_void_t *isshe_calloc(isshe_size_t size, isshe_log_t *log);
-isshe_void_t isshe_free(isshe_void_t *ptr, isshe_log_t *log);
+isshe_void_t *isshe_malloc(isshe_size_t size);
+isshe_void_t *isshe_calloc(isshe_size_t size);
+isshe_void_t isshe_free(isshe_void_t *ptr);
 
 #endif

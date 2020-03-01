@@ -14,6 +14,10 @@
 #define ISSHE_MAX_INT32_STR_LEN (sizeof("-2147483648") - 1)
 #define ISSHE_MAX_INT64_STR_LEN (sizeof("-9223372036854775808") - 1)
 
+
+#define isshe_tostring(str)     { sizeof(str) - 1, (ishse_char_t *) str }
+#define isshe_null_string       { 0, NULL }
+
 #define isshe_sprintf           sprintf
 #define isshe_strlen            strlen
 
@@ -22,13 +26,8 @@ struct isshe_string_s{
     isshe_char_t     *data;
 };
 
-isshe_char_t *isshe_strdup(isshe_char_t *src, isshe_size_t size);
-
-isshe_char_t *isshe_strdup_mp(isshe_char_t *src,
+isshe_char_t *isshe_strdup(isshe_char_t *src,
     isshe_size_t size, isshe_mempool_t *mempool);
-
-isshe_int_t isshe_string_mirror(isshe_char_t **pdst,
-    isshe_char_t *src, isshe_size_t len);
 
 isshe_int_t isshe_vsnprintf(
     isshe_char_t *buf, isshe_size_t size,
@@ -37,5 +36,11 @@ isshe_int_t isshe_vsnprintf(
 isshe_int_t isshe_snprintf(
     isshe_char_t *buf, isshe_size_t max,
     const isshe_char_t *fmt, ...);
+
+isshe_string_t *isshe_string_create(const isshe_char_t *str,
+    isshe_size_t size, isshe_mempool_t *mempool);
+
+isshe_void_t isshe_string_destroy(
+    isshe_string_t *string, isshe_mempool_t *mempool);
 
 #endif

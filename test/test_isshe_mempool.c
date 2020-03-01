@@ -5,7 +5,7 @@ void test()
     isshe_mempool_t *pool;
     isshe_log_t *log;
     
-    log = isshe_log_instance_get(ISSHE_LOG_DEBUG, NULL);
+    log = isshe_log_instance_get(ISSHE_LOG_DEBUG, NULL, NULL);
     if (!log) {
         printf("error: log == NULL!!!\n");
         return;

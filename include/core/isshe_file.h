@@ -34,8 +34,8 @@
 struct isshe_file_s
 {
     isshe_fd_t                  fd;
-    isshe_string_t              name;
-    isshe_finfo_t               info;
+    isshe_string_t              *name;
+    isshe_finfo_t               *info;
 };
 
 isshe_int_t isshe_lock_file(isshe_fd_t fd);

@@ -161,7 +161,7 @@ isshe_read_all(isshe_fd_t fd, isshe_ssize_t *reslen)
 
     isshe_fstat(fd, &info);
     if (info.st_size > 0) {
-        buf = isshe_malloc(info.st_size, NULL);           // remember to free
+        buf = isshe_malloc(info.st_size);           // remember to free
         len = isshe_read(fd, buf, info.st_size);
         *reslen = len;
         if (len != info.st_size) {

@@ -21,7 +21,7 @@ isshe_mempool_create(isshe_size_t size, isshe_log_t *log)
     isshe_mempool_data_t    *small;
     isshe_int_t             pagesize;
 
-    pool = (isshe_mempool_t *)isshe_malloc(size, log);
+    pool = (isshe_mempool_t *)isshe_malloc(size);
     if (!pool) {
         return NULL;
     }
@@ -39,10 +39,13 @@ isshe_mempool_create(isshe_size_t size, isshe_log_t *log)
     pool->log = log;
 
     pagesize = getpagesize();
-    //isshe_log_info(log, "page size: %ud", pagesize);
     pool->max = size < pagesize ? size : pagesize;      // 最大一页！
 
-    isshe_log_debug(log, "create mempool: %p", pool);
+    if (log) {
+        isshe_log_debug(log, "create mempool: %p", pool);
+    } else {
+        isshe_log_stderr(0, "create mempool: %p", pool);
+    }
 
     return pool;
 }
@@ -57,22 +60,27 @@ isshe_mempool_destroy(isshe_mempool_t *pool)
         return;
     }
 
-    isshe_log_debug(pool->log, "destroy mempool: %p", pool);
+    if (pool->log) {
+        isshe_log_debug(pool->log, "destroy mempool: %p", pool);
+    } else {
+        isshe_log_stderr(0, "destroy mempool: %p", pool);
+    }
+
     // free large
     for (tmp = pool->large; tmp; tmp = tmp->next)
     {
-        isshe_free(tmp->last, NULL);
+        isshe_free(tmp->last);
     }
 
     // free small
     for (tmp = pool->small->next; tmp; )
     {
         next = tmp->next;
-        isshe_free(tmp, NULL);
+        isshe_free(tmp);
         tmp = next;
     }
 
-    isshe_free(pool, NULL);
+    isshe_free(pool);
 }
 
 static isshe_mempool_data_t *
@@ -86,7 +94,7 @@ isshe_mpdata_create(isshe_mempool_t *pool, isshe_size_t size)
     size += sizeof(isshe_mempool_data_t);
     size = size > data_block_size ? size : data_block_size;
 
-    tmp = (isshe_mempool_data_t *)isshe_malloc(size, pool->log);
+    tmp = (isshe_mempool_data_t *)isshe_malloc(size);
     if (!tmp) {
         return NULL;
     }
@@ -136,7 +144,9 @@ isshe_mpalloc_small(isshe_mempool_t *pool, isshe_size_t size)
     // new data block
     tmp = isshe_mpdata_create(pool, size);
     if (!tmp) {
-        isshe_log_alert(pool->log, "isshe_mpdata_create failed");
+        if (pool->log) {
+            isshe_log_alert(pool->log, "isshe_mpdata_create failed");
+        }
         return NULL;
     }
 
@@ -157,7 +167,7 @@ isshe_mpalloc_large(isshe_mempool_t *pool, isshe_size_t size)
     isshe_void_t                    *data;
 
     // alloc size from system
-    data = isshe_malloc(size, pool->log);
+    data = isshe_malloc(size);
     if (!data) {
         return NULL;
     }
@@ -165,7 +175,7 @@ isshe_mpalloc_large(isshe_mempool_t *pool, isshe_size_t size)
     // alloc large struct from pool, 放后面是为了错误使用了内存池。
     large = (isshe_mempool_data_t *)isshe_mpalloc_small(pool, sizeof(isshe_mempool_data_t));
     if (!large) {
-        isshe_free(data, pool->log);
+        isshe_free(data);
         return NULL;
     }
 
@@ -187,11 +197,9 @@ isshe_mpalloc(isshe_mempool_t *pool, isshe_size_t size)
     }
 
     if (size <= pool->max) {
-        //isshe_log_debug(pool->log, "isshe_mpalloc called isshe_mpalloc_small");
         return isshe_mpalloc_small(pool, size);
     }
 
-    //isshe_log_debug(pool->log, "isshe_mpalloc called isshe_mpalloc_large");
     return isshe_mpalloc_large(pool, size);
 }
 
@@ -207,11 +215,43 @@ isshe_mpfree(isshe_mempool_t *pool, isshe_void_t *ptr, isshe_size_t hint_size)
     for (tmp = pool->large; tmp; tmp = tmp->next)
     {
         if (tmp->last == ptr) {
-            isshe_free(tmp->last, pool->log);
+            isshe_free(tmp->last);
             tmp->last = NULL;
             return ;
         }
     }
+}
+
+isshe_void_t *
+isshe_memdup(const isshe_void_t *src,
+    isshe_size_t size, isshe_mempool_t *mempool)
+{
+    isshe_void_t *dst;
+
+    if (mempool) {
+        dst = (isshe_char_t *)isshe_mpalloc(mempool, size);
+    } else {
+        dst = (isshe_char_t *)isshe_malloc(size);
+    }
+    if (!dst) {
+        return NULL;
+    }
+
+    isshe_memcpy(dst, src, size);
+
+    return dst;
+}
+
+isshe_int_t
+isshe_mempool_log_set(isshe_mempool_t *mempool, isshe_log_t *log)
+{
+    if (!mempool || !log) {
+        return ISSHE_ERROR;
+    }
+
+    mempool->log = log;
+
+    return ISSHE_OK;
 }
 
 

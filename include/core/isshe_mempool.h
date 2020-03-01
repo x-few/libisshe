@@ -8,6 +8,7 @@
 #include "isshe_common.h"
 
 #define ISSHE_MEMPOOL_MAX_FAILED            5
+#define ISSHE_DEFAULT_MEMPOOL_SIZE          getpagesize()
 
 struct isshe_mempool_data_s
 {
@@ -37,5 +38,11 @@ isshe_void_t *isshe_mpalloc(
 
 isshe_void_t isshe_mpfree(isshe_mempool_t *pool,
     isshe_void_t *ptr, isshe_size_t hint_size);
+
+isshe_void_t *isshe_memdup(const void *str,
+    isshe_size_t size, isshe_mempool_t *mempool);
+
+isshe_int_t
+isshe_mempool_log_set(isshe_mempool_t *mempool, isshe_log_t *log);
 
 #endif

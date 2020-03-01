@@ -44,18 +44,22 @@ struct isshe_log_s {
     isshe_file_t            *file;
     isshe_log_writer_pt     writer;     // 预留一个写日志函数，以支持自定义的写log。
     isshe_void_t            *wdata;
+    isshe_mempool_t         *mempool;
 };
+
+isshe_void_t isshe_log_stderr(isshe_errno_t errcode, const char *fmt, ...);
 
 isshe_char_t *isshe_log_level_to_string(isshe_int_t level);
 
 isshe_int_t isshe_log_level_to_number(const isshe_char_t *level);
 
-isshe_log_t * isshe_log_create(isshe_uint_t level, isshe_char_t *filename);
+isshe_log_t * isshe_log_create(isshe_uint_t level,
+    isshe_char_t *filename, isshe_mempool_t *mempool);
 
 isshe_void_t isshe_log_destroy(isshe_log_t *log);
 
-isshe_log_t *isshe_log_instance_get(
-    isshe_uint_t level, isshe_char_t *filename);
+isshe_log_t *isshe_log_instance_get(isshe_uint_t level,
+    isshe_char_t *filename, isshe_mempool_t *mempool);
 
 isshe_void_t isshe_log_instance_free();
 
