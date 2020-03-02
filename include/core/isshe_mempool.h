@@ -26,6 +26,9 @@ struct isshe_mempool_s {
     isshe_mempool_data_t        *last;          // 尾插
     isshe_mempool_data_t        *large;         // 头插
     isshe_log_t                 *log;
+
+    isshe_int_t                 total_small;
+    isshe_int_t                 used_small;
 };
 
 isshe_mempool_t *isshe_mempool_create(
@@ -44,5 +47,8 @@ isshe_void_t *isshe_memdup(const void *str,
 
 isshe_int_t
 isshe_mempool_log_set(isshe_mempool_t *mempool, isshe_log_t *log);
+
+isshe_void_t
+isshe_mempool_stat_print(isshe_mempool_t *mempool, isshe_log_t *log);
 
 #endif

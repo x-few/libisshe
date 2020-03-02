@@ -25,7 +25,9 @@ isshe_mempool_create(isshe_size_t size, isshe_log_t *log)
     if (!pool) {
         return NULL;
     }
-    
+
+    isshe_memzero(pool, size);
+
     small = (isshe_mempool_data_t *)((isshe_uchar_t *)pool + sizeof(isshe_mempool_t));
     small->last = (isshe_uchar_t *)small + sizeof(isshe_mempool_data_t);
     small->end = (isshe_uchar_t *)pool + size;
@@ -37,6 +39,8 @@ isshe_mempool_create(isshe_size_t size, isshe_log_t *log)
     pool->last = pool->current;
     pool->large = NULL;
     pool->log = log;
+    pool->total_small = size;
+    pool->used_small = sizeof(isshe_mempool_t) + sizeof(isshe_mempool_data_t);
 
     pagesize = getpagesize();
     pool->max = size < pagesize ? size : pagesize;      // 最大一页！
@@ -106,6 +110,8 @@ isshe_mpdata_create(isshe_mempool_t *pool, isshe_size_t size)
 
     pool->last->next = tmp;
     pool->last = tmp;
+    pool->total_small += size;
+    pool->used_small += sizeof(isshe_mempool_data_t);
 
     return tmp;
 }
@@ -152,6 +158,7 @@ isshe_mpalloc_small(isshe_mempool_t *pool, isshe_size_t size)
 
     target = tmp->last;
     tmp->last += size;
+    pool->used_small += size;
 
     // update current;
     isshe_mempool_current_update(pool);
@@ -252,6 +259,14 @@ isshe_mempool_log_set(isshe_mempool_t *mempool, isshe_log_t *log)
     mempool->log = log;
 
     return ISSHE_OK;
+}
+
+isshe_void_t
+isshe_mempool_stat_print(isshe_mempool_t *mempool, isshe_log_t *log)
+{
+    isshe_log_info(log, "mempool(%p) stat: ", mempool);
+    isshe_log_info(log, "- total small  : %d (bytes)", mempool->total_small);
+    isshe_log_info(log, "- used small   : %d (bytes)", mempool->used_small);
 }
 
 

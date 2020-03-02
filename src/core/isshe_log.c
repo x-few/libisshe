@@ -101,24 +101,14 @@ isshe_log_create(isshe_uint_t level,
     isshe_log_t *log;
     isshe_file_t *file;
 
-    if (mempool) {
-        log = (isshe_log_t *)isshe_mpalloc(mempool, sizeof(isshe_log_t));
-    } else {
-        log = (isshe_log_t *)isshe_malloc(sizeof(isshe_log_t));
-    }
+    log = (isshe_log_t *)isshe_mpalloc(mempool, sizeof(isshe_log_t));
     if (!log) {
         return NULL;
     }
 
-    log->mempool = mempool;
-
-    if (mempool) {
-        file = (isshe_file_t *)isshe_mpalloc(mempool, sizeof(isshe_file_t));
-    } else {
-        file = (isshe_file_t *)isshe_malloc(sizeof(isshe_file_t));
-    }
+    file = (isshe_file_t *)isshe_mpalloc(mempool, sizeof(isshe_file_t));
     if (!file) {
-        isshe_free(log);
+        isshe_mpfree(mempool, log, sizeof(isshe_log_t));
         return NULL;
     }
 
@@ -126,6 +116,7 @@ isshe_log_create(isshe_uint_t level,
     isshe_memzero(file, sizeof(isshe_file_t));
 
     // 初始化log
+    log->mempool = mempool;
     log->file = file;
     log->level = level;
 
@@ -173,12 +164,12 @@ isshe_void_t isshe_log_destroy(isshe_log_t *log)
             log->file->name = NULL;
         }
 
-        isshe_free(log->file);
+        isshe_mpfree(log->mempool, log->file, sizeof(isshe_file_t));
         log->file = NULL;
     }
 
     // 释放内存
-    isshe_free(log);
+    isshe_mpfree(log->mempool, log, sizeof(isshe_log_t));
 }
 
 

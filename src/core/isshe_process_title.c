@@ -59,7 +59,7 @@ environ_reset(isshe_char_t *newenvp, isshe_char_t *last)
     return last;
 }
 
-
+// TODO 改用isshe_mpalloc
 isshe_int_t
 isshe_process_title_init(isshe_int_t argc, isshe_char_t *argv[])
 {
