@@ -7,6 +7,7 @@
 #define _ISSHE_JSON_H_
 
 #include "isshe_common.h"
+#include "isshe_json_print.h"
 
 // isshe_json_t Types:
 #define ISSHE_JSON_INVALID          (0)
@@ -22,11 +23,6 @@
 #define ISSHE_JSON_IS_REFERENCE     256
 #define ISSHE_JSON_STRING_IS_CONST  512
 #define ISSHE_JSON_NUMBER_LEN_MAX   26
-
-typedef struct isshe_json_s                 isshe_json_t;
-typedef struct isshe_json_error_s           isshe_json_error_t;
-typedef struct isshe_json_parse_buffer_s    isshe_json_parse_buffer_t;
-typedef struct isshe_json_print_buffer_s    isshe_json_print_buffer_t;
 
 // The isshe_json_t structure:
 /**
@@ -66,18 +62,6 @@ struct isshe_json_parse_buffer_s {
     isshe_mempool_t *mempool;
 };
 
-struct isshe_json_print_buffer_s
-{
-    isshe_uchar_t *buffer;
-    isshe_size_t length;
-    isshe_size_t offset;
-    isshe_size_t depth;           // current nesting depth (for formatted printing)
-    //isshe_bool_t noalloc;
-    isshe_bool_t format;    // is this print a formatted print
-    isshe_mempool_t *mempool;
-    isshe_log_t     *log;
-};
-
 /* Limits how deeply nested arrays/objects can be before isshe_json_t rejects to parse them.
  * This is to prevent stack overflows. */
 #ifndef ISSHE_JSON_NESTING_LIMIT
@@ -104,6 +88,9 @@ struct isshe_json_print_buffer_s
 
 // get a pointer to the buffer at the position
 #define parse_buffer_at_offset(buffer) ((buffer)->content + (buffer)->offset)
+
+isshe_uchar_t isshe_json_decimal_point_get(isshe_void_t);
+isshe_bool_t isshe_json_is_equal_double(isshe_double_t a, isshe_double_t b);
 
 // These functions check the type of an item
 isshe_bool_t isshe_json_is_invalid(const isshe_json_t * const item);
@@ -149,16 +136,6 @@ isshe_size_t isshe_json_array_size(const isshe_json_t *array);
 
 isshe_json_t *isshe_json_array_item_get(
     const isshe_json_t *array, isshe_size_t index);
-
-
-// print about
-isshe_size_t isshe_json_print_length(const isshe_json_t * const item);
-
-isshe_size_t isshe_json_print_format_length(const isshe_json_t * const item);
-
-isshe_int_t isshe_json_print(const isshe_json_t * const item);
-
-isshe_int_t isshe_json_print_format(const isshe_json_t * const item);
 
 
 // create about

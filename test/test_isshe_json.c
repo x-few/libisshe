@@ -230,14 +230,15 @@ void test_read_json_file(char *file)
     json = isshe_json_file_parse(file, mempool);
     isshe_mempool_stat_print(mempool, NULL);
 
+    printf("---------------------------------\n");
     len = isshe_json_print_length(json);
     printf("isshe_json_print_length = %lu\n", len);
-
+    isshe_json_print(json, NULL);
+    
+    printf("---------------------------------\n");
     len = isshe_json_print_format_length(json);
     printf("isshe_json_print_format_length = %lu\n", len);
-
-    isshe_json_print(json);
-    isshe_json_print_format(json);
+    isshe_json_print_format(json, NULL);
 
     isshe_mempool_destroy(mempool);
 }

@@ -36,7 +36,8 @@ ISSHE_CRYPTO_SRCS = \
     crypto/isshe_rand.c
 
 ISSHE_JSON_SRCS = \
-    json/isshe_json.c
+    json/isshe_json.c \
+    json/isshe_json_print.c
 
 libisshe_a_SOURCES = \
     $(ISSHE_CORE_SRCS) \

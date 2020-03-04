@@ -72,5 +72,11 @@ typedef struct isshe_mempool_data_s     isshe_mempool_data_t;
 
 typedef struct isshe_process_title_s    isshe_process_title_t;
 
+typedef struct isshe_json_s                 isshe_json_t;
+typedef struct isshe_json_error_s           isshe_json_error_t;
+typedef struct isshe_json_parse_buffer_s    isshe_json_parse_buffer_t;
+typedef struct isshe_json_print_buffer_s    isshe_json_print_buffer_t;
+
+
 
 #endif
