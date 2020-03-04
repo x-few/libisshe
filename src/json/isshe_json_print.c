@@ -189,7 +189,7 @@ value_print_length(const isshe_json_t * const item,
         len += 4;           // "true"
         break;
     case ISSHE_JSON_NUMBER:
-        len += number_print_length(item->vdouble, pbuf);
+        len += number_print_length(item->vnumber, pbuf);
         break;
     case ISSHE_JSON_STRING:
         len += string_print_length((isshe_uchar_t *)item->vstring, pbuf);
@@ -524,7 +524,7 @@ value_print(const isshe_json_t * const item,
         pbuf->offset += 4;
         break;
     case ISSHE_JSON_NUMBER:
-        number_print(item->vdouble, pbuf);
+        number_print(item->vnumber, pbuf);
         break;
     case ISSHE_JSON_STRING:
         string_print((isshe_uchar_t *)item->vstring, pbuf);

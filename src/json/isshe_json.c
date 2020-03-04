@@ -450,7 +450,7 @@ parse_number_loop_end:
         return ISSHE_FALSE; // parse_error
     }
 
-    item->vdouble = number;
+    item->vnumber = number;
 
     /*
     // use saturation in case of overflow

@@ -32,7 +32,7 @@
  * type: The type of the item, as above.
  * vstring: The item's string, if type==ISSHE_JSON_STRING  and type == ISSHE_JSON_RAW.
  * vint: writing to vint is DEPRECATED, use isshe_json_set_number_value instead
- * vdouble: The item's number, if type==ISSHE_JSON_NUMBER.
+ * vnumber: The item's number, if type==ISSHE_JSON_NUMBER.
  * string: The item's name string
  * 
  */
@@ -44,7 +44,7 @@ struct isshe_json_s
     isshe_int_t type;
     isshe_char_t *vstring;
     //isshe_int64_t vint;     // DEPRECATED
-    isshe_double_t vdouble;
+    isshe_double_t vnumber;
     isshe_char_t *kstring;  // key string, name
     //isshe_double_t  vnumber;
 };
@@ -116,10 +116,17 @@ isshe_char_t *isshe_json_get_string_value(const isshe_json_t * const item);
  * where the caller has full responsibility of the buffer.
  * Supply a block of JSON, and this returns a isshe_json_t object you can interrogate.
  */
-isshe_json_t * isshe_json_parse(const isshe_char_t *value, isshe_mempool_t *mempool);
-isshe_void_t isshe_json_delete(isshe_json_t *item, isshe_mempool_t *mempool);
+isshe_json_t * isshe_json_parse(
+    const isshe_char_t *value,
+    isshe_mempool_t *mempool);
 
-isshe_json_t *isshe_json_file_parse(const isshe_char_t *filename, isshe_mempool_t *mempool);
+isshe_void_t isshe_json_delete(
+    isshe_json_t *item,
+    isshe_mempool_t *mempool);
+
+isshe_json_t *isshe_json_file_parse(
+    const isshe_char_t *filename,
+    isshe_mempool_t *mempool);
 
 isshe_bool_t isshe_json_has_object(
     const isshe_json_t *object, const char *string);
