@@ -2,11 +2,35 @@
 #include "isshe_common.h"
 
 
-isshe_char_t *isshe_strdup(isshe_char_t *src,
-    isshe_size_t size, isshe_mempool_t *mempool)
+isshe_char_t *isshe_strdup(isshe_char_t *src, isshe_mempool_t *mempool)
 {
-    return (isshe_char_t *)isshe_memdup((const void *)src, size, mempool);
+    isshe_size_t len;
+
+    len = isshe_strlen(src) + sizeof("");
+    return (isshe_char_t *)isshe_memdup((const void *)src, len, mempool);
 }
+
+isshe_int_t isshe_strcmp_case_insensitive(
+    const isshe_char_t *str1,
+    const isshe_char_t *str2)
+{
+    assert(str1);
+    assert(str2);
+
+    if (str1 == str2) {
+        return 0;
+    }
+
+    for(; tolower(*str1) == tolower(*str2); str1++, str2++) {
+        if (*str1 == '\0')
+        {
+            return 0;
+        }
+    }
+
+    return tolower(*str1) - tolower(*str2);
+}
+
 
 isshe_string_t *
 isshe_string_create(const isshe_char_t *str,
@@ -366,4 +390,3 @@ isshe_snprintf(
 
     return rc;
 }
-

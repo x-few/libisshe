@@ -80,6 +80,11 @@ isshe_mempool_destroy(isshe_mempool_t *pool)
     for (tmp = pool->small->next; tmp; )
     {
         next = tmp->next;
+        if (pool->log) {
+            isshe_log_debug(pool->log, "- free small: %p", tmp);
+        } else {
+            isshe_log_stderr(0, "- free small: %p", tmp);
+        }
         isshe_free(tmp);
         tmp = next;
     }
@@ -113,6 +118,12 @@ isshe_mpdata_create(isshe_mempool_t *pool, isshe_size_t size)
     pool->total_small += size;
     pool->used_small += sizeof(isshe_mempool_data_t);
 
+        if (pool->log) {
+            isshe_log_debug(pool->log, "- alloc small: %p", tmp);
+        } else {
+            isshe_log_stderr(0, "- alloc small: %p", tmp);
+        }
+
     return tmp;
 }
 
@@ -142,6 +153,7 @@ isshe_mpalloc_small(isshe_mempool_t *pool, isshe_size_t size)
         if (tmp->end - tmp->last >= size) {
             target = tmp->last;
             tmp->last += size;
+            pool->used_small += size;
             return target;
         }
         tmp->failed++;
@@ -264,9 +276,15 @@ isshe_mempool_log_set(isshe_mempool_t *mempool, isshe_log_t *log)
 isshe_void_t
 isshe_mempool_stat_print(isshe_mempool_t *mempool, isshe_log_t *log)
 {
-    isshe_log_info(log, "mempool(%p) stat: ", mempool);
-    isshe_log_info(log, "- total small  : %d (bytes)", mempool->total_small);
-    isshe_log_info(log, "- used small   : %d (bytes)", mempool->used_small);
+    isshe_char_t *fmt =
+        "mempool(%p) stat: \n" \
+        "- total small  : %d (bytes)\n" \
+        "- used small   : %d (bytes)\n";
+    if (log) {
+        isshe_log_info(log, fmt, mempool, mempool->total_small, mempool->used_small);
+    } else {
+        isshe_log_stderr(0, fmt, mempool, mempool->total_small, mempool->used_small);
+    }
 }
 
 

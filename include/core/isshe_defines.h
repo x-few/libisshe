@@ -25,6 +25,14 @@
 #define ISSHE_BSD
 #endif
 
+#if defined(__WINDOWS__) \
+    || defined(WIN32) \
+    || defined(WIN64) \
+    || defined(_MSC_VER) \
+    || defined(_WIN32)
+#define ISSHE_WINDOWS
+#endif
+
 #if (defined __linux__)
 #define ISSHE_LINUX
 #endif
@@ -77,5 +85,9 @@
 
 #define ISSHE_MAX_UINT32_VALUE  (uint32_t) 0xffffffff
 #define ISSHE_MAX_INT32_VALUE   (uint32_t) 0x7fffffff
+
+
+#define ISSHE_LLONG_MAX         LLONG_MAX
+#define ISSHE_LLONG_MIN         LLONG_MIN
 
 #endif

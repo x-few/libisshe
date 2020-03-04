@@ -20,14 +20,19 @@
 
 #define isshe_sprintf           sprintf
 #define isshe_strlen            strlen
+#define isshe_strsize(s)        (sizeof(s) - sizeof(""))
+#define isshe_strcmp            strcmp
 
 struct isshe_string_s{
     isshe_size_t      len;
     isshe_char_t     *data;
 };
 
-isshe_char_t *isshe_strdup(isshe_char_t *src,
-    isshe_size_t size, isshe_mempool_t *mempool);
+isshe_char_t *isshe_strdup(isshe_char_t *src, isshe_mempool_t *mempool);
+
+isshe_int_t isshe_strcmp_case_insensitive(
+    const isshe_char_t *str1,
+    const isshe_char_t *str2);
 
 isshe_int_t isshe_vsnprintf(
     isshe_char_t *buf, isshe_size_t size,
