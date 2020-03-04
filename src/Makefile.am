@@ -1,31 +1,31 @@
-AM_CPPFLAGS = -I$(top_srcdir)/include/core \
-    -I$(top_srcdir)/include/crypto
+AM_CPPFLAGS = -I$(top_srcdir)/src/base \
+    -I$(top_srcdir)/src/crypto \
+    -I$(top_srcdir)/src/json
 
 noinst_LIBRARIES = libisshe.a
 
 ISSHE_CORE_SRCS = \
-    core/isshe_debug.c \
-    core/isshe_error.c \
-    core/isshe_process.c \
-    core/isshe_signal.c \
-    core/isshe_stdio.c \
-    core/isshe_unistd.c \
-    core/isshe_pthread.c \
-    core/isshe_time.c \
-    core/isshe_ipc.c \
-    core/isshe_rpc.c \
-    core/isshe_socket.c \
-    core/isshe_rio.c \
-    core/isshe_sbuf.c \
-    core/isshe_json.c \
-    core/isshe_log.c \
-    core/isshe_memory.c \
-    core/isshe_process_title.c \
-    core/isshe_mempool.c \
-    core/isshe_string.c \
-    core/isshe_file.c \
-    core/isshe_connection.c \
-    core/isshe_connpool.c
+    base/isshe_debug.c \
+    base/isshe_error.c \
+    base/isshe_process.c \
+    base/isshe_signal.c \
+    base/isshe_stdio.c \
+    base/isshe_unistd.c \
+    base/isshe_pthread.c \
+    base/isshe_time.c \
+    base/isshe_ipc.c \
+    base/isshe_rpc.c \
+    base/isshe_socket.c \
+    base/isshe_rio.c \
+    base/isshe_sbuf.c \
+    base/isshe_log.c \
+    base/isshe_memory.c \
+    base/isshe_process_title.c \
+    base/isshe_mempool.c \
+    base/isshe_string.c \
+    base/isshe_file.c \
+    base/isshe_connection.c \
+    base/isshe_connpool.c
 
 ISSHE_CRYPTO_SRCS = \
     crypto/isshe_aes.c \
@@ -35,7 +35,11 @@ ISSHE_CRYPTO_SRCS = \
     crypto/isshe_hmac.c \
     crypto/isshe_rand.c
 
+ISSHE_JSON_SRCS = \
+    json/isshe_json.c
+
 libisshe_a_SOURCES = \
     $(ISSHE_CORE_SRCS) \
-    $(ISSHE_CRYPTO_SRCS)
+    $(ISSHE_CRYPTO_SRCS) \
+    $(ISSHE_JSON_SRCS)
 

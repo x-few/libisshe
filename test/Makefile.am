@@ -1,5 +1,6 @@
-AM_CPPFLAGS = -I$(top_srcdir)/include/core \
-    -I$(top_srcdir)/include/crypto
+AM_CPPFLAGS = -I$(top_srcdir)/src/base \
+    -I$(top_srcdir)/src/crypto \
+    -I$(top_srcdir)/src/json
 
 LDADD = \
 	${top_builddir}/src/libisshe.a

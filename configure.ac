@@ -35,7 +35,8 @@ AC_CHECK_FUNCS([ftruncate gettimeofday memset mkfifo munmap pathconf select sock
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile
-                 src/core/Makefile
+                 src/base/Makefile
                  src/crypto/Makefile
+                 src/json/Makefile
                  test/Makefile])
 AC_OUTPUT
