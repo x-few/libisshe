@@ -549,15 +549,24 @@ value_print(const isshe_json_t * const item,
 
 static isshe_int_t
 json_print(const isshe_json_t * const item,
-    isshe_bool_t format, isshe_log_t *log)
+    isshe_bool_t format, isshe_uchar_t *buffer,
+    isshe_size_t buflen, isshe_log_t *log)
 {
     isshe_json_print_buffer_t pbuf[1];
     isshe_size_t len = 0;
 
     len = json_print_length(item, format);
     if (len == 0) {
+        isshe_log_error(log, "get print length failed");
         return ISSHE_ERROR;
     }
+
+    if (buflen != 0 && buflen < len) {
+        isshe_log_warning(log,
+            "the provided buffer is smaller than required");
+        //return ISSHE_ERROR;
+    }
+
     isshe_memzero(pbuf, sizeof(pbuf));
 
     pbuf->format = format;
@@ -565,26 +574,28 @@ json_print(const isshe_json_t * const item,
     pbuf->log = log;
 
     // 这里不使用内存池
-    pbuf->buffer = isshe_malloc(len);
-    if (!pbuf->buffer) {
-        printf("alloc print buffer failed");
-        return ISSHE_ERROR;
+    if (buffer && buflen > 0) {
+        pbuf->buffer = buffer;
+    } else {
+        pbuf->buffer = (isshe_uchar_t *)isshe_malloc(len);
+        if (!pbuf->buffer) {
+            isshe_log_error(log, "alloc print buffer failed");
+            return ISSHE_ERROR;
+        }
     }
 
     if (value_print(item, pbuf) != ISSHE_OK) {
         isshe_free(pbuf->buffer);
+        isshe_log_error(log, "value print failed");
         return ISSHE_ERROR;
     }
 
     pbuf->buffer[pbuf->offset] = '\0';
 
-    if (log) {
+    if (!buffer || buflen == 0) {
         isshe_log_info(log, "%s", pbuf->buffer);
-    } else {
-        printf("%s\n", pbuf->buffer);
+        isshe_free(pbuf->buffer);
     }
-
-    isshe_free(pbuf->buffer);
 
     return ISSHE_OK;
 }
@@ -605,12 +616,26 @@ isshe_int_t
 isshe_json_print(
     const isshe_json_t * const item, isshe_log_t *log)
 {
-    return json_print(item, ISSHE_FALSE, log);
+    return json_print(item, ISSHE_FALSE, NULL, 0, log);
 }
 
 isshe_int_t
 isshe_json_print_format(
     const isshe_json_t * const item, isshe_log_t *log)
 {
-    return json_print(item, ISSHE_TRUE, log);
+    return json_print(item, ISSHE_TRUE, NULL, 0, log);
+}
+
+isshe_int_t isshe_json_print_buffer(
+    const isshe_json_t * const item, isshe_uchar_t *buffer,
+    isshe_size_t buflen, isshe_log_t *log)
+{
+    return json_print(item, ISSHE_FALSE, buffer, buflen, log);
+}
+
+isshe_int_t isshe_json_print_format_buffer(
+    const isshe_json_t * const item, isshe_uchar_t *buffer,
+    isshe_size_t buflen, isshe_log_t *log)
+{
+    return json_print(item, ISSHE_TRUE, buffer, buflen, log);
 }

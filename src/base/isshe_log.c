@@ -52,10 +52,12 @@ isshe_log_level_to_number(const isshe_char_t *level)
 }
 
 isshe_int_t
-ngx_log_errno(isshe_char_t *buf, isshe_int_t len, isshe_errno_t errcode)
+ngx_log_errno(isshe_char_t *buf,
+    isshe_int_t len, isshe_errno_t errcode)
 {
     isshe_int_t n = 0;
-    n += snprintf(buf + n, len, " (%d %s)", errcode, strerror(errcode));
+    n += snprintf(buf + n, len, " (%d %s)",
+        errcode, strerror(errcode));
     if (n >= len) {
         buf[len - 1] = '.';
         buf[len - 2] = '.';
@@ -221,19 +223,24 @@ isshe_log_core(isshe_uint_t level, isshe_log_t *log,
     n = 0;
     isshe_memzero(logstr, ISSHE_MAX_LOG_STR);
     n += isshe_log_time(logstr);
-    if (log->file->fd == isshe_stderr) {
-        n += snprintf(logstr + n, ISSHE_MAX_LOG_STR - n, " [%s]", log_levels_color[level]);
+    if (!log || log->file->fd == isshe_stderr) {
+        n += snprintf(logstr + n, ISSHE_MAX_LOG_STR - n,
+            " [%s]", log_levels_color[level]);
     } else {
-        n += snprintf(logstr + n, ISSHE_MAX_LOG_STR - n, " [%s]", log_levels[level]);
+        n += snprintf(logstr + n, ISSHE_MAX_LOG_STR - n,
+            " [%s]", log_levels[level]);
     }
     
 
-    n += snprintf(logstr + n, ISSHE_MAX_LOG_STR - n, " %d#%d: ", isshe_log_pid, isshe_log_tid);
+    n += snprintf(logstr + n, ISSHE_MAX_LOG_STR - n,
+        " %d#%d: ", isshe_log_pid, isshe_log_tid);
 
-    n += isshe_vsnprintf(logstr + n, ISSHE_MAX_LOG_STR - n, fmt, args);
+    n += isshe_vsnprintf(logstr + n,
+        ISSHE_MAX_LOG_STR - n, fmt, args);
 
     if (n < ISSHE_MAX_LOG_STR && errcode) {
-        n += snprintf(logstr + n, ISSHE_MAX_LOG_STR - n, ": %s", strerror(errcode));
+        n += snprintf(logstr + n, ISSHE_MAX_LOG_STR - n,
+            ": %s", strerror(errcode));
     }
 
     if (n > ISSHE_MAX_LOG_STR - ISSHE_LINEFEED_SIZE) {
@@ -243,10 +250,14 @@ isshe_log_core(isshe_uint_t level, isshe_log_t *log,
     p = logstr + n;
     isshe_linefeed(p);  // p++
 
-    if (log->writer) {
-        log->writer(log, level, logstr, p - logstr);
+    if (log) {
+        if (log->writer) {
+            log->writer(log, level, logstr, p - logstr);
+        } else {
+            isshe_write(log->file->fd, logstr, p - logstr);
+        }
     } else {
-        isshe_write(log->file->fd, logstr, p - logstr);
+        isshe_write(isshe_stderr, logstr, p - logstr);
     }
 }
 
@@ -254,7 +265,7 @@ isshe_void_t isshe_log(isshe_uint_t level,
     isshe_log_t *log, const char *fmt, ...)
 {
     va_list args;
-    if (log->level >= level) {
+    if (!log || log->level >= level) {
         va_start(args, fmt);
         isshe_log_core(level, log, 0, fmt, args);
         va_end(args);
@@ -265,7 +276,7 @@ isshe_void_t isshe_log_errno(isshe_uint_t level, isshe_log_t *log,
     isshe_errno_t errcode, const char *fmt, ...)
 {
     va_list args;
-    if (log->level >= level) {
+    if (!log || log->level >= level) {
         va_start(args, fmt);
         isshe_log_core(level, log, errcode, fmt, args);
         va_end(args);

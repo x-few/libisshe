@@ -10,31 +10,28 @@ isshe_void_t isshe_debug_print_addr(struct sockaddr *sockaddr, isshe_log_t *log)
     isshe_char_t            *type;
 
     if (!sockaddr) {
-        if (log) {
-            isshe_log_debug(log, "print addr failed: addr == NULL");
-        }
+        isshe_log_debug(log, "print addr failed: addr == NULL");
         return;
     }
 
     isshe_memzero(addr, INET6_ADDRSTRLEN);
     if (sockaddr->sa_family == AF_INET6) {
         in6 = (struct sockaddr_in6 *)sockaddr;
-        inet_ntop(AF_INET6, &in6->sin6_addr, addr, sizeof(struct sockaddr_in6));
+        inet_ntop(AF_INET6, &in6->sin6_addr, addr,
+            sizeof(struct sockaddr_in6));
         port = in6->sin6_port;
         type = "IPV6";
     } else {
         in4 = (struct sockaddr_in *)sockaddr;
-        inet_ntop(AF_INET, &in4->sin_addr, addr, sizeof(struct sockaddr_in));
+        inet_ntop(AF_INET, &in4->sin_addr, addr,
+            sizeof(struct sockaddr_in));
         port = in4->sin_port;
         type = "IPV4";
     }
 
     // 打印对端的信息
-    if (log) {
-        isshe_log_debug(log, "addr: (%s)%s, port: %d", type, addr, ntohs(port));
-    } else {
-        printf("addr: (%s)%s, port:%d\n", type, addr, ntohs(port));
-    }
+    isshe_log_debug(log, "addr: (%s)%s, port: %d",
+        type, addr, ntohs(port));
 }
 
 isshe_void_t

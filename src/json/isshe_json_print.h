@@ -30,4 +30,12 @@ isshe_int_t isshe_json_print(
 isshe_int_t isshe_json_print_format(
     const isshe_json_t * const item, isshe_log_t *log);
 
+isshe_int_t isshe_json_print_buffer(
+    const isshe_json_t * const item, isshe_uchar_t *buffer,
+    isshe_size_t buflen, isshe_log_t *log);
+
+isshe_int_t isshe_json_print_format_buffer(
+    const isshe_json_t * const item, isshe_uchar_t *buffer,
+    isshe_size_t buflen, isshe_log_t *log);
+
 #endif

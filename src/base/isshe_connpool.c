@@ -15,11 +15,7 @@ isshe_connpool_create(isshe_int_t n,
         connpool = (isshe_connpool_t *)isshe_malloc(size);
     }
     if (!connpool) {
-        if (log) {
-            isshe_log_alert(log, "malloc connection pool failed");
-        } else {
-            printf("malloc connection pool failed\n");
-        }
+        isshe_log_alert(log, "malloc connection pool failed");
         return NULL;
     }
 

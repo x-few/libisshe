@@ -45,11 +45,7 @@ isshe_mempool_create(isshe_size_t size, isshe_log_t *log)
     pagesize = getpagesize();
     pool->max = size < pagesize ? size : pagesize;      // 最大一页！
 
-    if (log) {
-        isshe_log_debug(log, "create mempool: %p", pool);
-    } else {
-        isshe_log_stderr(0, "create mempool: %p", pool);
-    }
+    isshe_log_debug(log, "create mempool: %p", pool);
 
     return pool;
 }
@@ -280,11 +276,9 @@ isshe_mempool_stat_print(isshe_mempool_t *mempool, isshe_log_t *log)
         "mempool(%p) stat: \n" \
         "- total small  : %d (bytes)\n" \
         "- used small   : %d (bytes)\n";
-    if (log) {
-        isshe_log_info(log, fmt, mempool, mempool->total_small, mempool->used_small);
-    } else {
-        isshe_log_stderr(0, fmt, mempool, mempool->total_small, mempool->used_small);
-    }
+
+    isshe_log_info(log, fmt, mempool,
+        mempool->total_small, mempool->used_small);
 }
 
 
