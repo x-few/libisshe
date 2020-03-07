@@ -37,7 +37,8 @@ ISSHE_CRYPTO_SRCS = \
 
 ISSHE_JSON_SRCS = \
     json/isshe_json.c \
-    json/isshe_json_print.c
+    json/isshe_json_print.c \
+    json/isshe_json_parse.c
 
 libisshe_a_SOURCES = \
     $(ISSHE_CORE_SRCS) \
